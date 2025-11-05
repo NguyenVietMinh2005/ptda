@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model CHI_TIET_DAT_PHONG {
+  MaDatPhong   Int
+  MaHomestay   Int
+  SoLuongPhong Int
+  DAT_PHONG    DAT_PHONG @relation(fields: [MaDatPhong], references: [MaDatPhong], onDelete: Cascade, map: "CHI_TIET_DAT_PHONG_ibfk_1")
+  HOMESTAY     HOMESTAY  @relation(fields: [MaHomestay], references: [MaHomestay], onDelete: Cascade, map: "CHI_TIET_DAT_PHONG_ibfk_2")
+
+  @@id([MaDatPhong, MaHomestay])
+  @@index([MaHomestay], map: "MaHomestay")
+}
+
+model CHU_HOMESTAY {
+  MaChu           Int                 @id @default(autoincrement())
+  HoTen           String              @db.VarChar(100)
+  Email           String              @unique(map: "Email") @db.VarChar(100)
+  MatKhau         String              @db.VarChar(255)
+  SoDienThoai     String?             @db.VarChar(15)
+  DiaChi          String?             @db.VarChar(255)
+  SoCCCD          String              @unique(map: "SoCCCD") @db.VarChar(20)
+  Quyen           CHU_HOMESTAY_Quyen? @default(chu_homestay)
+  created_at      DateTime?           @default(now()) @db.Timestamp(0)
+  isActive      Boolean  @default(true)
+  passwordResetToken   String?   @unique
+  passwordResetExpires DateTime?
+  DOANH_THU       DOANH_THU[]
+  HOMESTAY        HOMESTAY[]
+  PHIEU_KHIEU_NAI PHIEU_KHIEU_NAI[]
+  XU_LY_KHIEU_NAI XU_LY_KHIEU_NAI[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model DANH_GIA {
+  MaDanhGia   Int        @id @default(autoincrement())
+  MaNguoiDung Int
+  MaHomestay  Int
+  SoSao       Int?
+  BinhLuan    String?    @db.Text
+  created_at  DateTime?  @default(now()) @db.Timestamp(0)
+  NGUOI_DUNG  NGUOI_DUNG @relation(fields: [MaNguoiDung], references: [MaNguoiDung], onDelete: Cascade, map: "DANH_GIA_ibfk_1")
+  HOMESTAY    HOMESTAY   @relation(fields: [MaHomestay], references: [MaHomestay], onDelete: Cascade, map: "DANH_GIA_ibfk_2")
+
+  @@index([MaHomestay], map: "MaHomestay")
+  @@index([MaNguoiDung], map: "MaNguoiDung")
+}
+
+model DAT_PHONG {
+  MaDatPhong         Int                  @id @default(autoincrement())
+  MaNguoiDung        Int
+  NgayNhan           DateTime             @db.Date
+  NgayTra            DateTime             @db.Date
+  SoLuong            Int
+  Gia                Decimal              @db.Decimal(12, 2)
+  TrangThai          DAT_PHONG_TrangThai? @default(ChoXacNhan)
+  created_at         DateTime?            @default(now()) @db.Timestamp(0)
+  CHI_TIET_DAT_PHONG CHI_TIET_DAT_PHONG[]
+  NGUOI_DUNG         NGUOI_DUNG           @relation(fields: [MaNguoiDung], references: [MaNguoiDung], onDelete: Cascade, map: "DAT_PHONG_ibfk_1")
+  KHIEU_NAI          KHIEU_NAI[]
+
+  @@index([MaNguoiDung], map: "MaNguoiDung")
+}
+
+model DOANH_THU {
+  MaDoanhThu   Int          @id @default(autoincrement())
+  MaChu        Int
+  ThangNam     String?      @db.VarChar(7)
+  TongDoanhThu Decimal?     @default(0.00) @db.Decimal(12, 2)
+  SoLuongDat   Int?         @default(0)
+  created_at   DateTime?    @default(now()) @db.Timestamp(0)
+  CHU_HOMESTAY CHU_HOMESTAY @relation(fields: [MaChu], references: [MaChu], onDelete: Cascade, map: "DOANH_THU_ibfk_1")
+
+  @@index([MaChu], map: "MaChu")
+}
+
+model HINH_ANH {
+  MaAnh      Int      @id @default(autoincrement())
+  MaHomestay Int
+  HinhAnh    String? @db.VarChar(255)
+  HOMESTAY   HOMESTAY @relation(fields: [MaHomestay], references: [MaHomestay], onDelete: Cascade, map: "HINH_ANH_ibfk_1")
+
+  @@index([MaHomestay], map: "MaHomestay")
+}
+
+model HOMESTAY {
+  MaHomestay         Int                  @id @default(autoincrement())
+  MaChu              Int
+  TenHomestay        String               @db.VarChar(255)
+  DiaDiem            String               @db.VarChar(255)
+  Gia                Decimal              @db.Decimal(12, 2)
+  SoKhachToiDa       Int
+  TienIch            String?              @db.Text
+  MoTa               String?              @db.Text
+  created_at         DateTime?            @default(now()) @db.Timestamp(0)
+  CHI_TIET_DAT_PHONG CHI_TIET_DAT_PHONG[]
+  DANH_GIA           DANH_GIA[]
+  HINH_ANH           HINH_ANH[]
+  CHU_HOMESTAY       CHU_HOMESTAY         @relation(fields: [MaChu], references: [MaChu], onDelete: Cascade, map: "HOMESTAY_ibfk_1")
+  YEU_THICH          YEU_THICH[]
+
+  @@index([MaChu], map: "MaChu")
+}
+
+model KHIEU_NAI {
+  MaKhieuNai      Int                  @id @default(autoincrement())
+  MaDatPhong      Int
+  MaNguoiDung     Int
+  NoiDung         String               @db.Text
+  TrangThai       KHIEU_NAI_TrangThai? @default(ChuaXuLy)
+  NgayTao         DateTime?            @default(now()) @db.Timestamp(0)
+  DAT_PHONG       DAT_PHONG            @relation(fields: [MaDatPhong], references: [MaDatPhong], onDelete: Cascade, map: "KHIEU_NAI_ibfk_1")
+  NGUOI_DUNG      NGUOI_DUNG           @relation(fields: [MaNguoiDung], references: [MaNguoiDung], onDelete: Cascade, map: "KHIEU_NAI_ibfk_2")
+  PHIEU_KHIEU_NAI PHIEU_KHIEU_NAI[]
+  XU_LY_KHIEU_NAI XU_LY_KHIEU_NAI[]
+
+  @@index([MaDatPhong], map: "MaDatPhong")
+  @@index([MaNguoiDung], map: "MaNguoiDung")
+}
+
+model NGUOI_DUNG {
+  MaNguoiDung Int         @id @default(autoincrement())
+  HoTen       String      @db.VarChar(100)
+  Email       String      @unique(map: "Email") @db.VarChar(100)
+  MatKhau     String      @db.VarChar(255)
+  SoDienThoai String?     @db.VarChar(15)
+  DiaChi      String?     @db.VarChar(255)
+  CapNhatDL   DateTime?   @default(now()) @db.DateTime(0)
+  isActive    Boolean  @default(true) 
+  passwordResetToken   String?   @unique
+  passwordResetExpires DateTime?
+  DANH_GIA    DANH_GIA[]
+  DAT_PHONG   DAT_PHONG[]
+  KHIEU_NAI   KHIEU_NAI[]
+  YEU_THICH   YEU_THICH[]
+}
+
+model PHIEU_KHIEU_NAI {
+  MaChu        Int
+  MaKhieuNai   Int
+  CHU_HOMESTAY CHU_HOMESTAY @relation(fields: [MaChu], references: [MaChu], onDelete: Cascade, map: "PHIEU_KHIEU_NAI_ibfk_1")
+  KHIEU_NAI    KHIEU_NAI    @relation(fields: [MaKhieuNai], references: [MaKhieuNai], onDelete: Cascade, map: "PHIEU_KHIEU_NAI_ibfk_2")
+
+  @@id([MaChu, MaKhieuNai])
+  @@index([MaKhieuNai], map: "MaKhieuNai")
+}
+
+model XU_LY_KHIEU_NAI {
+  MaXuLy       Int          @id @default(autoincrement())
+  MaKhieuNai   Int
+  MaChu        Int
+  KetQua       String?      @db.Text
+  NgayXuLy     DateTime?    @default(now()) @db.Timestamp(0)
+  KHIEU_NAI    KHIEU_NAI    @relation(fields: [MaKhieuNai], references: [MaKhieuNai], onDelete: Cascade, map: "XU_LY_KHIEU_NAI_ibfk_1")
+  CHU_HOMESTAY CHU_HOMESTAY @relation(fields: [MaChu], references: [MaChu], onDelete: Cascade, map: "XU_LY_KHIEU_NAI_ibfk_2")
+
+  @@index([MaChu], map: "MaChu")
+  @@index([MaKhieuNai], map: "MaKhieuNai")
+}
+
+model YEU_THICH {
+  MaNguoiDung Int
+  MaHomestay  Int
+  NgayThem    DateTime?  @default(now()) @db.Timestamp(0)
+  NGUOI_DUNG  NGUOI_DUNG @relation(fields: [MaNguoiDung], references: [MaNguoiDung], onDelete: Cascade, map: "YEU_THICH_ibfk_1")
+  HOMESTAY    HOMESTAY   @relation(fields: [MaHomestay], references: [MaHomestay], onDelete: Cascade, map: "YEU_THICH_ibfk_2")
+
+  @@id([MaNguoiDung, MaHomestay])
+  @@index([MaHomestay], map: "MaHomestay")
+}
+
+enum KHIEU_NAI_TrangThai {
+  ChuaXuLy
+  DangXuLy
+  DaXuLy
+}
+
+enum DAT_PHONG_TrangThai {
+  ChoXacNhan
+  DaXacNhan
+  DaHuy
+}
+
+enum CHU_HOMESTAY_Quyen {
+  admin
+  chu_homestay
+}

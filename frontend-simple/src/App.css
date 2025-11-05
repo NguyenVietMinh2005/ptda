@@ -1,0 +1,1146 @@
+/* src/App.css */
+header {
+  background-color: #333;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 {
+  margin: 0;
+}
+header nav a {
+  color: white;
+  margin-left: 1rem;
+  text-decoration: none;
+}
+
+main {
+  max-width: 1200px;
+  margin: 1rem auto;
+  padding: 1rem;
+}
+
+.homestay-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 cột */
+  gap: 1rem;
+}
+
+.homestay-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.homestay-card h3 {
+  margin-top: 0;
+}
+/* Thêm vào cuối tệp src/App.css */
+.logout-button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1em;
+  font-family: inherit;
+  margin-left: 1rem;
+  text-decoration: underline;
+}
+
+.logout-button:hover {
+  color: #ffc107;
+}
+
+
+/* --- Thanh tìm kiếm --- */
+.search-bar-container {
+  padding: 1rem 0;
+  display: flex;
+  justify-content: center;
+}
+.search-bar {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 50px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.search-input {
+  padding: 0.75rem 1.5rem;
+  border-right: 1px solid #ddd;
+}
+.search-input:last-of-type {
+  border-right: none;
+}
+.search-input label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+.search-input input {
+  border: none;
+  outline: none;
+  background: transparent;
+}
+.search-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  margin: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Ghi đè CSS Grid cũ ---
+.homestay-list {
+  /* Xóa cái này đi để dùng layout mới */
+/* } */ 
+
+/* --- Giao diện Card MỚI --- */
+.homestay-list-new {
+  display: grid;
+grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.homestay-card-new-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.homestay-card-new {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  position: relative; /* Cho icon trái tim */
+}
+
+.homestay-image {
+  width: 100%;
+  height: 280px; /* Chiều cao cố định */
+  object-fit: cover; /* Cắt ảnh vừa vặn */
+  border-radius: 12px;
+}
+
+.homestay-info {
+  padding: 0.5rem 0;
+}
+.homestay-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Thêm ... nếu tên quá dài */
+}
+.homestay-info p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.25rem 0;
+}
+.homestay-info strong {
+  color: #222;
+}
+
+
+/* --- Footer MỚI --- */
+.site-footer {
+  background-color: #f7f7f7;
+  border-top: 1px solid #ddd;
+  padding: 3rem 2rem;
+  margin-top: 3rem;
+}
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+.footer-column h4 {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-column li {
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  color: #333;
+  cursor: pointer;
+}
+.footer-column li:hover {
+  text-decoration: underline;
+}
+.footer-bottom {
+  max-width: 1200px;
+  margin: 2rem auto 0;
+  border-top: 1px solid #ddd;
+  padding-top: 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+
+/* 1. Bỏ gạch chân cho thẻ Link ở trang chủ */
+.homestay-card-link {
+  text-decoration: none;
+  color: inherit; /* Kế thừa màu chữ (màu đen) */
+}
+
+/* 2. CSS cho trang Chi tiết */
+.homestay-detail {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.detail-location {
+  font-size: 1.2rem;
+  color: #555;
+  margin-top: -1rem;
+}
+
+.image-gallery {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 cột ảnh */
+  gap: 10px;
+}
+
+.image-gallery img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover; /* Đảm bảo ảnh không bị méo */
+  border-radius: 5px;
+}
+
+.detail-info {
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.book-button {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.reviews-section {
+  margin-top: 2rem;
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+.review-card {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+.review-card strong {
+  display: block; /* Cho tên người dùng xuống 1 hàng */
+  font-size: 1.1rem;
+}
+
+.review-card span {
+  display: block; /* Cho số sao xuống 1 hàng */
+  font-weight: bold;
+  color: #f5c518; /* Màu vàng */
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+.city-section {
+  margin-bottom: 2.5rem; /* Tạo khoảng cách giữa các thành phố */
+}
+
+.city-section h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee; /* Thêm đường gạch chân cho tiêu đề */
+}
+.booking-form {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.booking-form h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.booking-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 cột */
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Ghi đè CSS từ Form.css để dùng trong trang này */
+.booking-form .form-group label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.booking-form .form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Hiển thị lỗi đặt phòng */
+.booking-form .error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.book-button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.search-input select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit; /* Kế thừa font chữ */
+  color: inherit; /* Kế thừa màu chữ */
+  cursor: pointer;
+  
+  /* Căn chỉnh cho khớp với input */
+  padding-top: 2px; 
+  padding-bottom: 2px;
+}
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-card {
+  display: flex;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  overflow: hidden; /* Giữ ảnh bo tròn */
+}
+
+.booking-card-image {
+  width: 250px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.booking-card-info {
+  padding: 1rem 1.5rem;
+  flex-grow: 1;
+}
+
+.booking-card-info h3 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.booking-card-info p {
+  margin: 0.5rem 0;
+}
+
+/* Định dạng Trạng thái */
+.status {
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.status.ChoXacNhan {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+}
+.status.DaXacNhan {
+  color: #3c763d;
+  background-color: #dff0d8;
+}
+.status.DaHuy {
+  color: #a94442;
+  background-color: #f2dede;
+}
+.complain-button {
+  background-color: #d9534f; /* Màu đỏ */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+.complain-button:hover {
+  background-color: #c9302c;
+}
+
+/* 1. CSS cho Nút màu xanh (Update) */
+.button-primary {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff; /* Màu xanh dương */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.button-primary:disabled {
+  background-color: #ccc;
+}
+.auth-form input:disabled {
+  background-color: #eee;
+  color: #777;
+}
+
+/* 2. CSS cho Menu 3 sọc (Dropdown) */
+.profile-menu {
+  position: relative; /* Giữ menu dropdown bên trong */
+}
+
+.menu-icon-button {
+  background: none;
+  border: 1px solid white;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+  color: white;
+  display: flex; /* Để căn icon */
+  align-items: center;
+  justify-content: center;
+}
+.menu-icon-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 120%; /* Nằm ngay dưới icon */
+  right: 0;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 200px;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
+}
+
+.menu-item {
+  background: none;
+  border: none;
+  font: inherit;
+  padding: 0.75rem 1rem;
+  color: #333;
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background-color: #f4f4f4;
+}
+.menu-item.logout {
+  color: #d9534f; /* Màu đỏ */
+  border-top: 1px solid #eee;
+}
+
+/* Nút Hủy đơn (Màu cam) */
+.cancel-button {
+  background-color: #f0ad4e;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  margin-right: 0.5rem; /* Thêm khoảng cách */
+}
+.cancel-button:hover {
+  background-color: #ec971f;
+}
+
+/* Sửa lại nút Khiếu nại (để nằm cạnh nhau) */
+.complain-button {
+  margin-right: 0.5rem;
+}
+
+.booking-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.heart-button {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10; /* Nổi lên trên ảnh */
+  
+  /* Thêm hiệu ứng viền đen để icon trắng nổi bật */
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.7));
+}
+.heart-button:hover {
+  transform: scale(1.1); /* Phóng to 1 chút khi di chuột */
+}
+
+
+.detail-header-container h2 {
+  margin: 0;
+}
+
+/* Tái sử dụng CSS cho nút trái tim, 
+   nhưng đổi màu viền thành đen cho dễ thấy */
+.heart-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  
+  /* Lần này không cần 'position: absolute' */
+}
+.heart-button:hover {
+  transform: scale(1.1);
+}
+/* Bọc 2 nút "Đặt phòng" và "Yêu thích" */
+.booking-form-actions {
+  display: flex;
+  flex-direction: column; /* Xếp 2 nút dọc */
+  gap: 0.5rem; /* Khoảng cách nhỏ giữa 2 nút */
+  margin-top: 1rem;
+}
+
+/* Sửa nút Đặt phòng (xóa margin-top cũ) */
+.book-button {
+  margin-top: 0; 
+}
+
+/* Nút Yêu thích (mặc định) */
+.favorite-button {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #f0f0f0; /* Màu xám nhạt */
+  color: #333; /* Màu chữ đen */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+/* Nút Yêu thích (khi đã thích) */
+.favorite-button.favorited {
+  background-color: #ffeaea; /* Nền hồng nhạt */
+  color: #d9534f; /* Chữ màu đỏ */
+  border-color: #d9534f; /* Viền màu đỏ */
+}
+
+.review-form {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.review-form h4 {
+  font-size: 1.2rem;
+  margin-top: 0;
+}
+
+/* Tái sử dụng .form-group cho textarea và select */
+.review-form .form-group {
+  margin-bottom: 1rem;
+}
+.review-form .form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.review-form .form-group textarea,
+.review-form .form-group select {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+/* Sửa lại nút primary để nó không 100% width */
+.review-form .button-primary {
+  width: auto; /* Chỉ rộng vừa đủ chữ */
+}
+/* 1. CSS cho Component Ngôi Sao */
+.star-rating {
+  display: flex;
+  gap: 0.25rem;
+}
+.star-rating span {
+  cursor: pointer;
+  font-size: 2rem; /* Làm ngôi sao to ra */
+  transition: color 0.1s ease-in-out;
+}
+.star-empty {
+  color: #ccc; /* Màu sao rỗng */
+}
+.star-filled {
+  color: #f5c518; /* Màu sao vàng */
+}
+
+/* 2. CSS cho Điểm trung bình (dưới tiêu đề) */
+.detail-subtitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem; /* Kéo lên gần tiêu đề */
+  margin-bottom: 1rem;
+}
+.avg-rating {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.detail-location-dot {
+  font-weight: bold;
+}
+.detail-location {
+  font-size: 1.1rem;
+  color: #555;
+  margin: 0; /* Xóa margin cũ */
+}
+.form-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.complaint-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Tái sử dụng .booking-card */
+    .complaint-card {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 1rem 1.5rem;
+    }
+
+    .complaint-card p {
+      margin: 0.5rem 0;
+    }
+
+    /* Định dạng cho phản hồi (nếu có) */
+    .complaint-response {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed #ccc;
+      background-color: #f9f9f9;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+    }
+
+    .complaint-response strong {
+      color: #0056b3; /* Màu xanh dương */
+    }
+
+    .owner-homestay-card {
+      background: white;
+      padding: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .owner-homestay-card h3 {
+      margin-top: 0;
+    }
+
+    .upload-form {
+      margin: 1rem 0;
+      padding: 1rem;
+      border: 1px dashed #007bff;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+    .upload-form label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .upload-form input[type="file"] {
+      display: block;
+    }
+
+    .current-images {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .current-images img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    /* 1. Header Mới Của Chủ Nhà */
+    .owner-header {
+      background-color: #0056b3; /* Màu xanh dương đậm */
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .owner-logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .owner-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .owner-nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .owner-nav a:hover {
+      text-decoration: underline;
+    }
+    .owner-welcome {
+      border-left: 1px solid #555;
+      padding-left: 1rem;
+      font-style: italic;
+    }
+
+    /* 2. Thẻ Thống Kê (Dashboard) */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* 3 cột */
+      gap: 1.5rem;
+    }
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      border-top: 4px solid #007bff;
+    }
+    .stat-card h4 {
+      margin-top: 0;
+      color: #555;
+    }
+    .stat-card p {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #0056b3;
+      margin-bottom: 0;
+    }
+
+    /* Thẻ Quản lý Đơn (chủ nhà) */
+    .booking-management-card {
+      /* Bỏ ảnh, chỉ dùng info */
+      flex-direction: column;
+    }
+    
+    .booking-management-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+
+    /* Nút Xác nhận (Màu xanh lá) */
+    .button-approve {
+      padding: 0.5rem 1rem;
+      background-color: #5cb85c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .button-approve:hover {
+      background-color: #4cae4c;
+    }
+    
+    /* Ghi đè lại nút Đỏ (Xóa/Hủy) để nó nhỏ hơn */
+    .booking-management-actions .button-danger {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+    .resolve-form {
+      margin-top: 1rem;
+      border-top: 1px dashed #ccc;
+      padding-top: 1rem;
+    }
+    .resolve-form label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .resolve-form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    /* Ghi đè nút primary để nó nhỏ hơn */
+    .resolve-form .button-primary {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    .admin-link {
+      color: #ffc107 !important; /* Màu vàng */
+      font-weight: bold !important;
+      border: 1px solid #ffc107;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+    .admin-link:hover {
+      background: #ffc107;
+      color: #333 !important;
+    }
+
+    /* Bảng Admin */
+    .admin-section {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .admin-table th, .admin-table td {
+      border: 1px solid #ddd;
+      padding: 0.75rem;
+      text-align: left;
+      vertical-align: middle;
+    }
+    .admin-table th {
+      background-color: #f9f9f9;
+    }
+    .admin-table .button-danger,
+    .admin-table .button-approve {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    /* 1. CSS cho Header CỦA CHỦ NHÀ (nền xanh) */
+    .owner-header {
+      background-color: #0056b3; /* Màu xanh dương đậm */
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .owner-header .owner-logo a {
+      color: white;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    /* Icon 3 sọc (dùng chung .menu-icon-button) */
+    .owner-header .menu-icon-button {
+      border-color: white;
+      color: white;
+    }
+    .owner-header .auth-links a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+    }
+
+    /* 2. CSS cho lời chào bên trong dropdown */
+    .menu-item-greeting {
+      padding: 0.75rem 1rem;
+      font-style: italic;
+      color: #555;
+      border-bottom: 1px solid #eee;
+    }
+
+    /* 3. CSS cho link Admin (bên trong dropdown) */
+    .menu-item.admin-link {
+      color: #0056b3; /* Màu xanh */
+      font-weight: bold;
+      background-color: #f0f5fa; /* Nền xanh nhạt */
+    }
+    .menu-item.admin-link:hover {
+      background-color: #e0eaf5;
+    }
+    /* Style cho tag "Admin" trong bảng */
+.status-admin {
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #0056b3; /* Màu xanh admin */
+}
+.admin-table-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.admin-table small {
+  display: block;
+  font-size: 0.8em;
+  color: #555;
+}
+
+.role-select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+/* 1. CSS cho Modal (Cửa sổ Pop-up) */
+    .modal-overlay {
+      position: fixed; /* Che toàn màn hình */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6); /* Nền mờ */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 500px;
+      max-width: 90%;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      /* Cho phép cuộn nếu nội dung quá dài */
+      max-height: 90vh;
+      overflow-y: auto; 
+    }
+    
+    .modal-content h2 {
+      margin-top: 0;
+    }
+    
+    /* Tái sử dụng .form-group cho modal */
+    .modal-content .form-group {
+      margin-bottom: 1rem;
+    }
+    .modal-content .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+    .modal-content .form-group input,
+    .modal-content .form-group textarea {
+      width: 100%;
+      padding: 0.5rem;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end; /* Đẩy nút về bên phải */
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+    
+    /* Nút Hủy (màu xám) */
+    .button-secondary {
+      padding: 0.75rem 1.5rem;
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    .button-secondary:hover {
+      background-color: #e0e0e0;
+    }
+
+    /* 2. CSS cho các nút Sửa/Xóa trong thẻ Card */
+    .owner-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      border-top: 1px solid #eee;
+      padding-top: 1rem;
+    }
+    
+    /* Ghi đè nút (để làm chúng nhỏ hơn) */
+    .owner-actions .button-primary,
+    .owner-actions .button-danger {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+
+    /* Form phản hồi của Admin (trong bảng) */
+.resolve-form-admin {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.resolve-form-admin textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-family: inherit;
+}
+.resolve-form-admin button {
+  /* Ghi đè nút primary (cho nhỏ lại) */
+  width: auto;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  align-self: flex-end; /* Nút nằm bên phải */
+}
+/* Bố cục 2 cột của Admin Dashboard */
+    .admin-dashboard-layout {
+      display: grid;
+      grid-template-columns: 300px 1fr; /* Cột menu 300px, Cột nội dung 1fr */
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Menu bên trái (Sidebar) */
+    .admin-menu-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Tái sử dụng style .admin-menu-button (Đã có) */
+    .admin-menu-button {
+      display: block;
+      padding: 1.25rem; /* Tăng padding */
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+    .admin-menu-button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Nội dung Thống kê bên phải */
+    .admin-stats-container {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .admin-stats-container h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1rem;
+    }
+
+    /* Lưới Thống kê (Giữ 3 cột) */
+.stats-grid-admin {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem; /* Tăng khoảng cách */
+}
+
+/* Thẻ Thống kê (Style mới giống ảnh) */
+.stat-card-admin {
+  background: white; /* Nền trắng */
+  border: 1px solid #eee; /* Viền rất nhạt */
+  padding: 1.5rem;
+  border-radius: 8px;
+  /* Thêm viền xanh ở trên */
+  border-top: 4px solid #007bff; 
+  /* Thêm bóng mờ */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+}
+.stat-card-admin h4 {
+  margin-top: 0;
+  font-size: 0.9rem;
+  font-weight: 600; /* Đậm hơn 1 chút */
+  color: #555; /* Màu xám */
+}
+.stat-card-admin p {
+  font-size: 2rem; /* Tăng kích thước số */
+  font-weight: bold;
+  color: #007bff; /* Đổi màu số thành xanh dương */
+  margin-bottom: 0;
+  margin-top: 0.5rem;
+}
+
+ 

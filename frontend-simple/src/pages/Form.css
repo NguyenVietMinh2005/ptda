@@ -1,0 +1,85 @@
+/* src/pages/Form.css */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  /* background-color: #f4f4f4; */
+  background-image: url('background.png');
+  background-size: cover; /* Đảm bảo ảnh che phủ toàn bộ */
+  background-position: center; /* Căn ảnh ở giữa */
+}
+
+.auth-form {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 2rem;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.auth-form h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  box-sizing: border-box; /* Quan trọng */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.auth-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.auth-form button:disabled {
+  background-color: #ccc;
+}
+
+.error-message {
+  color: red;
+  background-color: #ffeaea;
+  border: 1px solid red;
+  padding: 0.5rem;
+  border-radius: 4px;
+  text-align: center;
+}
+/* Thêm vào cuối tệp src/pages/Form.css */
+.form-group-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.form-group-checkbox label {
+  margin-bottom: 0;
+  margin-left: 0.5rem; /* Tạo khoảng cách giữa ô và chữ */
+  font-weight: normal;
+}
+
+.form-group-checkbox input {
+  width: auto; /* Ghi đè 'width: 100%' của input thường */
+}

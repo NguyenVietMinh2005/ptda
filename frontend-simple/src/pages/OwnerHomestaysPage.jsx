@@ -5,10 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import OwnerHeader from '../components/OwnerHeader' // <-- Dùng Header mới
 import { toast } from 'react-hot-toast'
 import EditHomestayModal from '../components/EditHomestayModal';
+import CreateHomestayModal from '../components/CreateHomestayModal';
 
 import '../App.css'
 
-// (Code này gần giống với code cũ trong OwnerDashboardPage.jsx)
+
 const API_URL = 'http://localhost:3000/api/owner/me/homestays'
 const UPLOAD_API_URL = 'http://localhost:3000/api/homestays'
 
@@ -22,8 +23,25 @@ function OwnerHomestaysPage() {
   const [myHomestays, setMyHomestays] = useState([])
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
-  const [editingHomestay, setEditingHomestay] = useState(null);
   const token = localStorage.getItem('ownerAuthToken')
+  
+  // State cho 2 modal
+  const [editingHomestay, setEditingHomestay] = useState(null);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  const fetchMyHomestays = async () => {
+    // Đặt setLoading(true) ở đây nếu muốn
+    try {
+      const response = await axios.get(API_URL, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      setMyHomestays(response.data.data)
+    } catch (err) {
+      toast.error('Không thể tải homestay của bạn.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (!token) {
@@ -31,20 +49,7 @@ function OwnerHomestaysPage() {
       navigate('/owner/login');
       return;
     }
-
-    const fetchMyHomestays = async () => {
-      try {
-        const response = await axios.get(API_URL, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        setMyHomestays(response.data.data)
-      } catch (err) {
-        toast.error('Không thể tải homestay của bạn.')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchMyHomestays()
+    fetchMyHomestays() // Gọi hàm fetch lần đầu
   }, [token, navigate])
 
   const handleImageUpload = async (e, homestayId) => {
@@ -64,7 +69,7 @@ function OwnerHomestaysPage() {
         { headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } }
       );
       toast.success('Tải ảnh lên thành công!');
-      window.location.reload(); 
+      fetchMyHomestays(); // Tải lại dữ liệu sau khi upload
     } catch (err) {
       toast.error('Tải ảnh thất bại.');
     }
@@ -88,15 +93,22 @@ function OwnerHomestaysPage() {
       }
     };
     
-    // --- THÊM HÀM CẬP NHẬT UI SAU KHI SỬA ---
-    const handleHomestayUpdated = (updatedHomestay) => {
-      // Cập nhật lại danh sách homestay trong state
-      setMyHomestays(currentHomestays => 
-        currentHomestays.map(h => 
-          h.MaHomestay === updatedHomestay.MaHomestay ? updatedHomestay : h
-        )
-      );
-    };
+  const handleHomestayUpdated = (updatedHomestay) => {
+    // Cập nhật lại danh sách homestay trong state
+    setMyHomestays(currentHomestays => 
+      currentHomestays.map(h => 
+        h.MaHomestay === updatedHomestay.MaHomestay ? updatedHomestay : h
+      )
+    );
+  };
+
+
+  const handleHomestayCreated = () => {
+    toast.success('Đăng tải homestay thành công!');
+    setIsCreateModalOpen(false); // Đóng modal
+    setLoading(true); // Hiển thị loading
+    fetchMyHomestays(); // Tải lại toàn bộ danh sách
+  };
 
   if (loading) return <div className="page-container"><OwnerHeader /><p>Đang tải...</p></div>
 
@@ -106,7 +118,7 @@ function OwnerHomestaysPage() {
       
       <main>
         <h2>Quản lý Homestay</h2>
-        {/* (Sau này chúng ta sẽ thêm nút "Tạo Homestay mới" ở đây) */}
+        
         <div className="owner-dashboard">
           {myHomestays.length === 0 && (
             <p>Bạn chưa có homestay nào.</p>
@@ -148,7 +160,7 @@ function OwnerHomestaysPage() {
               <div className="owner-actions">
                 <button 
                   className="button-primary"
-                  onClick={() => setEditingHomestay(homestay)} // Mở Modal
+                  onClick={() => setEditingHomestay(homestay)} // Mở Modal Sửa
                 >
                   Sửa
                 </button>
@@ -159,15 +171,39 @@ function OwnerHomestaysPage() {
                   Xóa
                 </button>
               </div>
-              {/* (Sau này chúng ta sẽ thêm nút Sửa/Xóa homestay ở đây) */}
             </div>
           ))}
-        </div>
+          
+          {/*--- THÊM NÚT TẠO MỚI Ở CUỐI TRANG --- */}
+          <div className="add-homestay-container">
+            <button 
+              className="button-primary add-homestay-button"
+              onClick={() => setIsCreateModalOpen(true)}
+            >
+              + Thêm Homestay mới
+            </button>
+          </div>
+          
+        </div> {/* kết thúc .owner-dashboard */}
 
+        {/* ---THÊM 2 MODAL VÀO CUỐI --- */}
+        {editingHomestay && (
+          <EditHomestayModal
+            homestay={editingHomestay}
+            onClose={() => setEditingHomestay(null)}
+            onHomestayUpdated={handleHomestayUpdated}
+          />
+        )}
+        
+        <CreateHomestayModal
+          show={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+          onHomestayCreated={handleHomestayCreated}
+        />
         
       </main>
     </div>
   )
 }
 
-export default OwnerHomestaysPage
+export default OwnerHomestaysPage;

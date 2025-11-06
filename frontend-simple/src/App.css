@@ -1143,4 +1143,124 @@ grid-template-columns: repeat(3, 1fr);
   margin-top: 0.5rem;
 }
 
+/* --- Lớp phủ cho Modal --- */
+.modal-overlay {
+  position: fixed; /* Che toàn màn hình */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Nền mờ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* --- Nội dung Modal --- */
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 700px; /* Rộng hơn một chút */
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  max-height: 90vh; /* Cho phép cuộn nếu nội dung quá dài */
+  overflow-y: auto; 
+}
+
+.modal-content h2 {
+  margin-top: 0;
+}
+
+/* --- Lưới layout cho Form --- */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 cột trên di động */
+  gap: 1rem;
+}
+
+/* 2 cột trên màn hình lớn hơn */
+@media (min-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Class để làm 1 trường input chiếm 2 cột */
+.form-group.full-span {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit; /* Đảm bảo dùng font chữ thống nhất */
+  box-sizing: border-box; /* Rất quan trọng */
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical; /* Cho phép kéo thay đổi chiều cao */
+}
+
+/* --- Các nút hành động (Hủy, Tạo) --- */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end; /* Đẩy nút về bên phải */
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid #eee;
+  padding-top: 1rem;
+}
+
+/* --- Nút Hủy (màu xám) --- */
+.button-secondary {
+  padding: 0.75rem 1.5rem;
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+.button-secondary:hover {
+  background-color: #e0e0e0;
+}
+
+/* --- Nút "Thêm Homestay mới" ở cuối trang --- */
+.add-homestay-container {
+  /* Căn giữa nút */
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+  border-top: 1px dashed #ccc;
+  margin-top: 1.5rem;
+}
+
+.add-homestay-button {
+  /* Tái sử dụng class .button-primary */
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
  

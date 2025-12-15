@@ -261,7 +261,7 @@ function HomePage() {
         ))}
       </main>
 
-      {/* --- FOOTER MỚI --- */}
+      {/* --- FOOTER --- */}
       <footer className="site-footer">
         <div className="footer-content">
           <div className="footer-column">

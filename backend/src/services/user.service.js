@@ -10,41 +10,45 @@ import bcrypt from 'bcryptjs';
  * 
  */
 export const getFavorites = async (userId) => {
-  // 1. Tìm tất cả các bản ghi YEU_THICH của người dùng này
   const favorites = await prisma.yEU_THICH.findMany({
     where: {
       MaNguoiDung: userId,
     },
-    // 2. (Quan trọng) Sử dụng 'include' để lấy luôn thông tin
-    // của HOMESTAY liên quan đến mục yêu thích đó
     include: {
-      HOMESTAY: true, // Tên 'HOMESTAY' phải khớp với tên relation trong schema
+      // Thay đổi từ 'HOMESTAY: true' sang object để lồng tiếp
+      HOMESTAY: {
+        include: {
+          HINH_ANH: true, // <--- THÊM DÒNG NÀY để lấy danh sách ảnh
+        },
+      },
     },
   });
 
-  // 3. Trả về danh sách (có thể rỗng)
   return favorites;
 };
 
 export const getMyBookings = async (userId) => {
-  // 1. Tìm tất cả các đơn DAT_PHONG của người dùng này
   const bookings = await prisma.dAT_PHONG.findMany({
     where: {
       MaNguoiDung: userId,
     },
-    // 2. (Quan trọng) Lấy kèm chi tiết
     include: {
-      // Lấy các chi tiết trong bảng CHI_TIET_DAT_PHONG
       CHI_TIET_DAT_PHONG: {
-        // Từ bảng chi tiết, lấy luôn thông tin HOMESTAY
         include: {
-          HOMESTAY: true, // Lấy thông tin homestay đã đặt
+          HOMESTAY: {
+            // Thay đổi từ 'true' sang object
+            include: {
+              HINH_ANH: true, // <--- THÊM DÒNG NÀY
+            },
+          },
         },
       },
     },
-    // Sắp xếp đơn mới nhất lên đầu
     orderBy: {
-      created_at: 'desc',
+      // Lưu ý: Nếu cột trong DB là 'NgayTao' hay 'created_at', hãy check lại schema
+      // Giả sử schema bạn để là 'NgayDat' hoặc 'created_at'
+      // Nếu code cũ chạy ok dòng này thì giữ nguyên
+      created_at: 'desc', 
     },
   });
 

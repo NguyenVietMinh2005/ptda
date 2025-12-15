@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-// Không cần import CSS riêng, vì chúng ta sẽ thêm vào App.css
 
 // Endpoint API (từ homestay.controller.js)
 const HOMESTAY_API_URL = 'http://localhost:3000/api/homestays';
@@ -52,7 +51,7 @@ function CreateHomestayModal({ show, onClose, onHomestayCreated }) {
     setLoading(true);
 
     try {
-      // BƯỚC 1: TẠO HOMESTAY (Gửi thông tin dạng JSON)
+      
       const homestayResponse = await axios.post(
         HOMESTAY_API_URL, 
         {
@@ -66,7 +65,7 @@ function CreateHomestayModal({ show, onClose, onHomestayCreated }) {
       const newHomestayId = homestayResponse.data.data.MaHomestay;
       toast.success('Tạo thông tin thành công! Đang tải ảnh...');
 
-      // BƯỚC 2: UPLOAD ẢNH (Gửi thông tin dạng FormData)
+      
       if (images.length > 0) {
         const imageFormData = new FormData();
         for (let i = 0; i < images.length; i++) {
@@ -80,7 +79,7 @@ function CreateHomestayModal({ show, onClose, onHomestayCreated }) {
         );
       }
       
-      // BƯỚC 3: Báo cho trang cha biết
+      
       onHomestayCreated(); // Hàm này sẽ tải lại danh sách
       handleClose(); // Reset form và đóng modal
 

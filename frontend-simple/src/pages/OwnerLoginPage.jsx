@@ -73,7 +73,7 @@ function OwnerLoginPage() {
         </button>
 
         <div className="form-links">
-          <Link to="/owner/register">Tạo tài khoản Chủ nhà</Link>
+          {/* <Link to="/owner/register">Tạo tài khoản Chủ nhà</Link> */}
           <Link to="/owner/forgot-password">Quên mật khẩu?</Link>
         </div>
       </form>

@@ -198,14 +198,28 @@ function HomePage() {
         {/* 4. Sửa lại vòng lặp để NHÓM THEO THÀNH PHỐ */}
         {Object.entries(
           homestays.reduce((acc, homestay) => {
-            const city = homestay.DiaDiem || 'Khác';
-            if (!acc[city]) acc[city] = [];
-            acc[city].push(homestay);
+            
+            // --- LOGIC TRÍCH XUẤT TỈNH ---
+            const fullAddress = homestay.DiaDiem || 'Khác';
+            let province = 'Khác'; // Mặc định
+            
+            if (fullAddress !== 'Khác' && fullAddress.includes(',')) {
+              const parts = fullAddress.split(',');
+              province = parts[parts.length - 1].trim(); // Lấy phần tử cuối
+            } else if (fullAddress !== 'Khác') {
+              province = fullAddress; // Nếu không có dấu phẩy, dùng cả chuỗi
+            }
+            // ---------------------------------
+
+            if (!acc[province]) acc[province] = [];
+            acc[province].push(homestay);
             return acc;
           }, {})
-        ).map(([city, cityHomestays]) => (
-          <section key={city} className="city-section">
-            <h2>Nơi lưu trú tại {city}</h2>
+        ).map(([province, cityHomestays]) => (
+          <section key={province} className="city-section">
+            {/* Tiêu đề hiển thị Tỉnh */}
+            <h2>Nơi lưu trú tại {province}</h2> 
+            
             <div className="homestay-list-new">
               {cityHomestays.map((homestay) => {
                 
@@ -247,7 +261,7 @@ function HomePage() {
         ))}
       </main>
 
-      {/* --- FOOTER MỚI --- */}
+      {/* --- FOOTER --- */}
       <footer className="site-footer">
         <div className="footer-content">
           <div className="footer-column">

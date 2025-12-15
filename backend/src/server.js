@@ -1,14 +1,14 @@
 // server.js
 import 'dotenv/config'; // Tải biến môi trường (thay cho require('dotenv').config())
 import express from 'express';
-import path from 'path'; // <-- 1. Import 'path'
-import { fileURLToPath } from 'url'; // <-- 2. Import 'fileURLToPath' (cần cho ES Modules)
+import path from 'path'; 
+import { fileURLToPath } from 'url'; 
 import adminRoute from './routes/admin.route.js';
 import cors from 'cors';
 
 import homestayRoute from './routes/homestay.route.js';
 import ownerRoute from './routes/owner.route.js';
-// Import route (lưu ý đường dẫn và đuôi .js)
+// Import route 
 import authRoute from './routes/auth.route.js'; 
 import bookingRoute from './routes/booking.route.js';
 import complaintRoute from './routes/complaint.route.js';

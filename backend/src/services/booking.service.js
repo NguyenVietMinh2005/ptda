@@ -131,20 +131,44 @@ export const cancelMyBooking = async (bookingId, userId) => {
  * Tạo đơn đặt phòng mới cho người dùng
  */
 export const createBooking = async (userId, homestayId, bookingData) => {
-  const { NgayNhan, NgayTra, SoLuong, Gia } = bookingData;
+  const { NgayNhan, NgayTra, SoLuong } = bookingData; // Bỏ 'Gia' ở đây, ta sẽ tự tính
 
+  // 1. Lấy thông tin Homestay để lấy GIÁ GỐC
+  const homestay = await prisma.hOMESTAY.findUnique({
+    where: { MaHomestay: homestayId }
+  });
+
+  if (!homestay) {
+    throw new Error('Homestay không tồn tại');
+  }
+
+  // 2. Tính toán số ngày lưu trú
+  const startDate = new Date(NgayNhan);
+  const endDate = new Date(NgayTra);
+
+  // Tính hiệu số mili-giây: (1000ms * 60s * 60m * 24h = 86400000)
+  const differenceInTime = endDate.getTime() - startDate.getTime();
+  let soNgay = Math.ceil(differenceInTime / (1000 * 3600 * 24));
+
+  // Nếu khách chọn ngày đi trùng ngày về (0 ngày) hoặc lỗi, mặc định tính ít nhất 1 đêm
+  if (soNgay <= 0) soNgay = 1;
+
+  // 3. TÍNH TỔNG TIỀN = Giá gốc * Số ngày
+  const tongTien = homestay.Gia * soNgay;
+
+  // 4. Tạo đơn với giá đã tính toán
   const newBooking = await prisma.dAT_PHONG.create({
     data: {
       MaNguoiDung: userId,
-      NgayNhan: new Date(NgayNhan),
-      NgayTra: new Date(NgayTra),
+      NgayNhan: startDate,
+      NgayTra: endDate,
       SoLuong: SoLuong,
-      Gia: Gia,
+      Gia: tongTien, // <--- Lưu giá do Backend tính
       TrangThai: 'ChoXacNhan',
       CHI_TIET_DAT_PHONG: {
         create: {
           MaHomestay: homestayId,
-          SoLuongPhong: 1, // hoặc SoLuong nếu 1 đơn = 1 homestay
+          SoLuongPhong: 1, 
         },
       },
     },

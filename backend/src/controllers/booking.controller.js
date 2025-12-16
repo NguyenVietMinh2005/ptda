@@ -98,13 +98,14 @@ export const cancelMyBooking = async (req, res) => {
 export const createBooking = async (req, res) => {
   try {
     const userId = req.user.MaNguoiDung;
-    const { MaHomestay, NgayNhan, NgayTra, SoLuong, Gia } = req.body;
+    
+    const { MaHomestay, NgayNhan, NgayTra, SoLuong } = req.body;
 
     const booking = await bookingService.createBooking(userId, MaHomestay, {
       NgayNhan,
       NgayTra,
       SoLuong,
-      Gia,
+      
     });
 
     res.status(201).json({

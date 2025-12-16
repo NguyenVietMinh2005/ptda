@@ -1,10 +1,9 @@
 // src/pages/HomestayDetailPage.jsx
-import { useState, useEffect, useMemo } from 'react' // ĐÃ THÊM useMemo
+import { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
-import { useParams, Link, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import StarRating from '../components/StarRating'
-import { Heart } from 'lucide-react'
 import { toast } from 'react-hot-toast';
 import '../App.css' 
 
@@ -27,8 +26,12 @@ function HomestayDetailPage() {
   const [homestay, setHomestay] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  
+  // 1. Sửa state ngày thành datetime-local
   const [ngayNhan, setNgayNhan] = useState('')
-  const [ngayTra, setNgayTra] = useState('')
+  const [ngayTra, setNgayTra] = useState('') // Tự động tính
+  const [soNgay, setSoNgay] = useState(1)    // Thêm state số ngày
+  
   const [soLuongKhach, setSoLuongKhach] = useState(1)
   const [bookingLoading, setBookingLoading] = useState(false)
   const [bookingError, setBookingError] = useState(null)
@@ -39,11 +42,10 @@ function HomestayDetailPage() {
   const [reviewError, setReviewError] = useState(null)
   const [hasExistingReview, setHasExistingReview] = useState(false);
 
-  // --- XÁC THỰC (ĐÃ SỬA LỖI LOOP) ---
+  // --- XÁC THỰC ---
   const token = localStorage.getItem('authToken')
   const userString = localStorage.getItem('authUser');
   
-  // Dùng useMemo để 'user' ổn định, tránh vòng lặp vô tận
   const user = useMemo(() => {
     return userString ? JSON.parse(userString) : null;
   }, [userString]); 
@@ -51,9 +53,25 @@ function HomestayDetailPage() {
 
   // --- LOGIC ---
 
-  // 1. useEffect (Tải dữ liệu chi tiết VÀ yêu thích)
+  // 1. Tự động tính NGÀY TRẢ khi NGÀY NHẬN hoặc SỐ NGÀY thay đổi
   useEffect(() => {
-    // API 1: Lấy chi tiết Homestay
+    if (ngayNhan && soNgay > 0) {
+      const dateNhan = new Date(ngayNhan);
+      const dateTra = new Date(dateNhan);
+      
+      // Cộng thêm số ngày vào (giữ nguyên giờ phút)
+      dateTra.setDate(dateTra.getDate() + parseInt(soNgay));
+
+      // Xử lý múi giờ để hiển thị đúng trên input datetime-local
+      const tzOffset = dateTra.getTimezoneOffset() * 60000;
+      const localISOTime = new Date(dateTra.getTime() - tzOffset).toISOString().slice(0, 16);
+
+      setNgayTra(localISOTime);
+    }
+  }, [ngayNhan, soNgay]);
+
+  // 2. useEffect tải dữ liệu
+  useEffect(() => {
     const fetchHomestayDetail = async () => {
       try {
         setLoading(true);
@@ -78,7 +96,6 @@ function HomestayDetailPage() {
       }
     }
     
-    // API 2: Lấy Yêu thích
     const fetchFavorites = async () => {
       if (token) {
         try {
@@ -95,9 +112,9 @@ function HomestayDetailPage() {
     fetchHomestayDetail();
     fetchFavorites();
     
-  }, [id, token, user, DETAIL_API_URL]) // Dependency đã sửa
+  }, [id, token, user, DETAIL_API_URL])
 
-  // 2. Hàm xử lý Thích/Bỏ thích
+  // 3. Hàm xử lý Thích/Bỏ thích
   const handleToggleFavorite = async (e, homestayId, isFavorite) => {
     e.preventDefault(); 
     e.stopPropagation(); 
@@ -130,7 +147,7 @@ function HomestayDetailPage() {
     }
   }
 
-  // 3. Hàm xử lý Đặt phòng
+  // 4. Hàm xử lý Đặt phòng
   const handleBooking = async (e) => {
     e.preventDefault() 
     setBookingLoading(true)
@@ -150,23 +167,17 @@ function HomestayDetailPage() {
     }
 
     if (!ngayNhan || !ngayTra) {
-      setBookingError('Vui lòng chọn ngày nhận và ngày trả phòng.')
+      setBookingError('Vui lòng chọn ngày giờ nhận và nhập số ngày.')
       setBookingLoading(false)
       return
     }
     
+    // Check ngày quá khứ
     const ngayNhanDate = new Date(ngayNhan)
-    const ngayTraDate = new Date(ngayTra)
-    const homNay = new Date()
-    homNay.setHours(0, 0, 0, 0) 
-
-    if (ngayNhanDate < homNay) {
-      setBookingError('Ngày nhận phòng không được là ngày trong quá khứ.')
-      setBookingLoading(false)
-      return
-    }
-    if (ngayTraDate <= ngayNhanDate) {
-      setBookingError('Ngày trả phòng phải sau ngày nhận phòng.')
+    const now = new Date()
+    // Cho phép sai số nhỏ hoặc so sánh timestamp nếu cần chính xác tuyệt đối
+    if (ngayNhanDate < now) {
+      setBookingError('Thời gian nhận phòng phải từ thời điểm hiện tại trở đi.')
       setBookingLoading(false)
       return
     }
@@ -180,6 +191,7 @@ function HomestayDetailPage() {
       toast.success('Đặt phòng thành công! (Trạng thái: Chờ xác nhận)')
       setNgayNhan('')
       setNgayTra('')
+      setSoNgay(1)
     } catch (err) {
       const message = err.response?.data?.message || 'Đặt phòng thất bại.'
       setBookingError(message)
@@ -188,7 +200,7 @@ function HomestayDetailPage() {
     }
   }
 
-  // 4. Hàm xử lý Gửi Đánh giá
+  // 5. Hàm xử lý Gửi Đánh giá
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     setReviewLoading(true);
@@ -213,14 +225,12 @@ function HomestayDetailPage() {
     }
   }
 
-  // 5. Hàm trợ giúp lấy URL ảnh
   const getImageUrl = (imagePath) => {
     if (!imagePath) return PLACEHOLDER_IMAGE;
     if (imagePath.startsWith('http')) return imagePath; 
     return `http://localhost:3000/${imagePath}`;
   }
   
-  // --- XỬ LÝ TRẠNG THÁI LOADING / ERROR ---
   if (loading) return (
     <div className="page-container"><Header /><p>Đang tải chi tiết...</p></div>
   )
@@ -231,29 +241,22 @@ function HomestayDetailPage() {
     <div className="page-container"><Header /><p>Không tìm thấy homestay.</p></div>
   )
 
-  // --- BIẾN PHỤ TRỢ CHO RENDER (ĐÃ SẮP XẾP LẠI) ---
   const isFavorite = favoriteIds.has(homestay.MaHomestay);
-  const todayString = new Date().toISOString().split('T')[0];
-
-  // 1. Lấy TẤT CẢ đánh giá (kể cả chỉ có sao)
+  
   const allReviews = homestay.DANH_GIA || [];
-  const totalReviews = allReviews.length; // Tổng số người đã chấm sao
-
-  // 2. Lấy đánh giá CÓ BÌNH LUẬN (Phải được định nghĩa TRƯỚC khi dùng)
+  const totalReviews = allReviews.length; 
   const reviewsWithComments = allReviews.filter(
     review => review.BinhLuan && review.BinhLuan.trim() !== ''
   );
-  const totalComments = reviewsWithComments.length; // Tổng số người đã bình luận
+  const totalComments = reviewsWithComments.length;
 
-  // 3. Tính Sao trung bình
   let averageRating = "5.0"; 
   if (totalReviews > 0) {
     const sum = allReviews.reduce((acc, review) => acc + (review.SoSao || 0), 0);
     averageRating = (sum / totalReviews).toFixed(1);
   }
-  // ---------------------------------------------
 
-  // --- RENDER (GIAO DIỆN) ---
+  // --- RENDER ---
   return (
     <div className="page-container">
       <Header />
@@ -284,7 +287,7 @@ function HomestayDetailPage() {
         </div>
 
         <div className="detail-info">
-          <p><strong>Giá:</strong> {homestay.Gia} VNĐ/đêm</p>
+          <p><strong>Giá:</strong> {homestay.Gia} VNĐ/ngày</p>
           <p><strong>Số khách tối đa:</strong> {homestay.SoKhachToiDa}</p>
           <p><strong>Mô tả:</strong> {homestay.MoTa || 'Không có mô tả'}</p>
           <p><strong>Tiện ích:</strong> {homestay.TienIch || 'Không có thông tin'}</p>
@@ -293,26 +296,43 @@ function HomestayDetailPage() {
         <form className="booking-form" onSubmit={handleBooking}>
           <h3>Đặt chỗ</h3>
           <div className="booking-inputs">
+            
+            {/* 1. Chọn ngày giờ nhận */}
             <div className="form-group">
-              <label htmlFor="ngayNhan">Ngày nhận phòng:</label>
+              <label htmlFor="ngayNhan">Ngày giờ nhận phòng:</label>
               <input 
-                type="date" 
+                type="datetime-local" 
                 id="ngayNhan"
                 value={ngayNhan}
                 onChange={(e) => setNgayNhan(e.target.value)}
-                min={todayString}
               />
             </div>
+
+            {/* 2. Nhập số ngày */}
             <div className="form-group">
-              <label htmlFor="ngayTra">Ngày trả phòng:</label>
+              <label htmlFor="soNgay">Số ngày lưu trú:</label>
               <input 
-                type="date" 
+                type="number" 
+                id="soNgay"
+                value={soNgay}
+                onChange={(e) => setSoNgay(Number(e.target.value))}
+                min="1"
+                max="30"
+              />
+            </div>
+
+            {/* 3. Hiển thị ngày trả tự động */}
+            <div className="form-group">
+              <label htmlFor="ngayTra">Ngày giờ trả (Tự động):</label>
+              <input 
+                type="datetime-local" 
                 id="ngayTra"
                 value={ngayTra}
-                onChange={(e) => setNgayTra(e.target.value)}
-                min={ngayNhan || todayString}
+                readOnly
+                style={{ backgroundColor: '#f0f0f0', cursor: 'not-allowed' }}
               />
             </div>
+
             <div className="form-group">
               <label htmlFor="soLuongKhach">Số khách:</label>
               <input 
@@ -393,4 +413,3 @@ function HomestayDetailPage() {
 }
 
 export default HomestayDetailPage
-

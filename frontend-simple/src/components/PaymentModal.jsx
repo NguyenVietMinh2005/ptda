@@ -7,7 +7,9 @@ import {
   AlertCircle, History, RefreshCw, Calendar, Users, Home 
 } from 'lucide-react';
 
-const API_BASE = 'http://localhost:3000/api/bookings';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_BASE = `${API_BASE_URL}/bookings`;
 
 export default function PaymentModal({ bookingId, onClose, onPaymentSuccess }) {
   const [loading, setLoading] = useState(true);
@@ -258,7 +260,7 @@ export default function PaymentModal({ bookingId, onClose, onPaymentSuccess }) {
                             Quét QR mô phỏng
                           </span>
                           <p style={{ fontSize: '0.72rem', color: '#64748b', textAlign: 'center', marginTop: 6, maxWidth: 220, lineHeight: 1.3 }}>
-                            💡 <em>Mã QR chứa dữ liệu mô phỏng localhost; điện thoại ngoài không truy cập được nếu không cùng mạng LAN.</em>
+                            💡 <em>Mã QR chứa dữ liệu thanh toán mô phỏng.</em>
                           </p>
                         </div>
                       ) : (

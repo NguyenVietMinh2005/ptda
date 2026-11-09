@@ -20,7 +20,9 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const ADMIN_API_URL = 'http://localhost:3000/api/admin';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const ADMIN_API_URL = `${API_BASE_URL}/admin`;
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState(null);

@@ -1,5 +1,7 @@
 // src/services/admin.service.js
 import prisma from '../config/prisma.js';
+import * as storageService from './storage.service.js';
+import { enqueueCleanup, processQueue } from './storageCleanupQueue.service.js';
 
 /**
  * (Admin) Lấy tất cả người dùng
@@ -189,19 +191,57 @@ export const updateOwnerRole = async (ownerId, newRole) => {
 };
 
 export const deleteHomestay = async (homestayId) => {
-  // 1. Kiểm tra xem homestay có tồn tại không
+  // 1. Kiểm tra xem homestay có tồn tại không và lấy toàn bộ danh sách ảnh liên quan
   const homestay = await prisma.hOMESTAY.findUnique({
     where: { MaHomestay: homestayId },
+    include: { HINH_ANH: true },
   });
 
   if (!homestay) {
     throw new Error('Không tìm thấy homestay');
   }
 
-  // 2. Xóa homestay (Admin không cần kiểm tra quyền sở hữu)
-  await prisma.hOMESTAY.delete({
-    where: { MaHomestay: homestayId },
+  // 2. Chuẩn bị danh sách ảnh cần đưa vào Cleanup Queue
+  const cleanupItems = [];
+  if (Array.isArray(homestay.HINH_ANH) && homestay.HINH_ANH.length > 0) {
+    for (const img of homestay.HINH_ANH) {
+      if (img.HinhAnh) {
+        const classification = await storageService.classifyAndValidateImagePath(img.HinhAnh);
+        // Chỉ enqueue ảnh Local hoặc Supabase hợp lệ và được phép xóa vật lý (isDeletable = true)
+        // Bỏ qua EXTERNAL_URL (Unsplash/CDN); ngăn chặn hoàn toàn UNKNOWN và SECURITY_ALERT
+        if (classification.isDeletable && (classification.type === 'LOCAL' || classification.type === 'SUPABASE')) {
+          cleanupItems.push({
+            filePath: classification.filePath || img.HinhAnh,
+            bucketName: classification.bucketName,
+            reason: 'DELETE_HOMESTAY',
+          });
+        }
+      }
+    }
+  }
+
+  // 3. Thực hiện trong cùng một transaction bắt buộc
+  await prisma.$transaction(async (tx) => {
+    // a. Enqueue toàn bộ ảnh trong transaction (nếu có ảnh)
+    if (cleanupItems.length > 0) {
+      await enqueueCleanup(cleanupItems, tx);
+    }
+
+    // b. Hard-delete Homestay (cascade xóa các bản ghi liên quan trong DB)
+    await tx.hOMESTAY.delete({
+      where: { MaHomestay: homestayId },
+    });
   });
+
+  // 4. Sau khi transaction commit thành công: kích hoạt xử lý Queue (non-blocking)
+  if (cleanupItems.length > 0) {
+    processQueue(storageService.deleteFileFromStorage).catch((err) => {
+      console.error(
+        '[STORAGE_QUEUE_TRIGGER_WARN] Lỗi khi kích hoạt processQueue sau hard-delete homestay:',
+        err.message
+      );
+    });
+  }
 
   return;
 };

@@ -9,13 +9,15 @@ import CreateHomestayModal from '../components/CreateHomestayModal';
 import { PlusCircle, Upload, Edit, Trash2, Eye, Calendar, RefreshCw } from 'lucide-react';
 import '../App.css';
 
-const API_URL = 'http://localhost:3000/api/owner/me/homestays';
-const UPLOAD_API_URL = 'http://localhost:3000/api/homestays';
+import { API_BASE_URL, getFullImageUrl } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/me/homestays`;
+const UPLOAD_API_URL = `${API_BASE_URL}/homestays`;
 
 const getImageUrl = (imagePath) => {
   if (!imagePath) return 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80';
   if (imagePath.startsWith('http')) return imagePath;
-  return `http://localhost:3000/${imagePath}`;
+  return getFullImageUrl(imagePath, 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80');
 };
 
 export default function OwnerHomestaysPage() {

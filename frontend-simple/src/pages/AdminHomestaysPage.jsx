@@ -6,13 +6,15 @@ import AdminLayout from '../components/AdminLayout';
 import { Search, Check, X, Trash2, ExternalLink, RefreshCw, Eye } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const ADMIN_API_URL = 'http://localhost:3000/api/admin';
+import { API_BASE_URL, getFullImageUrl } from '../utils/apiConfig';
+
+const ADMIN_API_URL = `${API_BASE_URL}/admin`;
 const PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80';
 
 const getImageUrl = (imagePath) => {
   if (!imagePath) return PLACEHOLDER_IMAGE;
   if (imagePath.startsWith('http')) return imagePath;
-  return `http://localhost:3000/${imagePath}`;
+  return getFullImageUrl(imagePath, PLACEHOLDER_IMAGE);
 };
 
 export default function AdminHomestaysPage() {

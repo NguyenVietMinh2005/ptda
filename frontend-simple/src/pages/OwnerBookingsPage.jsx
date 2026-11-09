@@ -7,8 +7,10 @@ import { Search, RefreshCw, CheckCircle2, Clock, XCircle, Home, UserCheck, Dolla
 import { toast } from 'react-hot-toast';
 import '../App.css';
 
-const API_URL = 'http://localhost:3000/api/owner/me/bookings';
-const BOOKING_API_URL = 'http://localhost:3000/api/bookings';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/me/bookings`;
+const BOOKING_API_URL = `${API_BASE_URL}/bookings`;
 
 export default function OwnerBookingsPage() {
   const [bookings, setBookings] = useState([]);

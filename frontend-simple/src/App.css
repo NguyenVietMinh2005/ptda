@@ -474,7 +474,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('http://localhost:3000/uploads/hs_04_01_exterior.jpg');
+  background-image: var(--hero-bg, url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80'));
   background-size: cover;
   background-position: center 40%;
   padding: 4.5rem 1.5rem 5rem;

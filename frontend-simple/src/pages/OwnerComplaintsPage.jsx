@@ -7,8 +7,10 @@ import { AlertTriangle, CheckCircle2, Send, RefreshCw } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import '../App.css';
 
-const API_URL = 'http://localhost:3000/api/owner/me/complaints';
-const RESOLVE_API_URL = 'http://localhost:3000/api/complaints';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/me/complaints`;
+const RESOLVE_API_URL = `${API_BASE_URL}/complaints`;
 
 export default function OwnerComplaintsPage() {
   const [complaints, setComplaints] = useState([]);

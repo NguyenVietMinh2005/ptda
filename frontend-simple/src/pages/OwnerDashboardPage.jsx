@@ -17,7 +17,9 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const API_URL = 'http://localhost:3000/api/owner/me/dashboard-stats';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/me/dashboard-stats`;
 
 export default function OwnerDashboardPage() {
   const [stats, setStats] = useState(null);

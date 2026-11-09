@@ -5,13 +5,15 @@ import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header' // Dùng Header
 import '../App.css' // Dùng chung CSS
 
-const API_URL = 'http://localhost:3000/api/auth/me/favorites'
+import { API_BASE_URL, getFullImageUrl } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/auth/me/favorites`;
 
 // Hàm trợ giúp lấy URL ảnh
 const getImageUrl = (imagePath) => {
   if (!imagePath) return 'https://placehold.co/600x400/eee/ccc?text=Homestay';
   if (imagePath.startsWith('http')) return imagePath;
-  return `http://localhost:3000/${imagePath}`;
+  return getFullImageUrl(imagePath, 'https://placehold.co/600x400/eee/ccc?text=Homestay');
 }
 
 function MyFavoritesPage() {

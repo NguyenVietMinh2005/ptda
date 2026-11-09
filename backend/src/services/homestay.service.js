@@ -1,5 +1,7 @@
 // src/services/homestay.service.js
 import prisma from '../config/prisma.js';
+import * as storageService from './storage.service.js';
+import { enqueueCleanup, processQueue } from './storageCleanupQueue.service.js';
 
 /**
  * Lấy tất cả homestay từ database
@@ -509,24 +511,143 @@ export const uploadImages = async (homestayId, ownerId, files) => {
   }
 
   // 2. Kiểm tra xem 'files' có tồn tại không
-  if (!files || files.length === 0) {
+  if (!files || !Array.isArray(files) || files.length === 0) {
     throw new Error('Không có file nào được tải lên');
   }
 
-  // 3. Chuẩn bị dữ liệu để thêm vào bảng HINH_ANH
-  // 'files' là một mảng, 'file.path' là đường dẫn multer đã lưu
-  const imageEntries = files.map((file) => ({
+  // 3. Tải file lên Storage (hỗ trợ cả Local và Supabase)
+  const uploadedResults = await storageService.uploadFiles(files, homestayId);
+
+  // 4. Chuẩn bị dữ liệu để thêm vào bảng HINH_ANH (Lưu Object Key hoặc đường dẫn chuẩn hóa)
+  const imageEntries = uploadedResults.map((item) => ({
     MaHomestay: homestayId,
-    // Lưu đường dẫn (hoặc chỉ tên file) vào DB.
-    // 'file.path' sẽ là 'uploads/image-12345.png'
-    HinhAnh: file.path, 
+    HinhAnh: item.path,
   }));
 
-  // 4. Thêm đồng loạt nhiều ảnh vào DB
-  // 'hINH_ANH' là tên model Prisma
-  await prisma.hINH_ANH.createMany({
-    data: imageEntries,
-  });
+  try {
+    // 5. Thêm đồng loạt nhiều ảnh vào DB
+    await prisma.hINH_ANH.createMany({
+      data: imageEntries,
+    });
+  } catch (err) {
+    // Nếu ghi DB thất bại: Kích hoạt cơ chế bồi hoàn xóa các file đã tải lên Storage
+    for (const item of uploadedResults) {
+      try {
+        const delRes = await storageService.deleteFileFromStorage(item.path, item.bucketName);
+        if (!delRes || !delRes.success) {
+          throw new Error(delRes?.error || 'Xóa bù trừ không thành công');
+        }
+      } catch (cleanupErr) {
+        console.error(
+          `[STORAGE_COMPENSATION_ERROR] Lỗi khi xóa file bù trừ ${item.path}:`,
+          cleanupErr.message
+        );
+        // Nếu xóa bù trừ trực tiếp thất bại: Đưa vào Cleanup Queue hoặc Emergency Buffer
+        try {
+          await enqueueCleanup(
+            {
+              filePath: item.path,
+              bucketName: item.bucketName,
+              reason: 'UPLOAD_COMPENSATION',
+            },
+            prisma
+          );
+        } catch (enqueueErr) {
+          console.error(
+            `[STORAGE_ENQUEUE_FALLBACK] Database lỗi khi enqueue cleanup cho ${item.path}, lưu vào emergency buffer:`,
+            enqueueErr.message
+          );
+          storageService.pushToEmergencyBuffer({
+            filePath: item.path,
+            bucketName: item.bucketName,
+            reason: 'UPLOAD_COMPENSATION',
+            homestayId,
+          });
+        }
+      }
+    }
+    throw err;
+  }
 
   return imageEntries;
+};
+
+/**
+ * Xóa một ảnh riêng lẻ của homestay bởi Host sở hữu.
+ *
+ * Yêu cầu:
+ * 1. Xác minh homestay tồn tại và thuộc quyền sở hữu của Host.
+ * 2. Xác minh ảnh tồn tại và thực sự thuộc homestay.
+ * 3. Enqueue Cleanup Job và xóa bản ghi ảnh trong cùng 1 database transaction.
+ * 4. Kích hoạt xử lý Queue sau khi commit thành công.
+ *
+ * @param {number} homestayId
+ * @param {number} ownerId
+ * @param {number} imageId
+ * @returns {Promise<{ success: boolean }>}
+ */
+export const deleteImage = async (homestayId, ownerId, imageId) => {
+  // 1. Kiểm tra Homestay tồn tại
+  const homestay = await prisma.hOMESTAY.findUnique({
+    where: { MaHomestay: homestayId },
+  });
+
+  if (!homestay) {
+    throw new Error('Không tìm thấy homestay');
+  }
+
+  // 2. Kiểm tra quyền sở hữu của Host
+  if (homestay.MaChu !== ownerId) {
+    throw new Error('Không có quyền xóa ảnh của homestay này');
+  }
+
+  // 3. Kiểm tra ảnh tồn tại
+  const image = await prisma.hINH_ANH.findUnique({
+    where: { MaAnh: imageId },
+  });
+
+  if (!image) {
+    throw new Error('Không tìm thấy ảnh');
+  }
+
+  // 4. Kiểm tra ảnh có thuộc đúng homestay không
+  if (image.MaHomestay !== homestayId) {
+    throw new Error('Ảnh không thuộc homestay này');
+  }
+
+  // 5. Xác định loại đường dẫn qua Path Classifier
+  const classification = await storageService.classifyAndValidateImagePath(image.HinhAnh);
+  const shouldEnqueue = classification.isDeletable && (classification.type === 'LOCAL' || classification.type === 'SUPABASE');
+
+  // 6. Thực hiện Transaction bắt buộc: Enqueue Cleanup (nếu là ảnh Local/Supabase) + Xóa bản ghi DB
+  await prisma.$transaction(async (tx) => {
+    // a. Enqueue Cleanup trong cùng transaction client (tx) nếu ảnh cần xóa vật lý
+    if (shouldEnqueue) {
+      await enqueueCleanup(
+        {
+          filePath: classification.filePath || image.HinhAnh,
+          bucketName: classification.bucketName,
+          reason: 'DELETE_IMAGE',
+        },
+        tx
+      );
+    }
+
+    // b. Xóa bản ghi ảnh khỏi bảng HINH_ANH (luôn xóa để loại bỏ khỏi homestay)
+    await tx.hINH_ANH.delete({
+      where: { MaAnh: imageId },
+    });
+  });
+
+  // 7. Sau khi transaction commit thành công: kích hoạt xử lý Queue nếu có ảnh cần xóa vật lý
+  if (shouldEnqueue) {
+    processQueue(storageService.deleteFileFromStorage).catch((err) => {
+      console.error(
+        '[STORAGE_QUEUE_TRIGGER_WARN] Lỗi khi kích hoạt processQueue sau khi xóa ảnh:',
+        err.message
+      );
+    });
+  }
+
+  return { success: true };
 };

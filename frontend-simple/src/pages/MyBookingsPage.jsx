@@ -8,15 +8,17 @@ import PaymentModal from '../components/PaymentModal' // Modal thanh toán
 import { toast } from 'react-hot-toast';
 
 // API để TẢI bookings
-const API_URL = 'http://localhost:3000/api/auth/me/bookings'
+import { API_BASE_URL, getFullImageUrl } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/auth/me/bookings`;
 // API để KHIẾU NẠI và HỦY (cùng 1 gốc)
-const BOOKING_API_URL = 'http://localhost:3000/api/bookings'
+const BOOKING_API_URL = `${API_BASE_URL}/bookings`;
 
 // Hàm trợ giúp để lấy URL ảnh (giống HomePage)
 const getImageUrl = (imagePath) => {
   if (!imagePath) return 'https://placehold.co/600x400/eee/ccc?text=Homestay';
   if (imagePath.startsWith('http')) return imagePath;
-  return `http://localhost:3000/${imagePath}`;
+  return getFullImageUrl(imagePath, 'https://placehold.co/600x400/eee/ccc?text=Homestay');
 }
 
 function MyBookingsPage() {

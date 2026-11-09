@@ -15,8 +15,10 @@ import {
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const HOMESTAYS_API = 'http://localhost:3000/api/owner/me/homestays';
-const BOOKINGS_API = 'http://localhost:3000/api/owner/me/bookings';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const HOMESTAYS_API = `${API_BASE_URL}/owner/me/homestays`;
+const BOOKINGS_API = `${API_BASE_URL}/owner/me/bookings`;
 
 export default function OwnerCalendarPage() {
   const [homestays, setHomestays] = useState([]);

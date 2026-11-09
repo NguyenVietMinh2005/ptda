@@ -5,7 +5,9 @@ import AdminLayout from '../components/AdminLayout';
 import { Search, Star, Trash2, RefreshCw } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const ADMIN_API_URL = 'http://localhost:3000/api/admin';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const ADMIN_API_URL = `${API_BASE_URL}/admin`;
 
 export default function AdminReviewsPage() {
   const [reviews, setReviews] = useState([]);

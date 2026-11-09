@@ -1,0 +1,256 @@
+{
+  "info": {
+    "_postman_id": "c89b2750-13a8-444f-a720-homestay2026",
+    "name": "PTDA Homestay API Collection - Kiem Thu Phan Mem",
+    "description": "Tập hợp các API Endpoint kiểm thử cho 2 chức năng Xem chi tiết Homestay và Quản lý Homestay",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Chức năng Xem chi tiết Homestay",
+      "item": [
+        {
+          "name": "TC-API-DTL-01: Lấy thông tin Homestay hợp lệ",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/homestays/1",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "homestays",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-DTL-02: Lấy Homestay không tồn tại (404)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/homestays/999999",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "homestays",
+                "999999"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-DTL-03: Lấy ma trận lịch trống phòng",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/homestays/1/availability",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "homestays",
+                "1",
+                "availability"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-DTL-04: Thẩm định điều kiện đánh giá",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJpYXQiOjE3OTM2MzU4NzIsImV4cCI6MTc5MzY1Mzg3Mn0.1_571P_Sj9gPkwVMI7B1S1KQRL8txctK68KNCaZ77Hk"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/homestays/1/can-review",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "homestays",
+                "1",
+                "can-review"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-DTL-05: Đặt phòng lỗi 0 đêm (400 Bad Request)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJpYXQiOjE3OTM2MzU4NzIsImV4cCI6MTc5MzY1Mzg3Mn0.1_571P_Sj9gPkwVMI7B1S1KQRL8txctK68KNCaZ77Hk"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ngayNhan\": \"2026-12-05T14:00\",\n  \"ngayTra\": \"2026-12-05T14:00\",\n  \"soLuongKhach\": 2\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/homestays/1/book",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "homestays",
+                "1",
+                "book"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Chức năng Quản lý Homestay (Chủ nhà & Admin)",
+      "item": [
+        {
+          "name": "TC-API-MNG-01: Chủ nhà lấy danh sách Homestay sở hữu",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lcklkIjoxLCJyb2xlIjoiY2h1X2hvbWVzdGF5IiwiaWF0IjoxNzkzNjM1ODcwLCJleHAiOjE3OTM2NTM4NzB9.Rw3e0pvcFo05eXT3_GBnding3eqv3hgOJ4RdVBLHDB8"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/owner/me/homestays",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "owner",
+                "me",
+                "homestays"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-MNG-02: Chặn truy cập khi thiếu token (401)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:3000/api/owner/me/homestays",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "owner",
+                "me",
+                "homestays"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-MNG-03: Thêm mới Homestay",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lcklkIjoxLCJyb2xlIjoiY2h1X2hvbWVzdGF5IiwiaWF0IjoxNzkzNjM1ODcwLCJleHAiOjE3OTM2NTM4NzB9.Rw3e0pvcFo05eXT3_GBnding3eqv3hgOJ4RdVBLHDB8"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tenHomestay\": \"Mộc Châu Eco Mountain Retreat\",\n  \"diaDiem\": \"Mộc Châu, Sơn La\",\n  \"gia\": 1200000,\n  \"soKhachToiDa\": 6,\n  \"tienIch\": \"Wifi, Điều hòa, Bếp, Sân BBQ, View thung lũng\",\n  \"moTa\": \"Homestay sinh thái cao cấp nhìn ra đồi chè mộng mơ...\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/homestays",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "homestays"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-MNG-04: Admin phê duyệt Homestay",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lcklkIjoxOCwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzkzNjM1ODcxLCJleHAiOjE3OTM2NTM4NzF9.A50VzYzeA74_23JI5AOnp9n8WlpqfWUvu_b_9iYPYDg"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trangThaiDuyet\": \"DaDuyet\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/api/admin/homestays/1/approval",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "homestays",
+                "1",
+                "approval"
+              ]
+            }
+          }
+        },
+        {
+          "name": "TC-API-MNG-05: Chặn Chủ nhà gọi API Admin (403)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lcklkIjoxLCJyb2xlIjoiY2h1X2hvbWVzdGF5IiwiaWF0IjoxNzkzNjM1ODcwLCJleHAiOjE3OTM2NTM4NzB9.Rw3e0pvcFo05eXT3_GBnding3eqv3hgOJ4RdVBLHDB8"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:3000/api/admin/dashboard-stats",
+              "host": [
+                "http://localhost:3000"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "dashboard-stats"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

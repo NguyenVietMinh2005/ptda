@@ -5,7 +5,9 @@ import OwnerLayout from '../components/OwnerLayout';
 import { User, Phone, MapPin, CreditCard, Shield, Save, RefreshCw } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const API_URL = 'http://localhost:3000/api/owner/me/profile';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/me/profile`;
 
 export default function OwnerProfilePage() {
   const [profile, setProfile] = useState(null);

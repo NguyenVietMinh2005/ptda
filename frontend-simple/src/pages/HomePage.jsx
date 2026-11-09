@@ -10,21 +10,23 @@ import {
 import Header from '../components/Header'
 import { toast } from 'react-hot-toast'
 
-const API_URL = 'http://localhost:3000/api/homestays'
-const FAVORITES_API_URL = 'http://localhost:3000/api/auth/me/favorites'
-const FAVORITE_TOGGLE_API_URL = 'http://localhost:3000/api/homestays'
+import { API_BASE_URL, getFullImageUrl } from '../utils/apiConfig'
+
+const API_URL = `${API_BASE_URL}/homestays`
+const FAVORITES_API_URL = `${API_BASE_URL}/auth/me/favorites`
+const FAVORITE_TOGGLE_API_URL = `${API_BASE_URL}/homestays`
 const PLACEHOLDER_IMAGE = 'https://placehold.co/600x400/eee/ccc?text=Homestay'
 
 // Curated destinations with representative images and subtitles
 const TOP_DESTINATIONS = [
-  { name: 'Đà Lạt', title: 'Thành phố sương mù & hoa', count: 4, image: 'http://localhost:3000/uploads/hs_04_01_exterior.jpg' },
-  { name: 'Sa Pa', title: 'Núi rừng & mây ngàn', count: 3, image: 'http://localhost:3000/uploads/hs_08_04_view.jpg' },
-  { name: 'Hà Nội', title: 'Thủ đô nghìn năm hoài cổ', count: 3, image: 'http://localhost:3000/uploads/hs_02_01_exterior.jpg' },
-  { name: 'Ninh Bình', title: 'Non nước Tràng An hữu tình', count: 3, image: 'http://localhost:3000/uploads/hs_11_04_view.jpg' },
-  { name: 'Phú Quốc', title: 'Đảo ngọc biển xanh hoàng hôn', count: 3, image: 'http://localhost:3000/uploads/hs_22_01_exterior.jpg' },
-  { name: 'Đà Nẵng', title: 'Thành phố biển đáng sống', count: 3, image: 'http://localhost:3000/uploads/hs_14_04_view.jpg' },
-  { name: 'Hội An', title: 'Phố đèn lồng hoài niệm', count: 3, image: 'http://localhost:3000/uploads/hs_17_04_view.jpg' },
-  { name: 'Nha Trang', title: 'Vịnh biển san hô ngọc bích', count: 2, image: 'http://localhost:3000/uploads/hs_20_04_view.jpg' },
+  { name: 'Đà Lạt', title: 'Thành phố sương mù & hoa', count: 4, image: getFullImageUrl('uploads/hs_04_01_exterior.jpg') },
+  { name: 'Sa Pa', title: 'Núi rừng & mây ngàn', count: 3, image: getFullImageUrl('uploads/hs_08_04_view.jpg') },
+  { name: 'Hà Nội', title: 'Thủ đô nghìn năm hoài cổ', count: 3, image: getFullImageUrl('uploads/hs_02_01_exterior.jpg') },
+  { name: 'Ninh Bình', title: 'Non nước Tràng An hữu tình', count: 3, image: getFullImageUrl('uploads/hs_11_04_view.jpg') },
+  { name: 'Phú Quốc', title: 'Đảo ngọc biển xanh hoàng hôn', count: 3, image: getFullImageUrl('uploads/hs_22_01_exterior.jpg') },
+  { name: 'Đà Nẵng', title: 'Thành phố biển đáng sống', count: 3, image: getFullImageUrl('uploads/hs_14_04_view.jpg') },
+  { name: 'Hội An', title: 'Phố đèn lồng hoài niệm', count: 3, image: getFullImageUrl('uploads/hs_17_04_view.jpg') },
+  { name: 'Nha Trang', title: 'Vịnh biển san hô ngọc bích', count: 2, image: getFullImageUrl('uploads/hs_20_04_view.jpg') },
 ];
 
 const priceOptions = [
@@ -140,11 +142,7 @@ function HomePage() {
       .finally(() => setLoading(false))
   }
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return PLACEHOLDER_IMAGE
-    if (imagePath.startsWith('http')) return imagePath
-    return `http://localhost:3000/${imagePath}`
-  }
+  const getImageUrl = (imagePath) => getFullImageUrl(imagePath, PLACEHOLDER_IMAGE)
 
   // Favorite toggle
   const handleToggleFavorite = async (e, homestayId, isFavorite) => {
@@ -208,7 +206,7 @@ function HomePage() {
       <Header />
 
       {/* --- HERO SECTION --- */}
-      <section className="hero-section">
+      <section className="hero-section" style={{ backgroundImage: `url('${getFullImageUrl('uploads/hs_04_01_exterior.jpg')}')` }}>
         <div className="hero-background-overlay" />
         <div className="hero-container">
           
@@ -554,7 +552,7 @@ function HomePage() {
             
             <div 
               className="style-banner"
-              style={{ backgroundImage: `url('http://localhost:3000/uploads/hs_04_01_exterior.jpg')` }}
+              style={{ backgroundImage: `url('${getFullImageUrl('uploads/hs_04_01_exterior.jpg')}')` }}
               onClick={() => handleSelectDestination('Đà Lạt')}
             >
               <div className="style-overlay" />
@@ -568,7 +566,7 @@ function HomePage() {
 
             <div 
               className="style-banner"
-              style={{ backgroundImage: `url('http://localhost:3000/uploads/hs_22_01_exterior.jpg')` }}
+              style={{ backgroundImage: `url('${getFullImageUrl('uploads/hs_22_01_exterior.jpg')}')` }}
               onClick={() => handleSelectDestination('Phú Quốc')}
             >
               <div className="style-overlay" />
@@ -582,7 +580,7 @@ function HomePage() {
 
             <div 
               className="style-banner"
-              style={{ backgroundImage: `url('http://localhost:3000/uploads/hs_02_01_exterior.jpg')` }}
+              style={{ backgroundImage: `url('${getFullImageUrl('uploads/hs_02_01_exterior.jpg')}')` }}
               onClick={() => handleSelectDestination('Hà Nội')}
             >
               <div className="style-overlay" />

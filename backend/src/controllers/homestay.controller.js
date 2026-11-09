@@ -299,6 +299,39 @@ export const uploadImages = async (req, res) => {
 };
 
 /**
+ * Controller để xóa một ảnh riêng lẻ của homestay
+ */
+export const deleteImage = async (req, res) => {
+  try {
+    const homestayId = parseInt(req.params.id, 10);
+    const imageId = parseInt(req.params.imageId, 10);
+    const ownerId = req.owner?.MaChu;
+
+    if (isNaN(homestayId) || isNaN(imageId)) {
+      return res.status(400).json({ success: false, message: 'ID homestay hoặc ID ảnh không hợp lệ' });
+    }
+
+    await homestayService.deleteImage(homestayId, ownerId, imageId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Xóa ảnh thành công!',
+    });
+  } catch (error) {
+    if (error.message.includes('Không có quyền')) {
+      return res.status(403).json({ success: false, message: error.message });
+    }
+    if (error.message.includes('Không tìm thấy homestay') || error.message.includes('Không tìm thấy ảnh')) {
+      return res.status(404).json({ success: false, message: error.message });
+    }
+    if (error.message.includes('Ảnh không thuộc homestay')) {
+      return res.status(400).json({ success: false, message: error.message });
+    }
+    return res.status(500).json({ success: false, message: error.message || 'Lỗi máy chủ khi xóa ảnh.' });
+  }
+};
+
+/**
  * Controller để kiểm tra tình trạng phòng / ngày đã được đặt
  */
 export const getHomestayAvailability = async (req, res) => {

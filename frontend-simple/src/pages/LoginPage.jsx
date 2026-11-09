@@ -6,7 +6,9 @@ import './Form.css';
 import { toast } from 'react-hot-toast';
 import { LogIn, Shield, Building2, User } from 'lucide-react';
 
-const API_URL = 'http://localhost:3000/api/auth/login';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/auth/login`;
 
 function LoginPage() {
   const [email, setEmail] = useState('');

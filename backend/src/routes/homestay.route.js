@@ -3,7 +3,7 @@ import express from 'express';
 import * as homestayController from '../controllers/homestay.controller.js';
 import { protect } from '../middlewares/auth.middleware.js';
 import { protectOwner } from '../middlewares/owner.middleware.js';
-import upload from '../middlewares/upload.middleware.js';
+import upload, { validateUploadedImages, handleMulterError } from '../middlewares/upload.middleware.js';
 
 const router = express.Router();
 
@@ -16,7 +16,15 @@ router.get('/:id', homestayController.getHomestayById);
 router.post('/', protectOwner, homestayController.createHomestay);
 router.put('/:id', protectOwner, homestayController.updateHomestay);
 router.delete('/:id', protectOwner, homestayController.deleteHomestay);
-router.post('/:id/images',protectOwner,upload.array('images', 10), homestayController.uploadImages);
+router.post(
+  '/:id/images',
+  protectOwner,
+  upload.array('images', 5),
+  handleMulterError,
+  validateUploadedImages,
+  homestayController.uploadImages
+);
+router.delete('/:id/images/:imageId', protectOwner, homestayController.deleteImage);
 
 // --- User Routes (Dành cho NGUOI_DUNG) ---
 // Thêm homestay vào yêu thích (yêu cầu đăng nhập)

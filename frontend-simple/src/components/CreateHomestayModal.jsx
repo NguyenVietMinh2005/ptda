@@ -4,7 +4,9 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
 // Endpoint API (từ homestay.controller.js)
-const HOMESTAY_API_URL = 'http://localhost:3000/api/homestays';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const HOMESTAY_API_URL = `${API_BASE_URL}/homestays`;
 
 function CreateHomestayModal({ show, onClose, onHomestayCreated }) {
   const [formData, setFormData] = useState({

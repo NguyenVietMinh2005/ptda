@@ -4,7 +4,9 @@ import { useNavigate, Link } from 'react-router-dom'
 import './Form.css' 
 import { toast } from 'react-hot-toast'
 
-const API_URL = 'http://localhost:3000/api/auth/register'
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/auth/register`;
 
 function RegisterPage() {
   const [username, setUsername] = useState('')

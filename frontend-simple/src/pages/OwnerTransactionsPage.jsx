@@ -5,7 +5,9 @@ import OwnerLayout from '../components/OwnerLayout';
 import { Search, CreditCard, RefreshCw, CheckCircle2, XCircle, TrendingUp } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
-const API_URL = 'http://localhost:3000/api/owner/me/transactions';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/me/transactions`;
 
 export default function OwnerTransactionsPage() {
   const [transactions, setTransactions] = useState([]);

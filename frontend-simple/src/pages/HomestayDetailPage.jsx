@@ -14,17 +14,19 @@ import PaymentModal from '../components/PaymentModal'
 import { toast } from 'react-hot-toast'
 
 // --- API URLs ---
-const FAVORITES_API_URL = 'http://localhost:3000/api/auth/me/favorites'
-const FAVORITE_TOGGLE_API_URL = 'http://localhost:3000/api/homestays'
+import { API_BASE_URL, getFullImageUrl } from '../utils/apiConfig'
+
+const FAVORITES_API_URL = `${API_BASE_URL}/auth/me/favorites`
+const FAVORITE_TOGGLE_API_URL = `${API_BASE_URL}/homestays`
 const PLACEHOLDER_IMAGE = 'https://placehold.co/600x400/eee/ccc?text=Homestay'
 
 function HomestayDetailPage() {
   const { id } = useParams() 
   const navigate = useNavigate()
   
-  const DETAIL_API_URL = `http://localhost:3000/api/homestays/${id}`
-  const BOOKING_API_URL = `http://localhost:3000/api/homestays/${id}/book`
-  const REVIEW_API_URL = `http://localhost:3000/api/homestays/${id}/reviews`
+  const DETAIL_API_URL = `${API_BASE_URL}/homestays/${id}`
+  const BOOKING_API_URL = `${API_BASE_URL}/homestays/${id}/book`
+  const REVIEW_API_URL = `${API_BASE_URL}/homestays/${id}/reviews`
 
   // --- STATE ---
   const [homestay, setHomestay] = useState(null)
@@ -134,7 +136,7 @@ function HomestayDetailPage() {
     const checkReviewEligibility = async () => {
       if (token && id) {
         try {
-          const canRes = await axios.get(`http://localhost:3000/api/homestays/${id}/can-review`, {
+          const canRes = await axios.get(`${API_BASE_URL}/homestays/${id}/can-review`, {
             headers: { 'Authorization': `Bearer ${token}` }
           })
           setCanReview(canRes.data.canReview)
@@ -153,7 +155,7 @@ function HomestayDetailPage() {
   const fetchAvailability = async () => {
     if (id) {
       try {
-        const availRes = await axios.get(`http://localhost:3000/api/homestays/${id}/availability`);
+        const availRes = await axios.get(`${API_BASE_URL}/homestays/${id}/availability`);
         setBookedRanges(availRes.data?.bookedRanges || []);
       } catch (err) {
         console.warn('Không thể tải thông tin phòng trống:', err);
@@ -302,11 +304,7 @@ function HomestayDetailPage() {
     toast.success('Đã sao chép liên kết vào bộ nhớ tạm!')
   }
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return PLACEHOLDER_IMAGE
-    if (imagePath.startsWith('http')) return imagePath 
-    return `http://localhost:3000/${imagePath}`
-  }
+  const getImageUrl = (imagePath) => getFullImageUrl(imagePath, PLACEHOLDER_IMAGE)
   
   if (loading) return (
     <div className="site-wrapper">

@@ -5,7 +5,9 @@ import { useNavigate, Link } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import './Form.css' // Dùng chung file CSS
 
-const API_URL = 'http://localhost:3000/api/owner/forgot-password'
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/forgot-password`;
 
 function OwnerForgotPasswordPage() {
   const [email, setEmail] = useState('')

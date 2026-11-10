@@ -1,0 +1,255 @@
+-- CreateEnum
+CREATE TYPE "KHIEU_NAI_TrangThai" AS ENUM ('ChuaXuLy', 'DangXuLy', 'DaXuLy');
+
+-- CreateEnum
+CREATE TYPE "DAT_PHONG_TrangThai" AS ENUM ('ChoXacNhan', 'DaXacNhan', 'DaHuy');
+
+-- CreateEnum
+CREATE TYPE "CHU_HOMESTAY_Quyen" AS ENUM ('admin', 'chu_homestay');
+
+-- CreateTable
+CREATE TABLE "CHI_TIET_DAT_PHONG" (
+    "MaDatPhong" INTEGER NOT NULL,
+    "MaHomestay" INTEGER NOT NULL,
+    "SoLuongPhong" INTEGER NOT NULL,
+
+    CONSTRAINT "CHI_TIET_DAT_PHONG_pkey" PRIMARY KEY ("MaDatPhong","MaHomestay")
+);
+
+-- CreateTable
+CREATE TABLE "CHU_HOMESTAY" (
+    "MaChu" SERIAL NOT NULL,
+    "HoTen" VARCHAR(100) NOT NULL,
+    "Email" VARCHAR(100) NOT NULL,
+    "MatKhau" VARCHAR(255) NOT NULL,
+    "SoDienThoai" VARCHAR(15),
+    "DiaChi" VARCHAR(255),
+    "SoCCCD" VARCHAR(20) NOT NULL,
+    "Quyen" "CHU_HOMESTAY_Quyen" DEFAULT 'chu_homestay',
+    "created_at" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "passwordResetToken" TEXT,
+    "passwordResetExpires" TIMESTAMP(3),
+
+    CONSTRAINT "CHU_HOMESTAY_pkey" PRIMARY KEY ("MaChu")
+);
+
+-- CreateTable
+CREATE TABLE "DANH_GIA" (
+    "MaDanhGia" SERIAL NOT NULL,
+    "MaNguoiDung" INTEGER NOT NULL,
+    "MaHomestay" INTEGER NOT NULL,
+    "SoSao" INTEGER,
+    "BinhLuan" TEXT,
+    "created_at" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "DANH_GIA_pkey" PRIMARY KEY ("MaDanhGia")
+);
+
+-- CreateTable
+CREATE TABLE "DAT_PHONG" (
+    "MaDatPhong" SERIAL NOT NULL,
+    "MaNguoiDung" INTEGER NOT NULL,
+    "NgayNhan" DATE NOT NULL,
+    "NgayTra" DATE NOT NULL,
+    "SoLuong" INTEGER NOT NULL,
+    "Gia" DECIMAL(12,2) NOT NULL,
+    "TrangThai" "DAT_PHONG_TrangThai" DEFAULT 'ChoXacNhan',
+    "created_at" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "DAT_PHONG_pkey" PRIMARY KEY ("MaDatPhong")
+);
+
+-- CreateTable
+CREATE TABLE "DOANH_THU" (
+    "MaDoanhThu" SERIAL NOT NULL,
+    "MaChu" INTEGER NOT NULL,
+    "ThangNam" VARCHAR(7),
+    "TongDoanhThu" DECIMAL(12,2) DEFAULT 0.00,
+    "SoLuongDat" INTEGER DEFAULT 0,
+    "created_at" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "DOANH_THU_pkey" PRIMARY KEY ("MaDoanhThu")
+);
+
+-- CreateTable
+CREATE TABLE "HINH_ANH" (
+    "MaAnh" SERIAL NOT NULL,
+    "MaHomestay" INTEGER NOT NULL,
+    "HinhAnh" VARCHAR(255),
+
+    CONSTRAINT "HINH_ANH_pkey" PRIMARY KEY ("MaAnh")
+);
+
+-- CreateTable
+CREATE TABLE "HOMESTAY" (
+    "MaHomestay" SERIAL NOT NULL,
+    "MaChu" INTEGER NOT NULL,
+    "TenHomestay" VARCHAR(255) NOT NULL,
+    "DiaDiem" VARCHAR(255) NOT NULL,
+    "Gia" DECIMAL(12,2) NOT NULL,
+    "SoKhachToiDa" INTEGER NOT NULL,
+    "TienIch" TEXT,
+    "MoTa" TEXT,
+    "created_at" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "HOMESTAY_pkey" PRIMARY KEY ("MaHomestay")
+);
+
+-- CreateTable
+CREATE TABLE "KHIEU_NAI" (
+    "MaKhieuNai" SERIAL NOT NULL,
+    "MaDatPhong" INTEGER NOT NULL,
+    "MaNguoiDung" INTEGER NOT NULL,
+    "NoiDung" TEXT NOT NULL,
+    "TrangThai" "KHIEU_NAI_TrangThai" DEFAULT 'ChuaXuLy',
+    "NgayTao" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "KHIEU_NAI_pkey" PRIMARY KEY ("MaKhieuNai")
+);
+
+-- CreateTable
+CREATE TABLE "NGUOI_DUNG" (
+    "MaNguoiDung" SERIAL NOT NULL,
+    "HoTen" VARCHAR(100) NOT NULL,
+    "Email" VARCHAR(100) NOT NULL,
+    "MatKhau" VARCHAR(255) NOT NULL,
+    "SoDienThoai" VARCHAR(15),
+    "DiaChi" VARCHAR(255),
+    "CapNhatDL" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "passwordResetToken" TEXT,
+    "passwordResetExpires" TIMESTAMP(3),
+
+    CONSTRAINT "NGUOI_DUNG_pkey" PRIMARY KEY ("MaNguoiDung")
+);
+
+-- CreateTable
+CREATE TABLE "PHIEU_KHIEU_NAI" (
+    "MaChu" INTEGER NOT NULL,
+    "MaKhieuNai" INTEGER NOT NULL,
+
+    CONSTRAINT "PHIEU_KHIEU_NAI_pkey" PRIMARY KEY ("MaChu","MaKhieuNai")
+);
+
+-- CreateTable
+CREATE TABLE "XU_LY_KHIEU_NAI" (
+    "MaXuLy" SERIAL NOT NULL,
+    "MaKhieuNai" INTEGER NOT NULL,
+    "MaChu" INTEGER NOT NULL,
+    "KetQua" TEXT,
+    "NgayXuLy" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "XU_LY_KHIEU_NAI_pkey" PRIMARY KEY ("MaXuLy")
+);
+
+-- CreateTable
+CREATE TABLE "YEU_THICH" (
+    "MaNguoiDung" INTEGER NOT NULL,
+    "MaHomestay" INTEGER NOT NULL,
+    "NgayThem" TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "YEU_THICH_pkey" PRIMARY KEY ("MaNguoiDung","MaHomestay")
+);
+
+-- CreateIndex
+CREATE INDEX "CHI_TIET_DAT_PHONG_MaHomestay_idx" ON "CHI_TIET_DAT_PHONG"("MaHomestay");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CHU_HOMESTAY_Email_key" ON "CHU_HOMESTAY"("Email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CHU_HOMESTAY_SoCCCD_key" ON "CHU_HOMESTAY"("SoCCCD");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CHU_HOMESTAY_passwordResetToken_key" ON "CHU_HOMESTAY"("passwordResetToken");
+
+-- CreateIndex
+CREATE INDEX "DANH_GIA_MaHomestay_idx" ON "DANH_GIA"("MaHomestay");
+
+-- CreateIndex
+CREATE INDEX "DANH_GIA_MaNguoiDung_idx" ON "DANH_GIA"("MaNguoiDung");
+
+-- CreateIndex
+CREATE INDEX "DAT_PHONG_MaNguoiDung_idx" ON "DAT_PHONG"("MaNguoiDung");
+
+-- CreateIndex
+CREATE INDEX "DOANH_THU_MaChu_idx" ON "DOANH_THU"("MaChu");
+
+-- CreateIndex
+CREATE INDEX "HINH_ANH_MaHomestay_idx" ON "HINH_ANH"("MaHomestay");
+
+-- CreateIndex
+CREATE INDEX "HOMESTAY_MaChu_idx" ON "HOMESTAY"("MaChu");
+
+-- CreateIndex
+CREATE INDEX "KHIEU_NAI_MaDatPhong_idx" ON "KHIEU_NAI"("MaDatPhong");
+
+-- CreateIndex
+CREATE INDEX "KHIEU_NAI_MaNguoiDung_idx" ON "KHIEU_NAI"("MaNguoiDung");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "NGUOI_DUNG_Email_key" ON "NGUOI_DUNG"("Email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "NGUOI_DUNG_passwordResetToken_key" ON "NGUOI_DUNG"("passwordResetToken");
+
+-- CreateIndex
+CREATE INDEX "PHIEU_KHIEU_NAI_MaKhieuNai_idx" ON "PHIEU_KHIEU_NAI"("MaKhieuNai");
+
+-- CreateIndex
+CREATE INDEX "XU_LY_KHIEU_NAI_MaChu_idx" ON "XU_LY_KHIEU_NAI"("MaChu");
+
+-- CreateIndex
+CREATE INDEX "XU_LY_KHIEU_NAI_MaKhieuNai_idx" ON "XU_LY_KHIEU_NAI"("MaKhieuNai");
+
+-- CreateIndex
+CREATE INDEX "YEU_THICH_MaHomestay_idx" ON "YEU_THICH"("MaHomestay");
+
+-- AddForeignKey
+ALTER TABLE "CHI_TIET_DAT_PHONG" ADD CONSTRAINT "CHI_TIET_DAT_PHONG_MaDatPhong_fkey" FOREIGN KEY ("MaDatPhong") REFERENCES "DAT_PHONG"("MaDatPhong") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CHI_TIET_DAT_PHONG" ADD CONSTRAINT "CHI_TIET_DAT_PHONG_MaHomestay_fkey" FOREIGN KEY ("MaHomestay") REFERENCES "HOMESTAY"("MaHomestay") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DANH_GIA" ADD CONSTRAINT "DANH_GIA_MaNguoiDung_fkey" FOREIGN KEY ("MaNguoiDung") REFERENCES "NGUOI_DUNG"("MaNguoiDung") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DANH_GIA" ADD CONSTRAINT "DANH_GIA_MaHomestay_fkey" FOREIGN KEY ("MaHomestay") REFERENCES "HOMESTAY"("MaHomestay") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DAT_PHONG" ADD CONSTRAINT "DAT_PHONG_MaNguoiDung_fkey" FOREIGN KEY ("MaNguoiDung") REFERENCES "NGUOI_DUNG"("MaNguoiDung") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DOANH_THU" ADD CONSTRAINT "DOANH_THU_MaChu_fkey" FOREIGN KEY ("MaChu") REFERENCES "CHU_HOMESTAY"("MaChu") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HINH_ANH" ADD CONSTRAINT "HINH_ANH_MaHomestay_fkey" FOREIGN KEY ("MaHomestay") REFERENCES "HOMESTAY"("MaHomestay") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HOMESTAY" ADD CONSTRAINT "HOMESTAY_MaChu_fkey" FOREIGN KEY ("MaChu") REFERENCES "CHU_HOMESTAY"("MaChu") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "KHIEU_NAI" ADD CONSTRAINT "KHIEU_NAI_MaDatPhong_fkey" FOREIGN KEY ("MaDatPhong") REFERENCES "DAT_PHONG"("MaDatPhong") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "KHIEU_NAI" ADD CONSTRAINT "KHIEU_NAI_MaNguoiDung_fkey" FOREIGN KEY ("MaNguoiDung") REFERENCES "NGUOI_DUNG"("MaNguoiDung") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PHIEU_KHIEU_NAI" ADD CONSTRAINT "PHIEU_KHIEU_NAI_MaChu_fkey" FOREIGN KEY ("MaChu") REFERENCES "CHU_HOMESTAY"("MaChu") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PHIEU_KHIEU_NAI" ADD CONSTRAINT "PHIEU_KHIEU_NAI_MaKhieuNai_fkey" FOREIGN KEY ("MaKhieuNai") REFERENCES "KHIEU_NAI"("MaKhieuNai") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "XU_LY_KHIEU_NAI" ADD CONSTRAINT "XU_LY_KHIEU_NAI_MaKhieuNai_fkey" FOREIGN KEY ("MaKhieuNai") REFERENCES "KHIEU_NAI"("MaKhieuNai") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "XU_LY_KHIEU_NAI" ADD CONSTRAINT "XU_LY_KHIEU_NAI_MaChu_fkey" FOREIGN KEY ("MaChu") REFERENCES "CHU_HOMESTAY"("MaChu") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "YEU_THICH" ADD CONSTRAINT "YEU_THICH_MaNguoiDung_fkey" FOREIGN KEY ("MaNguoiDung") REFERENCES "NGUOI_DUNG"("MaNguoiDung") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "YEU_THICH" ADD CONSTRAINT "YEU_THICH_MaHomestay_fkey" FOREIGN KEY ("MaHomestay") REFERENCES "HOMESTAY"("MaHomestay") ON DELETE CASCADE ON UPDATE CASCADE;

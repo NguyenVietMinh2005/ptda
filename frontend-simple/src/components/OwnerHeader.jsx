@@ -1,35 +1,35 @@
 // src/components/OwnerHeader.jsx
-import { useState } from 'react'; // <-- 1. Import useState
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X } from 'lucide-react'; // <-- 2. Import icons
+import { Menu, X } from 'lucide-react';
 import { toast } from 'react-hot-toast';
-import '../App.css'; // Dùng CSS chung
+import '../App.css';
 
 function OwnerHeader() {
   const navigate = useNavigate();
   const ownerString = localStorage.getItem('ownerAuthUser');
   const owner = ownerString ? JSON.parse(ownerString) : null;
 
-  // 3. Thêm state để quản lý menu (giống Header.jsx)
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authUser');
     localStorage.removeItem('ownerAuthToken');
     localStorage.removeItem('ownerAuthUser');
+    localStorage.removeItem('authRole');
     toast.success('Đăng xuất thành công!');
-    navigate('/owner/login');
+    navigate('/login');
   };
 
   return (
-    <header className="owner-header"> {/* Giữ class này để có nền xanh */}
+    <header className="owner-header">
       <h1 className="owner-logo">
         <Link to="/owner/dashboard">Kênh Chủ Nhà</Link>
       </h1>
       
-      {/* 4. THAY THẾ TOÀN BỘ <nav> CŨ BẰNG LOGIC MỚI NÀY */}
       <nav>
         {owner ? (
-          // --- Menu 3 sọc khi đã đăng nhập (Giống Header.jsx) ---
           <div className="profile-menu">
             <button 
               className="menu-icon-button" 
@@ -40,10 +40,8 @@ function OwnerHeader() {
 
             {isMenuOpen && (
               <div className="menu-dropdown">
-                {/* Chào mừng */}
                 <span className="menu-item-greeting">Chào, {owner.HoTen}!</span>
                 
-                {/* Các link của Chủ nhà */}
                 <Link to="/owner/dashboard" className="menu-item" onClick={() => setIsMenuOpen(false)}>
                   Thống kê
                 </Link>
@@ -57,18 +55,16 @@ function OwnerHeader() {
                   Quản lý Khiếu nại
                 </Link>
                 
-                {/* --- LINK ADMIN ĐÃ ĐƯỢC DI CHUYỂN VÀO ĐÂY --- */}
                 {owner && owner.Quyen === 'admin' && (
                   <Link 
                     to="/admin/dashboard" 
-                    className="menu-item admin-link" // Dùng class mới
+                    className="menu-item admin-link"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     ⭐ Bảng điều khiển Admin
                   </Link>
                 )}
                 
-                {/* Nút Đăng xuất */}
                 <button onClick={handleLogout} className="menu-item logout">
                   Đăng xuất
                 </button>
@@ -76,15 +72,12 @@ function OwnerHeader() {
             )}
           </div>
         ) : (
-          // --- Khi chưa đăng nhập ---
           <div className="auth-links">
-            <Link to="/owner/login">Đăng nhập</Link>
+            <Link to="/login">Đăng nhập</Link>
             <Link to="/owner/register">Đăng ký</Link>
           </div>
         )}
       </nav>
-      {/* ------------------ KẾT THÚC THAY THẾ ------------------ */}
-      
     </header>
   );
 }

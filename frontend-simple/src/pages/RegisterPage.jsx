@@ -1,11 +1,12 @@
-// src/pages/RegisterPage.jsx
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, Link } from 'react-router-dom'
 import './Form.css' 
-import { Toaster } from 'react-hot-toast';
+import { toast } from 'react-hot-toast'
 
-const API_URL = 'http://localhost:3000/api/auth/register'
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/auth/register`;
 
 function RegisterPage() {
   const [username, setUsername] = useState('')
@@ -21,11 +22,19 @@ function RegisterPage() {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
 
+  useEffect(() => {
+    if (localStorage.getItem('authToken')) {
+      navigate('/')
+    }
+  }, [navigate])
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(null)
     if (password !== confirmPassword) {
-      setError('Mật khẩu và xác nhận mật khẩu không khớp!')
+      const msg = 'Mật khẩu và xác nhận mật khẩu không khớp!'
+      setError(msg)
+      toast.error(msg)
       return
     }
     setLoading(true)
@@ -37,7 +46,9 @@ function RegisterPage() {
         soDienThoai: soDienThoai,
       })
       toast.success('Đăng ký thành công! Đang chuyển đến trang đăng nhập.')
-      navigate('/login')
+      setTimeout(() => {
+        navigate('/login')
+      }, 500)
     } catch (err) {
       const message = err.response?.data?.message || 'Đăng ký thất bại.'
       toast.error(message)

@@ -1,0 +1,133 @@
+/* Design Tokens & Global Reset for PTDA Homestay */
+:root {
+  /* Brand Colors: Nature & Premium Homestay */
+  --primary: #1C3B2B;
+  --primary-light: #2D5640;
+  --primary-dark: #12261B;
+  --primary-subtle: #EBF3EE;
+  
+  /* Warm Earth Terracotta Accent */
+  --accent: #C9653B;
+  --accent-hover: #B2532B;
+  --accent-subtle: #FDF3EE;
+  
+  /* Nature Earth Tones */
+  --sage: #5F8571;
+  --sand: #E5DDD0;
+  
+  /* Surfaces & Backgrounds */
+  --bg-page: #FAF8F5;
+  --bg-surface: #FFFFFF;
+  --bg-subtle: #F3EEE6;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  
+  /* Borders */
+  --border: #E8E2D7;
+  --border-light: #F0ECE4;
+  --border-focus: #1C3B2B;
+  
+  /* Text */
+  --text-main: #1C231F;
+  --text-muted: #5C6861;
+  --text-light: #8F9D95;
+  --text-inverse: #FFFFFF;
+  
+  /* Functional / Status */
+  --star-color: #F59E0B;
+  --success: #15803D;
+  --success-bg: #DCFCE7;
+  --warning: #B45309;
+  --warning-bg: #FEF3C7;
+  --danger: #B91C1C;
+  --danger-bg: #FEE2E2;
+  
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-xs: 0 1px 3px rgba(28, 59, 43, 0.05);
+  --shadow-sm: 0 4px 12px rgba(28, 59, 43, 0.06);
+  --shadow-md: 0 10px 28px -4px rgba(28, 59, 43, 0.08);
+  --shadow-lg: 0 20px 40px -8px rgba(28, 59, 43, 0.12);
+  --shadow-hover: 0 14px 34px -4px rgba(28, 59, 43, 0.14);
+  
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-page);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  color: var(--text-main);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+::-webkit-scrollbar-thumb {
+  background: #D1C9BE;
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B3A99D;
+}
+

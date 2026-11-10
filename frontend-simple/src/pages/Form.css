@@ -1,85 +1,169 @@
-/* src/pages/Form.css */
+/* src/pages/Form.css - Modern Auth Design */
 .form-container {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  /* background-color: #f4f4f4; */
-  background-image: url('background.png');
-  background-size: cover; /* Đảm bảo ảnh che phủ toàn bộ */
-  background-position: center; /* Căn ảnh ở giữa */
+  padding: 2.5rem 1.5rem;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 38, 27, 0.75) 0%,
+    rgba(18, 38, 27, 0.88) 100%
+  ), var(--auth-bg, url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80'));
+  background-size: cover;
+  background-position: center;
 }
 
 .auth-form {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 2rem;
-  width: 400px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  background: rgba(255, 255, 255, 0.9);
+  background: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 2.5rem 2rem;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+  animation: formPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes formPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .auth-form h2 {
   text-align: center;
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: var(--primary);
   margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.auth-form-sub {
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
+  margin-bottom: 0.4rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
-  padding: 0.5rem;
-  box-sizing: border-box; /* Quan trọng */
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 0.75rem 0.95rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-page);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  outline: none;
+  transition: all var(--transition-fast);
 }
 
-.auth-form button {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--primary);
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(28, 59, 43, 0.12);
+}
+
+.auth-form button[type="submit"],
+.button-primary {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #007bff;
-  color: white;
+  padding: 0.85rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #FFFFFF;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--radius-full);
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 0.98rem;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(28, 59, 43, 0.25);
+  transition: all var(--transition-fast);
+  margin-top: 0.5rem;
+}
+
+.auth-form button[type="submit"]:hover:not(:disabled),
+.button-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(28, 59, 43, 0.35);
+  background: var(--primary-light);
 }
 
 .auth-form button:disabled {
-  background-color: #ccc;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .error-message {
-  color: red;
-  background-color: #ffeaea;
-  border: 1px solid red;
-  padding: 0.5rem;
-  border-radius: 4px;
+  color: var(--danger);
+  background-color: var(--danger-bg);
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
   text-align: center;
+  margin-bottom: 1.25rem;
 }
-/* Thêm vào cuối tệp src/pages/Form.css */
+
 .form-group-checkbox {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  cursor: pointer;
 }
 
 .form-group-checkbox label {
-  margin-bottom: 0;
-  margin-left: 0.5rem; /* Tạo khoảng cách giữa ô và chữ */
-  font-weight: normal;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
 }
 
-.form-group-checkbox input {
-  width: auto; /* Ghi đè 'width: 100%' của input thường */
+.form-group-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.form-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
+  font-size: 0.88rem;
+}
+
+.form-links a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.form-links a:hover {
+  text-decoration: underline;
 }

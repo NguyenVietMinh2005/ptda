@@ -53,3 +53,57 @@ export const protect = async (req, res, next) => {
     res.status(401).json({ message: 'Không tìm thấy token, yêu cầu bị từ chối.' });
   }
 };
+
+export const protectAny = async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+  ) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      if (decoded.userId) {
+        const currentUser = await prisma.nGUOI_DUNG.findUnique({
+          where: { MaNguoiDung: decoded.userId },
+          select: {
+            MaNguoiDung: true,
+            HoTen: true,
+            Email: true,
+            isActive: true,
+          },
+        });
+        if (currentUser && currentUser.isActive !== false) {
+          req.user = currentUser;
+          return next();
+        }
+      }
+
+      if (decoded.ownerId) {
+        const currentOwner = await prisma.cHU_HOMESTAY.findUnique({
+          where: { MaChu: decoded.ownerId },
+          select: {
+            MaChu: true,
+            HoTen: true,
+            Email: true,
+            Quyen: true,
+            isActive: true,
+          },
+        });
+        if (currentOwner && currentOwner.isActive !== false) {
+          req.owner = currentOwner;
+          return next();
+        }
+      }
+
+      return res.status(401).json({ message: 'Tài khoản không tồn tại hoặc đã bị khóa.' });
+    } catch (error) {
+      return res.status(401).json({ message: 'Token không hợp lệ hoặc đã hết hạn.' });
+    }
+  }
+
+  if (!token) {
+    return res.status(401).json({ message: 'Không tìm thấy token, yêu cầu bị từ chối.' });
+  }
+};

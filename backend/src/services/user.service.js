@@ -43,6 +43,9 @@ export const getMyBookings = async (userId) => {
           },
         },
       },
+      GIAO_DICH: {
+        orderBy: { created_at: 'desc' },
+      },
     },
     orderBy: {
       // Lưu ý: Nếu cột trong DB là 'NgayTao' hay 'created_at', hãy check lại schema

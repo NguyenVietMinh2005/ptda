@@ -1,0 +1,67 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+frontend-simple/node_modules/
+.pnp
+.pnp.js
+
+# Environment variables & local secrets (never commit real credentials)
+.env
+.env.*
+!.env.example
+*.local
+
+# Production build outputs
+dist/
+dist-ssr/
+frontend-simple/dist/
+build/
+
+# Vite, bundler & engine cache
+.vite/
+frontend-simple/.vite/
+.cache/
+backend/node_modules/.cache/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Database dumps, backups & archives
+*.sql.backup
+*.dump
+*.backup
+*.rar
+*.zip
+*.tar.gz
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+
+# IDE & Editor settings
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Uploads: Preserve sample homestay photos (hs*.jpg) and seed assets, ignore runtime user uploads
+backend/uploads/*
+!backend/uploads/hs*.jpg
+!backend/uploads/.gitkeep
+!backend/uploads/README.md
+
+# Temporary scratch scripts & testing logs
+scratch/
+*.tmp*
+

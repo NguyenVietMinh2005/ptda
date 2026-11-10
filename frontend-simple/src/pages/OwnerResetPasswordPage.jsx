@@ -5,7 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import './Form.css'
 
-const API_URL = 'http://localhost:3000/api/owner/reset-password'
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/reset-password`;
 
 function OwnerResetPasswordPage() {
   const [password, setPassword] = useState('')

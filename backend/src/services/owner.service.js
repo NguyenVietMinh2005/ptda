@@ -7,10 +7,10 @@ import crypto from 'crypto';
  * Đăng ký một tài khoản Chủ Homestay mới
  */
 export const registerOwner = async (ownerData) => {
+  const normalizedEmail = ownerData.email?.trim().toLowerCase();
   // 1. Kiểm tra email
-  // 'cHU_HOMESTAY' là tên Prisma tạo ra từ model 'CHU_HOMESTAY'
   const existingOwner = await prisma.cHU_HOMESTAY.findUnique({
-    where: { Email: ownerData.email },
+    where: { Email: normalizedEmail },
   });
 
   if (existingOwner) {
@@ -19,7 +19,7 @@ export const registerOwner = async (ownerData) => {
 
   // 2. Kiểm tra CCCD
   const existingCCCD = await prisma.cHU_HOMESTAY.findUnique({
-    where: { SoCCCD: ownerData.soCCCD },
+    where: { SoCCCD: ownerData.soCCCD?.trim() },
   });
 
   if (existingCCCD) {
@@ -32,12 +32,13 @@ export const registerOwner = async (ownerData) => {
   // 4. Tạo chủ homestay mới
   const newOwner = await prisma.cHU_HOMESTAY.create({
     data: {
-      HoTen: ownerData.hoTen,
-      Email: ownerData.email,
+      HoTen: ownerData.hoTen?.trim(),
+      Email: normalizedEmail,
       MatKhau: hashedPassword,
-      SoCCCD: ownerData.soCCCD,
-      SoDienThoai: ownerData.soDienThoai,
-      DiaChi: ownerData.diaChi,
+      SoCCCD: ownerData.soCCCD?.trim(),
+      SoDienThoai: ownerData.soDienThoai?.trim() || null,
+      DiaChi: ownerData.diaChi?.trim() || null,
+      isActive: true,
       // 'Quyen' sẽ tự động dùng giá trị 'chu_homestay' (default)
     },
   });
@@ -51,25 +52,33 @@ export const registerOwner = async (ownerData) => {
  * Đăng nhập một tài khoản Chủ Homestay
  */
 export const loginOwner = async (ownerData) => {
+  const normalizedEmail = ownerData.email?.trim().toLowerCase();
+  const rawPassword = ownerData.password || ownerData.matKhau;
+
   // 1. Tìm chủ homestay bằng email
   const owner = await prisma.cHU_HOMESTAY.findUnique({
-    where: { Email: ownerData.email },
+    where: { Email: normalizedEmail },
   });
 
   if (!owner) {
     throw new Error('Email không tồn tại');
   }
   
-if (owner.isActive === false) {
+  if (owner.isActive === false) {
     throw new Error('Tài khoản của bạn đã bị khóa');
   }
 
+  if (!rawPassword) {
+    throw new Error('Mật khẩu không chính xác');
+  }
+
   // 2. So sánh mật khẩu
-  const isPasswordMatch = await bcrypt.compare(ownerData.password, owner.MatKhau);
+  const isPasswordMatch = await bcrypt.compare(rawPassword, owner.MatKhau);
 
   if (!isPasswordMatch) {
     throw new Error('Mật khẩu không chính xác');
   }
+
 
   // 3. Tạo Token (JWT)
   // Lần này, chúng ta đưa 'MaChu' và 'Quyen' vào token
@@ -211,6 +220,9 @@ export const getMyBookings = async (ownerId) => {
             select: { TenHomestay: true }
           }
         }
+      },
+      GIAO_DICH: {
+        orderBy: { created_at: 'desc' }
       }
     },
     orderBy: {
@@ -316,13 +328,24 @@ export const getDashboardStats = async (ownerId) => {
   let totalRevenue = 0;
   let confirmedBookings = 0;
   let pendingBookings = 0;
+  let stayingBookings = 0;
+  let completedBookings = 0;
+  let cancelledBookings = 0;
 
   allBookings.forEach((booking) => {
+    if (booking.TrangThai === 'DaXacNhan' || booking.TrangThai === 'DangLuuTru' || booking.TrangThai === 'DaHoanThanh') {
+      totalRevenue += parseFloat(booking.Gia || 0);
+    }
     if (booking.TrangThai === 'DaXacNhan') {
       confirmedBookings += 1;
-      totalRevenue += parseFloat(booking.Gia); // Cộng doanh thu
     } else if (booking.TrangThai === 'ChoXacNhan') {
       pendingBookings += 1;
+    } else if (booking.TrangThai === 'DangLuuTru') {
+      stayingBookings += 1;
+    } else if (booking.TrangThai === 'DaHoanThanh') {
+      completedBookings += 1;
+    } else if (booking.TrangThai === 'DaHuy') {
+      cancelledBookings += 1;
     }
   });
 
@@ -333,9 +356,107 @@ export const getDashboardStats = async (ownerId) => {
   // 6. Trả về kết quả
   return {
     totalHomestays,
+    totalBookings: allBookings.length,
     totalRevenue,
     confirmedBookings,
     pendingBookings,
+    stayingBookings,
+    completedBookings,
+    cancelledBookings,
     pendingComplaints,
   };
 };
+
+/**
+ * Lấy lịch sử giao dịch thanh toán liên quan đến homestay của chủ nhà
+ */
+export const getMyTransactions = async (ownerId) => {
+  const myHomestayIds = await prisma.hOMESTAY.findMany({
+    where: { MaChu: ownerId },
+    select: { MaHomestay: true },
+  });
+  const homestayIdList = myHomestayIds.map((h) => h.MaHomestay);
+
+  const transactions = await prisma.gIAO_DICH.findMany({
+    where: {
+      DAT_PHONG: {
+        CHI_TIET_DAT_PHONG: {
+          some: {
+            MaHomestay: { in: homestayIdList }
+          }
+        }
+      }
+    },
+    include: {
+      DAT_PHONG: {
+        include: {
+          NGUOI_DUNG: { select: { HoTen: true, Email: true, SoDienThoai: true } },
+          CHI_TIET_DAT_PHONG: {
+            include: {
+              HOMESTAY: { select: { MaHomestay: true, TenHomestay: true } }
+            }
+          }
+        }
+      }
+    },
+    orderBy: { created_at: 'desc' }
+  });
+
+  return transactions;
+};
+
+/**
+ * Lấy thông tin hồ sơ chủ homestay
+ */
+export const getOwnerProfile = async (ownerId) => {
+  const owner = await prisma.cHU_HOMESTAY.findUnique({
+    where: { MaChu: ownerId },
+    select: {
+      MaChu: true,
+      HoTen: true,
+      Email: true,
+      SoDienThoai: true,
+      DiaChi: true,
+      SoCCCD: true,
+      Quyen: true,
+      isActive: true,
+      created_at: true,
+    }
+  });
+
+  if (!owner) {
+    throw new Error('Không tìm thấy tài khoản chủ homestay');
+  }
+
+  return owner;
+};
+
+/**
+ * Cập nhật thông tin hồ sơ chủ homestay
+ */
+export const updateOwnerProfile = async (ownerId, profileData) => {
+  const { hoTen, soDienThoai, diaChi, soCCCD } = profileData;
+
+  const updatedOwner = await prisma.cHU_HOMESTAY.update({
+    where: { MaChu: ownerId },
+    data: {
+      ...(hoTen !== undefined && { HoTen: hoTen }),
+      ...(soDienThoai !== undefined && { SoDienThoai: soDienThoai }),
+      ...(diaChi !== undefined && { DiaChi: diaChi }),
+      ...(soCCCD !== undefined && { SoCCCD: soCCCD }),
+    },
+    select: {
+      MaChu: true,
+      HoTen: true,
+      Email: true,
+      SoDienThoai: true,
+      DiaChi: true,
+      SoCCCD: true,
+      Quyen: true,
+      isActive: true,
+      created_at: true,
+    }
+  });
+
+  return updatedOwner;
+};

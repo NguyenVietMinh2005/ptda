@@ -4,56 +4,59 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import '../App.css' // Dùng chung CSS
 import Header from '../components/Header' // Dùng Header
+import PaymentModal from '../components/PaymentModal' // Modal thanh toán
 import { toast } from 'react-hot-toast';
 
 // API để TẢI bookings
-const API_URL = 'http://localhost:3000/api/auth/me/bookings'
+import { API_BASE_URL, getFullImageUrl } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/auth/me/bookings`;
 // API để KHIẾU NẠI và HỦY (cùng 1 gốc)
-const BOOKING_API_URL = 'http://localhost:3000/api/bookings' // <-- LỖI LÀ DO THIẾU DÒNG NÀY
+const BOOKING_API_URL = `${API_BASE_URL}/bookings`;
 
 // Hàm trợ giúp để lấy URL ảnh (giống HomePage)
 const getImageUrl = (imagePath) => {
   if (!imagePath) return 'https://placehold.co/600x400/eee/ccc?text=Homestay';
   if (imagePath.startsWith('http')) return imagePath;
-  return `http://localhost:3000/${imagePath}`;
+  return getFullImageUrl(imagePath, 'https://placehold.co/600x400/eee/ccc?text=Homestay');
 }
 
 function MyBookingsPage() {
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [payingBookingId, setPayingBookingId] = useState(null)
   const navigate = useNavigate()
 
   // Lấy token và user
   const token = localStorage.getItem('authToken')
   const user = JSON.parse(localStorage.getItem('authUser'))
 
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get(API_URL, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      setBookings(response.data.data)
+    } catch (err) {
+      setError('Không thể tải lịch sử đặt phòng.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     // 1. Kiểm tra đăng nhập
     if (!token) {
       toast.success('Bạn cần đăng nhập để xem trang này.')
-      navigate('/login') // Chuyển về trang đăng nhập
-      return // Dừng thực thi
-    }
-
-    // 2. Gọi API để lấy lịch sử đặt phòng
-    const fetchBookings = async () => {
-      try {
-        const response = await axios.get(API_URL, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-        setBookings(response.data.data)
-      } catch (err) {
-        setError('Không thể tải lịch sử đặt phòng.')
-      } finally {
-        setLoading(false)
-      }
+      navigate('/login')
+      return
     }
 
     fetchBookings()
-  }, [token, navigate]) // Phụ thuộc vào token và navigate
+  }, [token, navigate])
 
   // (Đã xóa hàm handleLogout vì Header.jsx đã xử lý)
 
@@ -146,8 +149,64 @@ function MyBookingsPage() {
                       {booking.TrangThai}
                     </span>
                   </p>
+                  <p><strong>Thanh toán:</strong>
+                    <span style={{
+                      marginLeft: 6,
+                      padding: '2px 8px',
+                      borderRadius: '6px',
+                      fontSize: '0.85rem',
+                      fontWeight: '600',
+                      backgroundColor: booking.TrangThaiThanhToan === 'DaThanhToan' ? '#dcfce7' : '#fef3c7',
+                      color: booking.TrangThaiThanhToan === 'DaThanhToan' ? '#15803d' : '#b45309'
+                    }}>
+                      {booking.TrangThaiThanhToan === 'DaThanhToan' ? '✓ Đã thanh toán' : '⏳ Chưa thanh toán'}
+                    </span>
+                    {booking.PhuongThucThanhToan && (
+                      <span style={{ marginLeft: 6, fontSize: '0.8rem', color: '#64748b' }}>
+                        ({booking.PhuongThucThanhToan === 'ChuyenKhoanQR' ? 'QR Chuyển khoản' : 'Tiền mặt khi nhận phòng'})
+                      </span>
+                    )}
+                  </p>
 
                   <div className="booking-actions">
+                    {/* Nút Thanh toán: Hiển thị cho mọi đơn chưa bị hủy và chưa thanh toán */}
+                    {booking.TrangThai !== 'DaHuy' && booking.TrangThaiThanhToan !== 'DaThanhToan' && (
+                      <button
+                        style={{
+                          backgroundColor: '#2d5a27',
+                          color: '#ffffff',
+                          border: 'none',
+                          borderRadius: '6px',
+                          padding: '8px 14px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          fontSize: '0.85rem'
+                        }}
+                        onClick={() => setPayingBookingId(booking.MaDatPhong)}
+                      >
+                        💳 Thanh toán
+                      </button>
+                    )}
+
+                    {/* Nút xem chi tiết thanh toán / biên lai khi đã thanh toán */}
+                    {booking.TrangThaiThanhToan === 'DaThanhToan' && (
+                      <button
+                        style={{
+                          backgroundColor: '#f0fdf4',
+                          color: '#15803d',
+                          border: '1px solid #bbf7d0',
+                          borderRadius: '6px',
+                          padding: '8px 12px',
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                          fontSize: '0.85rem'
+                        }}
+                        onClick={() => setPayingBookingId(booking.MaDatPhong)}
+                      >
+                        🧾 Biên lai thanh toán
+                      </button>
+                    )}
+
                     {booking.TrangThai === 'ChoXacNhan' && (
                       <button 
                         className="cancel-button"
@@ -171,6 +230,15 @@ function MyBookingsPage() {
           })}
         </div>
       </main>
+
+      {/* Modal thanh toán mô phỏng */}
+      {payingBookingId && (
+        <PaymentModal
+          bookingId={payingBookingId}
+          onClose={() => setPayingBookingId(null)}
+          onPaymentSuccess={fetchBookings}
+        />
+      )}
     </div>
   )
 }

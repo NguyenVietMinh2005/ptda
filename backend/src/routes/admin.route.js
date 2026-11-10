@@ -8,16 +8,20 @@ const router = express.Router();
 // Tất cả các route trong này đều phải qua 'protectAdmin'
 router.use(protectAdmin);
 
-// GET /api/admin/users
+// GET /api/admin/dashboard-stats
+router.get('/dashboard-stats', adminController.getDashboardStats);
 router.get('/users', adminController.getAllUsers);
 router.get('/owners', adminController.getAllOwners);
 router.get('/homestays', adminController.getAllHomestays);
+router.put('/homestays/:id/approval', adminController.updateHomestayApproval);
 router.put('/users/:id/status', adminController.updateUserStatus);
 router.put('/owners/:id/status', adminController.updateOwnerStatus);
 router.delete('/homestays/:id', adminController.deleteHomestay);
+router.get('/reviews', adminController.getAllReviews);
 router.delete('/reviews/:id', adminController.deleteReview);
 router.get('/bookings', adminController.getAllBookings);
 router.put('/bookings/:id/status', adminController.updateBookingStatus);
+router.get('/transactions', adminController.getAllTransactions);
 router.get('/complaints', adminController.getAllComplaints);
 router.put('/owners/:id/role', adminController.updateOwnerRole);
 router.post('/complaints/:id/resolve', adminController.adminResolveComplaint);

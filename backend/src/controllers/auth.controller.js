@@ -1,42 +1,42 @@
 // src/controllers/auth.controller.js
 import * as authService from '../services/auth.service.js';
 import * as userService from '../services/user.service.js';
+
 // register
 export const register = async (req, res) => {
   try {
     const userData = req.body;
     const user = await authService.registerUser(userData);
 
-    // Xóa dòng này đi, vì service đã làm rồi
-    // user.password = undefined; 
-
     res.status(201).json({ 
-        message: 'Đăng ký thành công!', // Đã sửa lại message
-        user: user // Service đã trả về user an toàn
+        message: 'Đăng ký thành công!',
+        user: user
     });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
 
-// Thêm hàm login
+// Đăng nhập một cổng chung
 export const login = async (req, res) => {
   try {
     const userData = req.body;
-    // Service sẽ trả về { user, token }
     const data = await authService.loginUser(userData); 
 
     res.status(200).json({ 
         message: 'Đăng nhập thành công!',
-        data: data // Gửi cả user và token về
+        data: data 
     });
   } catch (error) {
-    // Phân biệt lỗi 401 (Sai thông tin) và 404 (Không tìm thấy)
-    if (error.message === 'Email không tồn tại' || error.message === 'Mật khẩu không chính xác') {
+    if (
+      error.message === 'Email không tồn tại' ||
+      error.message === 'Mật khẩu không chính xác' ||
+      error.message.includes('Vui lòng cung cấp')
+    ) {
       res.status(401).json({ message: error.message });
     } 
     else if (error.message === 'Tài khoản của bạn đã bị khóa') {
-      res.status(403).json({ message: error.message }); // 403 Forbidden
+      res.status(403).json({ message: error.message });
     }
     else {
       res.status(500).json({ message: 'Lỗi máy chủ' });
@@ -44,13 +44,11 @@ export const login = async (req, res) => {
   }
 };
 
-// Thêm hàm getMe
+// Lấy thông tin tài khoản hiện tại
 export const getMe = async (req, res) => {
-  // Nhờ middleware 'protect', chúng ta đã có thông tin 'req.user'
-  // mà không cần truy vấn lại database
   res.status(200).json({
     message: 'Lấy thông tin người dùng thành công.',
-    user: req.user,
+    user: req.user || req.owner,
   });
 };
 
@@ -59,10 +57,7 @@ export const getMe = async (req, res) => {
  */
 export const getMyFavorites = async (req, res) => {
   try {
-    // 1. Lấy ID người dùng từ middleware 'protect'
     const userId = req.user.MaNguoiDung;
-
-    // 2. Gọi service mới
     const favorites = await userService.getFavorites(userId);
 
     res.status(200).json({
@@ -79,10 +74,7 @@ export const getMyFavorites = async (req, res) => {
  */
 export const getMyBookings = async (req, res) => {
   try {
-    // 1. Lấy ID người dùng từ middleware 'protect'
     const userId = req.user.MaNguoiDung;
-
-    // 2. Gọi service
     const bookings = await userService.getMyBookings(userId);
 
     res.status(200).json({
@@ -102,10 +94,9 @@ export const forgotPassword = async (req, res) => {
     const { email } = req.body;
     const resetToken = await userService.requestPasswordReset(email);
 
-    // Mô phỏng: Trả token về. Trong đời thực: gửi email.
     res.status(200).json({
       message: 'Yêu cầu thành công. (Đã mô phỏng gửi token)',
-      resetToken: resetToken, // Bạn sẽ dùng token này để test
+      resetToken: resetToken,
     });
   } catch (error) {
     if (error.message === 'Email không tồn tại') {
@@ -139,19 +130,20 @@ export const resetPassword = async (req, res) => {
  */
 export const updateMyProfile = async (req, res) => {
   try {
-    const userId = req.user.MaNguoiDung; // Lấy từ middleware 'protect'
-    const dataToUpdate = req.body; // { HoTen, SoDienThoai, DiaChi }
+    const userId = req.user.MaNguoiDung;
+    const dataToUpdate = req.body;
 
     const updatedUser = await userService.updateMyProfile(userId, dataToUpdate);
 
     res.status(200).json({
       message: 'Cập nhật thông tin thành công!',
-      user: updatedUser, // Gửi lại user mới
+      user: updatedUser,
     });
   } catch (error) {
     res.status(500).json({ message: 'Lỗi máy chủ.' });
   }
 };
+
 export const getMyComplaints = async (req, res) => {
   try {
     const userId = req.user.MaNguoiDung;

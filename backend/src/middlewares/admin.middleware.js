@@ -26,6 +26,11 @@ export const protectAdmin = async (req, res, next) => {
         return res.status(401).json({ message: 'Người dùng không tồn tại.' });
       }
 
+      // Kiểm tra trạng thái: Tài khoản có bị khóa không?
+      if (admin.isActive === false) {
+        return res.status(403).json({ message: 'Tài khoản đã bị khóa.' });
+      }
+
       // Kiểm tra 2: User có phải là admin không?
       if (admin.Quyen !== 'admin') {
         return res.status(403).json({ message: 'Không có quyền truy cập.' }); // 403 Forbidden

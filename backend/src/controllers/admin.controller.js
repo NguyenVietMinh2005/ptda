@@ -250,3 +250,79 @@ export const adminResolveComplaint = async (req, res) => {
     }
   }
 };
+
+/**
+ * (Admin) Controller lấy số liệu thống kê tổng quan
+ */
+export const getDashboardStats = async (req, res) => {
+  try {
+    const stats = await adminService.getDashboardStats();
+    res.status(200).json({
+      message: 'Lấy dữ liệu thống kê quản trị thành công!',
+      data: stats,
+    });
+  } catch (error) {
+    console.error('getDashboardStats error:', error);
+    res.status(500).json({ message: 'Lỗi máy chủ khi lấy dữ liệu thống kê.' });
+  }
+};
+
+/**
+ * (Admin) Controller duyệt / từ chối Homestay
+ */
+export const updateHomestayApproval = async (req, res) => {
+  try {
+    const homestayId = parseInt(req.params.id);
+    const { trangThaiDuyet } = req.body;
+
+    if (!trangThaiDuyet) {
+      return res.status(400).json({ message: 'Trường trangThaiDuyet là bắt buộc.' });
+    }
+
+    const updatedHomestay = await adminService.updateHomestayApproval(homestayId, trangThaiDuyet);
+    res.status(200).json({
+      message: `Đã cập nhật trạng thái duyệt homestay #${homestayId} thành '${trangThaiDuyet}'!`,
+      data: updatedHomestay,
+    });
+  } catch (error) {
+    if (error.message.includes('Không tìm thấy')) {
+      res.status(404).json({ message: error.message });
+    } else if (error.message.includes('không hợp lệ')) {
+      res.status(400).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Lỗi máy chủ.' });
+    }
+  }
+};
+
+/**
+ * (Admin) Controller lấy danh sách tất cả giao dịch thanh toán
+ */
+export const getAllTransactions = async (req, res) => {
+  try {
+    const transactions = await adminService.getAllTransactions();
+    res.status(200).json({
+      message: 'Lấy danh sách giao dịch thành công!',
+      data: transactions,
+    });
+  } catch (error) {
+    console.error('getAllTransactions error:', error);
+    res.status(500).json({ message: 'Lỗi máy chủ khi lấy danh sách giao dịch.' });
+  }
+};
+
+/**
+ * (Admin) Controller lấy danh sách tất cả đánh giá
+ */
+export const getAllReviews = async (req, res) => {
+  try {
+    const reviews = await adminService.getAllReviews();
+    res.status(200).json({
+      message: 'Lấy danh sách đánh giá thành công!',
+      data: reviews,
+    });
+  } catch (error) {
+    console.error('getAllReviews error:', error);
+    res.status(500).json({ message: 'Lỗi máy chủ khi lấy danh sách đánh giá.' });
+  }
+};

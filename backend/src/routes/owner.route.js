@@ -18,6 +18,8 @@ router.get('/me/homestays', protectOwner, ownerController.getMyHomestays);
 router.get('/me/bookings', protectOwner, ownerController.getMyBookings);
 router.get('/me/complaints', protectOwner, ownerController.getMyComplaints);
 router.get('/me/dashboard-stats', protectOwner, ownerController.getDashboardStats);
-
+router.get('/me/transactions', protectOwner, ownerController.getMyTransactions);
+router.get('/me/profile', protectOwner, ownerController.getOwnerProfile);
+router.put('/me/profile', protectOwner, ownerController.updateOwnerProfile);
 
 export default router;

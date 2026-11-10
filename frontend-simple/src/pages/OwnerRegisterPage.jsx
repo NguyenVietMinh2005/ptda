@@ -6,7 +6,9 @@ import { toast } from 'react-hot-toast'
 import './Form.css' // Dùng chung file CSS
 
 // API Đăng ký của CHỦ HOMESTAY
-const API_URL = 'http://localhost:3000/api/owner/register'
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/owner/register`;
 
 function OwnerRegisterPage() {
   const [hoTen, setHoTen] = useState('')

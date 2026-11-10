@@ -1,1266 +1,3447 @@
-/* src/App.css */
-header {
-  background-color: #333;
-  color: white;
-  padding: 1rem;
+/* ==========================================================================
+   PTDA HOMESTAY - MODERN TRAVEL DESIGN SYSTEM & STYLESHEET
+   Style: Modern Travel, Premium Eco-Homestay, Close to Nature
+   ========================================================================== */
+
+/* --- LAYOUT WRAPPER --- */
+.site-wrapper {
   display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-page);
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-page);
+}
+
+.page-container > main {
+  flex: 1;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+/* ==========================================================================
+   1. HEADER & NAVIGATION
+   ========================================================================== */
+.modern-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(251, 249, 245, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
+}
+
+.modern-header.scrolled {
+  background-color: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 4px 20px rgba(28, 59, 43, 0.07);
+  border-bottom-color: var(--border);
+}
+
+.header-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-}
-header h1 {
-  margin: 0;
-}
-header nav a {
-  color: white;
-  margin-left: 1rem;
-  text-decoration: none;
-}
-
-main {
-  max-width: 1200px;
-  margin: 1rem auto;
-  padding: 1rem;
-}
-
-.homestay-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 cột */
-  gap: 1rem;
-}
-
-.homestay-card {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.homestay-card h3 {
-  margin-top: 0;
-}
-/* Thêm vào cuối tệp src/App.css */
-.logout-button {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1em;
-  font-family: inherit;
-  margin-left: 1rem;
-  text-decoration: underline;
-}
-
-.logout-button:hover {
-  color: #ffc107;
-}
-
-
-/* --- Thanh tìm kiếm --- */
-.search-bar-container {
-  padding: 1rem 0;
-  display: flex;
-  justify-content: center;
-}
-.search-bar {
-  display: flex;
-  border: 1px solid #ddd;
-  border-radius: 50px;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-.search-input {
-  padding: 0.75rem 1.5rem;
-  border-right: 1px solid #ddd;
-}
-.search-input:last-of-type {
-  border-right: none;
-}
-.search-input label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: bold;
-}
-.search-input input {
-  border: none;
-  outline: none;
-  background: transparent;
-}
-.search-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  margin: 5px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* --- Ghi đè CSS Grid cũ ---
-.homestay-list {
-  /* Xóa cái này đi để dùng layout mới */
-/* } */ 
-
-/* --- Giao diện Card MỚI --- */
-.homestay-list-new {
-  display: grid;
-grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
-.homestay-card-new-link {
+/* Brand Logo */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
   text-decoration: none;
-  color: inherit;
 }
 
-.homestay-card-new {
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-  position: relative; /* Cho icon trái tim */
+.brand-icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px rgba(28, 59, 43, 0.2);
 }
 
-.homestay-image {
-  width: 100%;
-  height: 280px; /* Chiều cao cố định */
-  object-fit: cover; /* Cắt ảnh vừa vặn */
-  border-radius: 12px;
+.brand-text-group {
+  display: flex;
+  flex-direction: column;
 }
 
-.homestay-info {
-  padding: 0.5rem 0;
+.brand-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  line-height: 1.1;
 }
-.homestay-info h3 {
-  font-size: 1rem;
+
+.brand-title .brand-accent {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.brand-tagline {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Desktop Nav Links */
+.header-nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.92rem;
   font-weight: 600;
-  margin: 0;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.nav-link:hover {
+  color: var(--primary);
+  background-color: var(--bg-subtle);
+}
+
+.nav-link.active {
+  color: var(--primary);
+  background-color: var(--primary-subtle);
+}
+
+/* Right Header Actions */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.owner-portal-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+  background-color: var(--primary-subtle);
+  border: 1px solid rgba(28, 59, 43, 0.12);
+  transition: all var(--transition-fast);
+}
+
+.owner-portal-btn:hover {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}
+
+/* Guest Buttons */
+.guest-auth-group {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-login-ghost {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.btn-login-ghost:hover {
+  background-color: var(--bg-subtle);
+}
+
+.btn-register-solid {
+  padding: 0.55rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background-color: var(--primary);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(28, 59, 43, 0.18);
+  transition: all var(--transition-fast);
+}
+
+.btn-register-solid:hover {
+  background-color: var(--primary-light);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(28, 59, 43, 0.22);
+}
+
+/* User Profile Pill */
+.user-profile-wrapper {
+  position: relative;
+}
+
+.user-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.4rem;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-fast);
+}
+
+.user-pill-btn:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--sage) 100%);
+  color: #FFFFFF;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-display-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  max-width: 140px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; /* Thêm ... nếu tên quá dài */
-}
-.homestay-info p {
-  font-size: 0.9rem;
-  color: #555;
-  margin: 0.25rem 0;
-}
-.homestay-info strong {
-  color: #222;
+  text-overflow: ellipsis;
 }
 
-
-/* --- Footer MỚI --- */
-.site-footer {
-  background-color: #f7f7f7;
-  border-top: 1px solid #ddd;
-  padding: 3rem 2rem;
-  margin-top: 3rem;
+.chevron-icon {
+  color: var(--text-muted);
+  transition: transform var(--transition-fast);
 }
-.footer-content {
-  max-width: 1200px;
+
+.chevron-icon.open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.dropdown-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 260px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0.6rem;
+  z-index: 1002;
+  animation: dropdownFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdown-user-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.6rem 0.8rem;
+}
+
+.header-avatar-lg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--sage) 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.header-user-meta {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header-user-meta strong {
+  font-size: 0.92rem;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-email-text {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-light);
+  margin: 0.4rem 0;
+}
+
+.dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.dropdown-link:hover {
+  background-color: var(--bg-subtle);
+  color: var(--primary);
+}
+
+.dropdown-link.logout-btn {
+  color: var(--danger);
+}
+
+.dropdown-link.logout-btn:hover {
+  background-color: var(--danger-bg);
+}
+
+/* Mobile Hamburger Button */
+.mobile-hamburger-btn {
+  display: none;
+  padding: 0.4rem;
+  color: var(--text-main);
+}
+
+.mobile-nav-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  padding: 1.25rem;
+  animation: dropdownFadeIn 0.25s ease;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.mobile-link {
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+}
+
+.mobile-link:hover {
+  background-color: var(--bg-subtle);
+  color: var(--primary);
+}
+
+.mobile-user-section {
+  border-top: 1px solid var(--border);
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+}
+
+.mobile-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.9rem 0.9rem;
+}
+
+.mobile-logout-btn {
+  color: var(--danger) !important;
+  text-align: left;
+  width: 100%;
+}
+
+.mobile-auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.mobile-auth-actions a {
+  text-align: center;
+}
+
+/* Owner Header Specific */
+.owner-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--primary);
+  color: #FFFFFF;
+  padding: 0.9rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+}
+
+.owner-logo a {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+.owner-header .menu-icon-button {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF;
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
+   2. HERO SECTION & FLOATING SEARCH BAR
+   ========================================================================== */
+.hero-section {
+  position: relative;
+  min-height: 580px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: var(--hero-bg, url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1600&q=80'));
+  background-size: cover;
+  background-position: center 40%;
+  padding: 4.5rem 1.5rem 5rem;
+}
+
+.hero-background-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(14, 30, 21, 0.65) 0%,
+    rgba(14, 30, 21, 0.78) 50%,
+    rgba(14, 30, 21, 0.90) 100%
+  );
+  z-index: 1;
+}
+
+.hero-container {
+  position: relative;
+  z-index: 2;
+  max-width: 1080px;
+  width: 100%;
   margin: 0 auto;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0.45rem 1.1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.25rem;
+  color: #F3EEE6;
+}
+
+.hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.1rem, 4.5vw, 3.4rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+.hero-subtitle {
+  max-width: 680px;
+  margin: 0 auto 2.5rem;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  font-weight: 400;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Floating Search Bar */
+.hero-search-wrapper {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.hero-search-form {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-full);
+  padding: 0.6rem 0.75rem 0.6rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+.search-field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}
+
+.field-icon-box {
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.field-inputs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.field-inputs label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.field-inputs input,
+.field-inputs select {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--text-main);
+  padding: 0;
+  width: 100%;
+}
+
+.field-inputs input::placeholder {
+  color: #9CA3AF;
+  font-weight: 400;
+}
+
+.search-divider {
+  width: 1px;
+  height: 38px;
+  background-color: var(--border);
+}
+
+.hero-search-btn {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  color: #FFFFFF;
+  border-radius: var(--radius-full);
+  padding: 0.9rem 1.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(201, 101, 59, 0.35);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.hero-search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201, 101, 59, 0.45);
+}
+
+/* ==========================================================================
+   3. SECTION SHARED STYLES
+   ========================================================================== */
+.section-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sage);
+  margin-bottom: 0.35rem;
+}
+
+.section-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 0.4rem;
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 580px;
+}
+
+.btn-reset-filter {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--primary);
+  transition: all var(--transition-fast);
+}
+
+.btn-reset-filter:hover {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   4. DESTINATIONS DISCOVERY
+   ========================================================================== */
+.section-destinations {
+  background-color: var(--bg-page);
+}
+
+.destinations-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.dest-card {
+  position: relative;
+  height: 250px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.dest-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+.dest-card.active {
+  box-shadow: 0 0 0 3px var(--primary);
+}
+
+.dest-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dest-card:hover .dest-img {
+  transform: scale(1.08);
+}
+
+.dest-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(14, 30, 21, 0.4) 40%,
+    rgba(14, 30, 21, 0.85) 100%
+  );
+}
+
+.dest-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem;
+  color: #FFFFFF;
+  z-index: 2;
+}
+
+.dest-count {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  background-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dest-name {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.dest-title-sub {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-top: 0.2rem;
+}
+
+.dest-hover-arrow {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: all var(--transition-fast);
+  z-index: 2;
+}
+
+.dest-card:hover .dest-hover-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ==========================================================================
+   5. WHY CHOOSE US (VALUES / FEATURES)
+   ========================================================================== */
+.section-features {
+  background-color: #FFFFFF;
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
 }
-.footer-column h4 {
-  font-size: 0.9rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.footer-column li {
-  font-size: 0.9rem;
-  margin-bottom: 0.75rem;
-  color: #333;
-  cursor: pointer;
-}
-.footer-column li:hover {
-  text-decoration: underline;
-}
-.footer-bottom {
-  max-width: 1200px;
-  margin: 2rem auto 0;
-  border-top: 1px solid #ddd;
-  padding-top: 1rem;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #555;
+
+.feature-card {
+  padding: 1.75rem;
+  border-radius: var(--radius-md);
+  background-color: var(--bg-page);
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-normal);
 }
 
-
-/* 1. Bỏ gạch chân cho thẻ Link ở trang chủ */
-.homestay-card-link {
-  text-decoration: none;
-  color: inherit; /* Kế thừa màu chữ (màu đen) */
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-sm);
+  border-color: var(--border);
 }
 
-/* 2. CSS cho trang Chi tiết */
-.homestay-detail {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
+.feature-icon-box {
+  width: 54px;
+  height: 54px;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary-subtle);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.2rem;
 }
 
-.detail-location {
-  font-size: 1.2rem;
-  color: #555;
-  margin-top: -1rem;
-}
-
-.image-gallery {
-  margin-top: 1.5rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 cột ảnh */
-  gap: 10px;
-}
-
-.image-gallery img {
-  width: 100%;
-  height: 300px;
-  object-fit: cover; /* Đảm bảo ảnh không bị méo */
-  border-radius: 5px;
-}
-
-.detail-info {
-  margin-top: 1.5rem;
+.feature-title {
   font-size: 1.1rem;
-}
-
-.book-button {
-  margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.reviews-section {
-  margin-top: 2rem;
-  border-top: 1px solid #eee;
-  padding-top: 1.5rem;
-}
-
-.review-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-}
-.review-card strong {
-  display: block; /* Cho tên người dùng xuống 1 hàng */
-  font-size: 1.1rem;
-}
-
-.review-card span {
-  display: block; /* Cho số sao xuống 1 hàng */
-  font-weight: bold;
-  color: #f5c518; /* Màu vàng */
-  margin-top: 0.25rem;
+  font-weight: 700;
+  color: var(--text-main);
   margin-bottom: 0.5rem;
 }
-.city-section {
-  margin-bottom: 2.5rem; /* Tạo khoảng cách giữa các thành phố */
+
+.feature-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.55;
 }
 
-.city-section h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #eee; /* Thêm đường gạch chân cho tiêu đề */
-}
-.booking-form {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+/* ==========================================================================
+   6. HOMESTAY CATALOG & CARDS
+   ========================================================================== */
+.section-catalog {
+  background-color: var(--bg-page);
 }
 
-.booking-form h3 {
-  margin-top: 0;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 0.5rem;
+.catalog-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.25rem;
 }
 
-.booking-inputs {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* 3 cột */
+.catalog-status-info {
+  display: flex;
+  align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
-/* Ghi đè CSS từ Form.css để dùng trong trang này */
-.booking-form .form-group label {
-  font-weight: bold;
-  display: block;
+.btn-link-action {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* City Groups */
+.city-group-block {
+  margin-bottom: 3.5rem;
+}
+
+.city-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.city-group-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.city-pin {
+  color: var(--accent);
+}
+
+.city-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  background-color: var(--bg-subtle);
+  color: var(--text-muted);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+/* Homestay Grid */
+.homestay-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+/* Homestay Card */
+.homestay-card {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: all var(--transition-normal);
+}
+
+.homestay-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  border-color: #D1C7BA;
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background-color: var(--bg-subtle);
+}
+
+.card-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.homestay-card:hover .card-main-img {
+  transform: scale(1.06);
+}
+
+.card-top-badge {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  background: rgba(14, 30, 21, 0.75);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.card-heart-btn {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: transform var(--transition-fast);
+}
+
+.card-heart-btn:hover {
+  transform: scale(1.12);
+  background: #FFFFFF;
+}
+
+/* Card Body */
+.card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
 }
-.booking-form .form-group input {
-  width: 100%;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+
+.card-capacity {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
 }
 
-/* Hiển thị lỗi đặt phòng */
-.booking-form .error-message {
-  color: red;
-  font-weight: bold;
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.star-fill {
+  color: var(--star-color);
+  fill: var(--star-color);
+}
+
+.star-empty {
+  color: #D1D5DB;
+}
+
+.card-title {
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 0.4rem;
+}
+
+.card-title a {
+  color: var(--text-main);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color var(--transition-fast);
+}
+
+.card-title a:hover {
+  color: var(--primary);
+}
+
+.card-location {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-location svg {
+  flex-shrink: 0;
+  color: var(--sage);
+}
+
+.card-footer-row {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border-light);
+}
+
+.card-price-group {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.price-val {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.price-unit {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.card-detail-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--accent-subtle);
+  transition: all var(--transition-fast);
+}
+
+.card-detail-btn:hover {
+  background-color: var(--accent);
+  color: #FFFFFF;
+}
+
+/* Loading & Empty States */
+.loading-state-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
+  color: var(--text-muted);
+  gap: 1rem;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.empty-state-box {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 3.5rem 1.5rem;
   text-align: center;
+  max-width: 520px;
+  margin: 2rem auto;
+}
+
+.empty-icon {
+  color: var(--sage);
   margin-bottom: 1rem;
 }
 
-.book-button[disabled] {
-  background-color: #ccc;
-  cursor: not-allowed;
+.empty-state-box h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
 }
-.search-input select {
-  border: none;
-  outline: none;
-  background: transparent;
-  font: inherit; /* Kế thừa font chữ */
-  color: inherit; /* Kế thừa màu chữ */
+
+.empty-state-box p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-reset-search {
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--primary);
+  color: #FFFFFF;
+  font-size: 0.92rem;
+  font-weight: 700;
+  transition: background-color var(--transition-fast);
+}
+
+.btn-reset-search:hover {
+  background-color: var(--primary-light);
+}
+
+/* ==========================================================================
+   7. TRAVEL STYLE BANNERS
+   ========================================================================== */
+.section-styles {
+  background-color: #FFFFFF;
+  border-top: 1px solid var(--border-light);
+}
+
+.styles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+.style-banner {
+  position: relative;
+  height: 340px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
   cursor: pointer;
-  
-  /* Căn chỉnh cho khớp với input */
-  padding-top: 2px; 
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.style-banner:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+}
+
+.style-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(14, 30, 21, 0.2) 0%,
+    rgba(14, 30, 21, 0.7) 50%,
+    rgba(14, 30, 21, 0.95) 100%
+  );
+}
+
+.style-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.75rem;
+  color: #FFFFFF;
+  z-index: 2;
+}
+
+.style-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background-color: var(--accent);
+  color: #FFFFFF;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 0.6rem;
+}
+
+.style-content h3 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 0.35rem;
+}
+
+.style-content p {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 1rem;
+}
+
+.style-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   padding-bottom: 2px;
 }
+
+/* ==========================================================================
+   8. DETAIL PAGE (HOMESTAY DETAIL)
+   ========================================================================== */
+.detail-main-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Top Navigation & Breadcrumbs */
+.detail-top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.detail-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.detail-back-btn:hover {
+  color: var(--primary);
+}
+
+.detail-breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.detail-breadcrumbs a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.detail-breadcrumbs a:hover {
+  color: var(--primary);
+}
+
+.detail-breadcrumbs .current {
+  color: var(--text-main);
+  font-weight: 600;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Header Row */
+.detail-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.detail-title {
+  font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.detail-meta-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.detail-rating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.meta-separator {
+  color: var(--border);
+}
+
+.detail-location-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-muted);
+}
+
+.detail-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn-action-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background-color: #FFFFFF;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  transition: all var(--transition-fast);
+}
+
+.btn-action-outline:hover {
+  border-color: var(--primary);
+  background-color: var(--bg-subtle);
+}
+
+.btn-action-outline.active-fav {
+  border-color: var(--danger);
+  color: var(--danger);
+  background-color: var(--danger-bg);
+}
+
+/* Luxe 5-Photo Gallery Grid */
+.detail-gallery-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 1rem;
+  height: 480px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-md);
+}
+
+.gallery-main-slot {
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-subtle);
+}
+
+.gallery-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-main-slot:hover .gallery-main-img {
+  transform: scale(1.03);
+}
+
+.gallery-side-col {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 1rem;
+  height: 100%;
+}
+
+.gallery-sub-slot {
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-subtle);
+}
+
+.gallery-sub-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.gallery-sub-slot:hover .gallery-sub-img {
+  transform: scale(1.05);
+}
+
+/* Two Column Detail Layout */
+.detail-body-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.detail-content-col {
+  min-width: 0;
+}
+
+.section-divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: 2.25rem 0;
+}
+
+/* Host Card */
+.host-profile-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.host-avatar-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--sage) 100%);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.host-meta-box h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.host-sub {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.verified-icon {
+  color: var(--success);
+}
+
+/* Highlights */
+.highlights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.highlight-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary-subtle);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.highlight-item h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.highlight-item p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+/* Sections */
+.detail-section {
+  margin-bottom: 1.5rem;
+}
+
+.section-subtitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 1.25rem;
+}
+
+.detail-desc-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+/* Amenities Grid */
+.amenities-pills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.amenity-pill-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.amenity-check-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* Policies Grid */
+.policies-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.policy-card {
+  padding: 1.25rem;
+  border-radius: var(--radius-sm);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+}
+
+.policy-card h4 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.policy-card p {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* Reviews */
+.reviews-header-block {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+}
+
+.reviews-score-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--primary-subtle);
+  color: var(--primary);
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+}
+
+.reviews-score-badge .big-score {
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.reviews-meta-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.reviews-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.user-review-card {
+  padding: 1.25rem;
+  border-radius: var(--radius-sm);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border-light);
+}
+
+.review-user-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.review-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--sand);
+  color: var(--primary);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.review-stars-row {
+  display: flex;
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.review-comment-text {
+  font-size: 0.92rem;
+  color: var(--text-main);
+  line-height: 1.55;
+}
+
+.no-reviews-note {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 1rem 0;
+}
+
+/* Review Submission Form */
+.review-submission-box {
+  margin-top: 2rem;
+  padding: 1.75rem;
+  border-radius: var(--radius-md);
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+}
+
+.review-box-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+
+.review-stars-input-group {
+  margin-bottom: 1.25rem;
+}
+
+.review-stars-input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.review-textarea-group {
+  margin-bottom: 1.25rem;
+}
+
+.review-textarea-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.review-textarea-group textarea {
+  width: 100%;
+  padding: 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.review-textarea-group textarea:focus {
+  border-color: var(--primary);
+}
+
+.btn-submit-review {
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--primary);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: all var(--transition-fast);
+}
+
+.btn-submit-review:hover {
+  background-color: var(--primary-light);
+}
+
+/* Sticky Booking Card */
+.sticky-booking-card {
+  position: sticky;
+  top: 90px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.booking-card-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 1rem;
+}
+
+.booking-price-amount {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.booking-price-unit {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.booking-rating-mini {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.88rem;
+}
+
+.booking-inputs-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.booking-cell {
+  padding: 0.65rem 0.85rem;
+  border-bottom: 1px solid var(--border-light);
+  border-right: 1px solid var(--border-light);
+}
+
+.booking-cell:nth-child(2n) {
+  border-right: none;
+}
+
+.booking-cell.full-span {
+  grid-column: 1 / -1;
+  border-right: none;
+}
+
+.booking-cell:last-child {
+  border-bottom: none;
+}
+
+.booking-cell label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.booking-cell input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  background: none;
+}
+
+.readonly-date-input {
+  color: var(--text-muted) !important;
+  cursor: not-allowed;
+}
+
+.guest-limit-hint {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-top: 2px;
+  display: block;
+}
+
+.booking-error-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+/* Price Calculation Box */
+.price-calc-box {
+  background-color: var(--bg-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.calc-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.free-tag {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.calc-divider {
+  height: 1px;
+  background-color: var(--border);
+  margin: 0.6rem 0;
+}
+
+.calc-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+
+.total-number {
+  color: var(--accent);
+  font-size: 1.15rem;
+}
+
+.btn-book-now {
+  width: 100%;
+  padding: 1rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(201, 101, 59, 0.3);
+  transition: all var(--transition-fast);
+  margin-bottom: 0.85rem;
+}
+
+.btn-book-now:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201, 101, 59, 0.4);
+}
+
+.btn-book-now:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.booking-trust-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+  text-align: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   9. MODERN SITE FOOTER
+   ========================================================================== */
+.modern-footer {
+  background-color: #14261B;
+  color: #FFFFFF;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-top-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 3.5rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.brand-tree-icon {
+  color: #5F8571;
+}
+
+.brand-name {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.footer-brand .brand-accent {
+  color: var(--accent);
+}
+
+.footer-desc {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  max-width: 380px;
+}
+
+.footer-contact-info p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 0.4rem;
+}
+
+.footer-links-col h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.footer-links-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-links-col li a,
+.footer-links-col li button {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  text-align: left;
+  transition: color var(--transition-fast);
+}
+
+.footer-links-col li a:hover,
+.footer-links-col li button:hover {
+  color: #FFFFFF;
+}
+
+.footer-bottom-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1.5rem;
+}
+
+.footer-bottom-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.55);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-bottom-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ==========================================================================
+   10. OTHER PAGES & ADMIN STYLES (PRESERVED & ENHANCED)
+   ========================================================================== */
+/* Common Card & Tables */
+.admin-section {
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.admin-table th {
+  padding: 0.9rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  border-bottom: 2px solid var(--border);
+}
+
+.admin-table td {
+  padding: 0.9rem 1rem;
+  font-size: 0.92rem;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.admin-table-image {
+  width: 60px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--radius-xs);
+}
+
+/* Status Pill Badges */
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.status.DaXacNhan,
+.status.DaHoanThanh {
+  background-color: var(--success-bg);
+  color: var(--success);
+}
+
+.status.ChoXacNhan,
+.status.ChuaXuLy {
+  background-color: var(--warning-bg);
+  color: var(--warning);
+}
+
+.status.DaHuy,
+.status.TuChoi {
+  background-color: var(--danger-bg);
+  color: var(--danger);
+}
+
+.status-admin {
+  background-color: var(--primary-subtle);
+  color: var(--primary);
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Buttons */
+.button-primary {
+  padding: 0.65rem 1.35rem;
+  border-radius: var(--radius-full);
+  background-color: var(--primary);
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
+}
+
+.button-primary:hover {
+  background-color: var(--primary-light);
+}
+
+.button-danger {
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.button-danger:hover {
+  background-color: var(--danger);
+  color: #FFFFFF;
+}
+
+.button-approve {
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--success-bg);
+  color: var(--success);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(21, 128, 61, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.button-approve:hover {
+  background-color: var(--success);
+  color: #FFFFFF;
+}
+
+/* Admin Dashboard 2-column layout */
+.admin-dashboard-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.admin-menu-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-menu-button {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.admin-menu-button:hover {
+  background-color: var(--bg-subtle);
+  color: var(--primary);
+}
+
+.stats-grid,
+.stats-grid-admin {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.stat-card,
+.stat-card-admin {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card h4,
+.stat-card-admin h4 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.stat-card p,
+.stat-card-admin p {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* Star Rating Component */
+.star-rating {
+  display: flex;
+  gap: 4px;
+}
+
+.star-rating button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+}
+
+/* ==========================================================================
+   11. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .destinations-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .homestay-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .styles-grid {
+    grid-template-columns: 1fr;
+  }
+  .detail-body-layout {
+    grid-template-columns: 1fr;
+  }
+  .sticky-booking-card {
+    position: static;
+  }
+  .footer-top-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-nav-desktop,
+  .owner-portal-btn,
+  .guest-auth-group {
+    display: none;
+  }
+  
+  .mobile-hamburger-btn {
+    display: block;
+  }
+
+  .hero-section {
+    min-height: auto;
+    padding: 3rem 1rem 4rem;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+  }
+
+  .hero-search-form {
+    flex-direction: column;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+  }
+
+  .search-divider {
+    display: none;
+  }
+
+  .search-field {
+    width: 100%;
+    border-bottom: 1px solid var(--border-light);
+    padding: 0.6rem 0;
+  }
+
+  .hero-search-btn {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .destinations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .homestay-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-gallery-grid {
+    grid-template-columns: 1fr;
+    height: 300px;
+  }
+
+  .gallery-side-col {
+    display: none;
+  }
+
+  .amenities-pills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .policies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top-container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .admin-dashboard-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid,
+  .stats-grid-admin {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   12. USER PAGES (BOOKINGS, FAVORITES, COMPLAINTS)
+   ========================================================================== */
 .bookings-list {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .booking-card {
   display: flex;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  overflow: hidden; /* Giữ ảnh bo tròn */
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.booking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .booking-card-image {
-  width: 250px;
-  height: 200px;
+  width: 240px;
+  min-height: 180px;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .booking-card-info {
-  padding: 1rem 1.5rem;
-  flex-grow: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
 }
 
 .booking-card-info h3 {
-  margin-top: 0;
   font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.25rem;
 }
 
 .booking-card-info p {
-  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
-/* Định dạng Trạng thái */
-.status {
-  font-weight: bold;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
+.booking-card-info p strong {
+  color: var(--text-main);
 }
-.status.ChoXacNhan {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
+
+.booking-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-light);
 }
-.status.DaXacNhan {
-  color: #3c763d;
-  background-color: #dff0d8;
+
+.cancel-button {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  transition: all var(--transition-fast);
 }
-.status.DaHuy {
-  color: #a94442;
-  background-color: #f2dede;
+
+.cancel-button:hover {
+  background-color: var(--danger);
+  color: #FFFFFF;
 }
+
 .complain-button {
-  background-color: #d9534f; /* Màu đỏ */
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--warning-bg);
+  color: var(--warning);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(180, 83, 9, 0.2);
+  transition: all var(--transition-fast);
 }
 
 .complain-button:hover {
-  background-color: #c9302c;
+  background-color: var(--warning);
+  color: #FFFFFF;
 }
 
-/* 1. CSS cho Nút màu xanh (Update) */
-.button-primary {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #007bff; /* Màu xanh dương */
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
-}
-.button-primary:disabled {
-  background-color: #ccc;
-}
-.auth-form input:disabled {
-  background-color: #eee;
-  color: #777;
-}
-
-/* 2. CSS cho Menu 3 sọc (Dropdown) */
-.profile-menu {
-  position: relative; /* Giữ menu dropdown bên trong */
-}
-
-.menu-icon-button {
-  background: none;
-  border: 1px solid white;
-  border-radius: 50%;
-  padding: 5px;
-  cursor: pointer;
-  color: white;
-  display: flex; /* Để căn icon */
-  align-items: center;
-  justify-content: center;
-}
-.menu-icon-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.menu-dropdown {
-  position: absolute;
-  top: 120%; /* Nằm ngay dưới icon */
-  right: 0;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 200px;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem 0;
-}
-
-.menu-item {
-  background: none;
-  border: none;
-  font: inherit;
-  padding: 0.75rem 1rem;
-  color: #333;
-  text-decoration: none;
-  text-align: left;
-  cursor: pointer;
-}
-.menu-item:hover {
-  background-color: #f4f4f4;
-}
-.menu-item.logout {
-  color: #d9534f; /* Màu đỏ */
-  border-top: 1px solid #eee;
-}
-
-/* Nút Hủy đơn (Màu cam) */
-.cancel-button {
-  background-color: #f0ad4e;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-top: 0.5rem;
-  margin-right: 0.5rem; /* Thêm khoảng cách */
-}
-.cancel-button:hover {
-  background-color: #ec971f;
-}
-
-/* Sửa lại nút Khiếu nại (để nằm cạnh nhau) */
-.complain-button {
-  margin-right: 0.5rem;
-}
-
-.booking-actions {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.heart-button {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 10; /* Nổi lên trên ảnh */
-  
-  /* Thêm hiệu ứng viền đen để icon trắng nổi bật */
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.7));
-}
-.heart-button:hover {
-  transform: scale(1.1); /* Phóng to 1 chút khi di chuột */
-}
-
-
-.detail-header-container h2 {
-  margin: 0;
-}
-
-/* Tái sử dụng CSS cho nút trái tim, 
-   nhưng đổi màu viền thành đen cho dễ thấy */
-.heart-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  
-  /* Lần này không cần 'position: absolute' */
-}
-.heart-button:hover {
-  transform: scale(1.1);
-}
-/* Bọc 2 nút "Đặt phòng" và "Yêu thích" */
-.booking-form-actions {
-  display: flex;
-  flex-direction: column; /* Xếp 2 nút dọc */
-  gap: 0.5rem; /* Khoảng cách nhỏ giữa 2 nút */
-  margin-top: 1rem;
-}
-
-/* Sửa nút Đặt phòng (xóa margin-top cũ) */
-.book-button {
-  margin-top: 0; 
-}
-
-/* Nút Yêu thích (mặc định) */
-.favorite-button {
-  width: 100%;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  background-color: #f0f0f0; /* Màu xám nhạt */
-  color: #333; /* Màu chữ đen */
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-/* Nút Yêu thích (khi đã thích) */
-.favorite-button.favorited {
-  background-color: #ffeaea; /* Nền hồng nhạt */
-  color: #d9534f; /* Chữ màu đỏ */
-  border-color: #d9534f; /* Viền màu đỏ */
-}
-
-.review-form {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #eee;
-}
-
-.review-form h4 {
-  font-size: 1.2rem;
-  margin-top: 0;
-}
-
-/* Tái sử dụng .form-group cho textarea và select */
-.review-form .form-group {
-  margin-bottom: 1rem;
-}
-.review-form .form-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-.review-form .form-group textarea,
-.review-form .form-group select {
-  width: 100%;
-  padding: 0.5rem;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1rem;
-}
-
-/* Sửa lại nút primary để nó không 100% width */
-.review-form .button-primary {
-  width: auto; /* Chỉ rộng vừa đủ chữ */
-}
-/* 1. CSS cho Component Ngôi Sao */
-.star-rating {
-  display: flex;
-  gap: 0.25rem;
-}
-.star-rating span {
-  cursor: pointer;
-  font-size: 2rem; /* Làm ngôi sao to ra */
-  transition: color 0.1s ease-in-out;
-}
-.star-empty {
-  color: #ccc; /* Màu sao rỗng */
-}
-.star-filled {
-  color: #f5c518; /* Màu sao vàng */
-}
-
-/* 2. CSS cho Điểm trung bình (dưới tiêu đề) */
-.detail-subtitle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem; /* Kéo lên gần tiêu đề */
-  margin-bottom: 1rem;
-}
-.avg-rating {
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-.detail-location-dot {
-  font-weight: bold;
-}
-.detail-location {
-  font-size: 1.1rem;
-  color: #555;
-  margin: 0; /* Xóa margin cũ */
-}
-.form-links {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-.complaint-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    /* Tái sử dụng .booking-card */
-    .complaint-card {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      padding: 1rem 1.5rem;
-    }
-
-    .complaint-card p {
-      margin: 0.5rem 0;
-    }
-
-    /* Định dạng cho phản hồi (nếu có) */
-    .complaint-response {
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px dashed #ccc;
-      background-color: #f9f9f9;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-    }
-
-    .complaint-response strong {
-      color: #0056b3; /* Màu xanh dương */
-    }
-
-    .owner-homestay-card {
-      background: white;
-      padding: 1.5rem;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .owner-homestay-card h3 {
-      margin-top: 0;
-    }
-
-    .upload-form {
-      margin: 1rem 0;
-      padding: 1rem;
-      border: 1px dashed #007bff;
-      border-radius: 5px;
-      background: #f9f9f9;
-    }
-    .upload-form label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .upload-form input[type="file"] {
-      display: block;
-    }
-
-    .current-images {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 1rem;
-    }
-    .current-images img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-
-    /* 1. Header Mới Của Chủ Nhà */
-    .owner-header {
-      background-color: #0056b3; /* Màu xanh dương đậm */
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .owner-logo a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    .owner-nav {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .owner-nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .owner-nav a:hover {
-      text-decoration: underline;
-    }
-    .owner-welcome {
-      border-left: 1px solid #555;
-      padding-left: 1rem;
-      font-style: italic;
-    }
-
-    /* 2. Thẻ Thống Kê (Dashboard) */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 3 cột */
-      gap: 1.5rem;
-    }
-    .stat-card {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-      border-top: 4px solid #007bff;
-    }
-    .stat-card h4 {
-      margin-top: 0;
-      color: #555;
-    }
-    .stat-card p {
-      font-size: 2rem;
-      font-weight: bold;
-      color: #0056b3;
-      margin-bottom: 0;
-    }
-
-    /* Thẻ Quản lý Đơn (chủ nhà) */
-    .booking-management-card {
-      /* Bỏ ảnh, chỉ dùng info */
-      flex-direction: column;
-    }
-    
-    .booking-management-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-      border-top: 1px solid #eee;
-      padding-top: 1rem;
-    }
-
-    /* Nút Xác nhận (Màu xanh lá) */
-    .button-approve {
-      padding: 0.5rem 1rem;
-      background-color: #5cb85c;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .button-approve:hover {
-      background-color: #4cae4c;
-    }
-    
-    /* Ghi đè lại nút Đỏ (Xóa/Hủy) để nó nhỏ hơn */
-    .booking-management-actions .button-danger {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-    }
-    .resolve-form {
-      margin-top: 1rem;
-      border-top: 1px dashed #ccc;
-      padding-top: 1rem;
-    }
-    .resolve-form label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 0.5rem;
-    }
-    .resolve-form textarea {
-      width: 100%;
-      padding: 0.5rem;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-family: inherit;
-      font-size: 1rem;
-      margin-bottom: 0.5rem;
-    }
-    /* Ghi đè nút primary để nó nhỏ hơn */
-    .resolve-form .button-primary {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-    }
-
-    .admin-link {
-      color: #ffc107 !important; /* Màu vàng */
-      font-weight: bold !important;
-      border: 1px solid #ffc107;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-    .admin-link:hover {
-      background: #ffc107;
-      color: #333 !important;
-    }
-
-    /* Bảng Admin */
-    .admin-section {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .admin-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-    }
-    .admin-table th, .admin-table td {
-      border: 1px solid #ddd;
-      padding: 0.75rem;
-      text-align: left;
-      vertical-align: middle;
-    }
-    .admin-table th {
-      background-color: #f9f9f9;
-    }
-    .admin-table .button-danger,
-    .admin-table .button-approve {
-      padding: 0.4rem 0.8rem;
-      font-size: 0.9rem;
-    }
-
-    /* 1. CSS cho Header CỦA CHỦ NHÀ (nền xanh) */
-    .owner-header {
-      background-color: #0056b3; /* Màu xanh dương đậm */
-      color: white;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .owner-header .owner-logo a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
-    /* Icon 3 sọc (dùng chung .menu-icon-button) */
-    .owner-header .menu-icon-button {
-      border-color: white;
-      color: white;
-    }
-    .owner-header .auth-links a {
-      color: white;
-      margin-left: 1rem;
-      text-decoration: none;
-    }
-
-    /* 2. CSS cho lời chào bên trong dropdown */
-    .menu-item-greeting {
-      padding: 0.75rem 1rem;
-      font-style: italic;
-      color: #555;
-      border-bottom: 1px solid #eee;
-    }
-
-    /* 3. CSS cho link Admin (bên trong dropdown) */
-    .menu-item.admin-link {
-      color: #0056b3; /* Màu xanh */
-      font-weight: bold;
-      background-color: #f0f5fa; /* Nền xanh nhạt */
-    }
-    .menu-item.admin-link:hover {
-      background-color: #e0eaf5;
-    }
-    /* Style cho tag "Admin" trong bảng */
-.status-admin {
-  font-weight: bold;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  color: #fff;
-  background-color: #0056b3; /* Màu xanh admin */
-}
-.admin-table-image {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
-.admin-table small {
-  display: block;
-  font-size: 0.8em;
-  color: #555;
-}
-
-.role-select {
-  padding: 0.25rem 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #fff;
-  cursor: pointer;
-}
-/* 1. CSS cho Modal (Cửa sổ Pop-up) */
-    .modal-overlay {
-      position: fixed; /* Che toàn màn hình */
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6); /* Nền mờ */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      width: 500px;
-      max-width: 90%;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      /* Cho phép cuộn nếu nội dung quá dài */
-      max-height: 90vh;
-      overflow-y: auto; 
-    }
-    
-    .modal-content h2 {
-      margin-top: 0;
-    }
-    
-    /* Tái sử dụng .form-group cho modal */
-    .modal-content .form-group {
-      margin-bottom: 1rem;
-    }
-    .modal-content .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    .modal-content .form-group input,
-    .modal-content .form-group textarea {
-      width: 100%;
-      padding: 0.5rem;
-      box-sizing: border-box;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end; /* Đẩy nút về bên phải */
-      gap: 0.5rem;
-      margin-top: 1.5rem;
-      border-top: 1px solid #eee;
-      padding-top: 1rem;
-    }
-    
-    /* Nút Hủy (màu xám) */
-    .button-secondary {
-      padding: 0.75rem 1.5rem;
-      background-color: #f0f0f0;
-      color: #333;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-    }
-    .button-secondary:hover {
-      background-color: #e0e0e0;
-    }
-
-    /* 2. CSS cho các nút Sửa/Xóa trong thẻ Card */
-    .owner-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-      border-top: 1px solid #eee;
-      padding-top: 1rem;
-    }
-    
-    /* Ghi đè nút (để làm chúng nhỏ hơn) */
-    .owner-actions .button-primary,
-    .owner-actions .button-danger {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-    }
-
-    /* Form phản hồi của Admin (trong bảng) */
-.resolve-form-admin {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.resolve-form-admin textarea {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
-}
-.resolve-form-admin button {
-  /* Ghi đè nút primary (cho nhỏ lại) */
-  width: auto;
-  padding: 0.4rem 0.8rem;
-  font-size: 0.9rem;
-  align-self: flex-end; /* Nút nằm bên phải */
-}
-/* Bố cục 2 cột của Admin Dashboard */
-    .admin-dashboard-layout {
-      display: grid;
-      grid-template-columns: 300px 1fr; /* Cột menu 300px, Cột nội dung 1fr */
-      gap: 2rem;
-      margin-top: 1.5rem;
-    }
-
-    /* Menu bên trái (Sidebar) */
-    .admin-menu-sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    /* Tái sử dụng style .admin-menu-button (Đã có) */
-    .admin-menu-button {
-      display: block;
-      padding: 1.25rem; /* Tăng padding */
-      background-color: #007bff;
-      color: white;
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: bold;
-      text-align: center;
-      border-radius: 8px;
-      transition: background-color 0.2s;
-    }
-    .admin-menu-button:hover {
-      background-color: #0056b3;
-    }
-
-    /* Nội dung Thống kê bên phải */
-    .admin-stats-container {
-      background-color: white;
-      padding: 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .admin-stats-container h3 {
-      margin-top: 0;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 1rem;
-    }
-
-    /* Lưới Thống kê (Giữ 3 cột) */
-.stats-grid-admin {
+/* Favorites Grid */
+.favorites-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem; /* Tăng khoảng cách */
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
-/* Thẻ Thống kê (Style mới giống ảnh) */
-.stat-card-admin {
-  background: white; /* Nền trắng */
-  border: 1px solid #eee; /* Viền rất nhạt */
-  padding: 1.5rem;
-  border-radius: 8px;
-  /* Thêm viền xanh ở trên */
-  border-top: 4px solid #007bff; 
-  /* Thêm bóng mờ */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-}
-.stat-card-admin h4 {
-  margin-top: 0;
-  font-size: 0.9rem;
-  font-weight: 600; /* Đậm hơn 1 chút */
-  color: #555; /* Màu xám */
-}
-.stat-card-admin p {
-  font-size: 2rem; /* Tăng kích thước số */
-  font-weight: bold;
-  color: #007bff; /* Đổi màu số thành xanh dương */
-  margin-bottom: 0;
-  margin-top: 0.5rem;
+.favorite-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
 }
 
-/* --- Lớp phủ cho Modal --- */
-.modal-overlay {
-  position: fixed; /* Che toàn màn hình */
-  top: 0;
-  left: 0;
+.favorite-card-image {
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Nền mờ */
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.favorite-card-info {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.favorite-card-info h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.favorite-card-info p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.remove-favorite-button {
+  margin-top: auto;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  background-color: var(--danger-bg);
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(185, 28, 28, 0.2);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.remove-favorite-button:hover {
+  background-color: var(--danger);
+  color: #FFFFFF;
+}
+
+/* Complaints List */
+.complaints-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.complaint-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.complaint-card h3 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+/* Modals */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(14, 30, 21, 0.65);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
+  padding: 1.5rem;
 }
 
-/* --- Nội dung Modal --- */
 .modal-content {
-  background: white;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-md);
   padding: 2rem;
-  border-radius: 8px;
-  width: 700px; /* Rộng hơn một chút */
-  max-width: 90%;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  max-height: 90vh; /* Cho phép cuộn nếu nội dung quá dài */
-  overflow-y: auto; 
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
 }
 
-.modal-content h2 {
-  margin-top: 0;
-}
-
-/* --- Lưới layout cho Form --- */
 .form-grid {
   display: grid;
-  grid-template-columns: 1fr; /* 1 cột trên di động */
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-/* 2 cột trên màn hình lớn hơn */
-@media (min-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem 1.5rem;
-  }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Class để làm 1 trường input chiếm 2 cột */
 .form-group.full-span {
   grid-column: 1 / -1;
 }
 
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #374151;
-}
-
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-family: inherit; /* Đảm bảo dùng font chữ thống nhất */
-  box-sizing: border-box; /* Rất quan trọng */
-}
-
-.form-group textarea {
-  min-height: 100px;
-  resize: vertical; /* Cho phép kéo thay đổi chiều cao */
-}
-
-/* --- Các nút hành động (Hủy, Tạo) --- */
 .modal-actions {
   display: flex;
-  justify-content: flex-end; /* Đẩy nút về bên phải */
-  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
   margin-top: 1.5rem;
-  border-top: 1px solid #eee;
   padding-top: 1rem;
+  border-top: 1px solid var(--border-light);
 }
 
-/* --- Nút Hủy (màu xám) --- */
 .button-secondary {
-  padding: 0.75rem 1.5rem;
-  background-color: #f0f0f0;
-  color: #333;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: bold;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-subtle);
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all var(--transition-fast);
 }
+
 .button-secondary:hover {
-  background-color: #e0e0e0;
+  background-color: var(--sand);
 }
 
-/* --- Nút "Thêm Homestay mới" ở cuối trang --- */
-.add-homestay-container {
-  /* Căn giữa nút */
+@media (max-width: 768px) {
+  .booking-card {
+    flex-direction: column;
+  }
+  .booking-card-image {
+    width: 100%;
+    height: 180px;
+  }
+  .favorites-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   ADMIN PORTAL STYLES (SEPARATE & DEDICATED)
+   ========================================================================== */
+.admin-portal-wrapper {
   display: flex;
-  justify-content: center;
-  padding: 2rem 0;
-  border-top: 1px dashed #ccc;
-  margin-top: 1.5rem;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #F1F5F9;
+  color: #0F172A;
 }
 
-.add-homestay-button {
-  /* Tái sử dụng class .button-primary */
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
-  font-weight: bold;
+  background-color: #0F172A;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.25);
 }
 
- 
+.admin-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.admin-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.admin-brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+}
+
+.admin-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+}
+
+.admin-brand-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #93C5FD;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.admin-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-topbar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #CBD5E1;
+  text-decoration: none;
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease;
+}
+
+.admin-topbar-link:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+}
+
+.admin-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.45rem;
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3B82F6, #1E40AF);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-user-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #F8FAFC;
+  line-height: 1.1;
+}
+
+.admin-user-role {
+  font-size: 0.68rem;
+  color: #60A5FA;
+  font-weight: 600;
+}
+
+.admin-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  background-color: #EF4444;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-logout-btn:hover {
+  background-color: #DC2626;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+}
+
+/* Admin Body Layout */
+.admin-body-layout {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 65px);
+}
+
+.admin-sidebar {
+  width: 260px;
+  background-color: #1E293B;
+  color: #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #334155;
+  flex-shrink: 0;
+  padding: 1.25rem 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.admin-sidebar-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94A3B8;
+  padding: 0.5rem 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.admin-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  color: #CBD5E1;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.admin-nav-item:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+}
+
+.admin-nav-item.active {
+  background: linear-gradient(90deg, #2563EB, #1D4ED8);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.admin-nav-icon {
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.admin-nav-text {
+  flex: 1;
+}
+
+.admin-nav-chevron {
+  opacity: 0.6;
+  transition: transform 0.2s;
+}
+
+.admin-nav-item.active .admin-nav-chevron {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.admin-sidebar-footer {
+  margin-top: auto;
+  padding: 0.85rem;
+  border-top: 1px solid #334155;
+}
+
+.admin-sidebar-hint {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  color: #94A3B8;
+}
+
+.admin-main-viewport {
+  flex: 1;
+  padding: 2rem;
+  background-color: #F8FAFC;
+  overflow-y: auto;
+  max-width: calc(100% - 260px);
+}
+
+.admin-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E2E8F0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.admin-page-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.admin-page-subtitle {
+  font-size: 0.9rem;
+  color: #64748B;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+.admin-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   OWNER PORTAL STYLES (SEPARATE & DEDICATED)
+   ========================================================================== */
+.owner-portal-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #FAF8F5;
+  color: #1C231F;
+}
+
+.owner-portal-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.75rem;
+  background-color: #1C3B2B;
+  color: #FFFFFF;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(28, 59, 43, 0.2);
+}
+
+.owner-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.owner-mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.owner-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.owner-brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #C9653B, #B2532B);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(201, 101, 59, 0.4);
+}
+
+.owner-brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+}
+
+.owner-brand-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #E5DDD0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.owner-topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.owner-admin-switch-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #FEF3C7;
+  text-decoration: none;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  background-color: rgba(245, 158, 11, 0.25);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  transition: all 0.2s ease;
+}
+
+.owner-admin-switch-btn:hover {
+  background-color: rgba(245, 158, 11, 0.35);
+  transform: translateY(-1px);
+}
+
+.owner-topbar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #E5DDD0;
+  text-decoration: none;
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+}
+
+.owner-topbar-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+}
+
+.owner-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem 0.75rem 0.35rem 0.45rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.owner-user-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #C9653B;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.owner-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.owner-user-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.1;
+}
+
+.owner-user-role {
+  font-size: 0.68rem;
+  color: #E5DDD0;
+  font-weight: 600;
+}
+
+.owner-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.owner-logout-btn:hover {
+  background-color: #EF4444;
+  border-color: #EF4444;
+}
+
+/* Owner Body Layout */
+.owner-body-layout {
+  display: flex;
+  flex: 1;
+  min-height: calc(100vh - 65px);
+}
+
+.owner-sidebar {
+  width: 260px;
+  background-color: #FFFFFF;
+  color: #1C231F;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #E8E2D7;
+  flex-shrink: 0;
+  padding: 1.25rem 0.75rem;
+  transition: transform 0.3s ease;
+  box-shadow: 2px 0 10px rgba(28, 59, 43, 0.03);
+}
+
+.owner-sidebar-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #5C6861;
+  padding: 0.5rem 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.owner-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.owner-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: 10px;
+  color: #5C6861;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.owner-nav-item:hover {
+  background-color: #F3EEE6;
+  color: #1C3B2B;
+}
+
+.owner-nav-item.active {
+  background: #1C3B2B;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(28, 59, 43, 0.25);
+}
+
+.owner-nav-icon {
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.owner-nav-text {
+  flex: 1;
+}
+
+.owner-nav-chevron {
+  opacity: 0.5;
+  transition: transform 0.2s;
+}
+
+.owner-nav-item.active .owner-nav-chevron {
+  transform: translateX(2px);
+  opacity: 1;
+}
+
+.owner-sidebar-footer {
+  margin-top: auto;
+  padding: 0.85rem;
+  border-top: 1px solid #E8E2D7;
+  background-color: #FAF8F5;
+  border-radius: 8px;
+}
+
+.owner-sidebar-hint {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  color: #5C6861;
+}
+
+.owner-main-viewport {
+  flex: 1;
+  padding: 2rem;
+  background-color: #FAF8F5;
+  overflow-y: auto;
+  max-width: calc(100% - 260px);
+}
+
+.owner-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E8E2D7;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.owner-page-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1C3B2B;
+  margin: 0;
+}
+
+.owner-page-subtitle {
+  font-size: 0.9rem;
+  color: #5C6861;
+  margin-top: 0.25rem;
+  margin-bottom: 0;
+}
+
+.owner-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Responsive sidebar drawers */
+@media (max-width: 900px) {
+  .admin-mobile-toggle,
+  .owner-mobile-toggle {
+    display: block;
+  }
+  .admin-sidebar,
+  .owner-sidebar {
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    transform: translateX(-100%);
+  }
+  .admin-sidebar.open,
+  .owner-sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-sidebar-overlay,
+  .owner-sidebar-overlay {
+    position: fixed;
+    inset: 60px 0 0 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+  }
+  .admin-main-viewport,
+  .owner-main-viewport {
+    max-width: 100%;
+    padding: 1.25rem;
+  }
+  .admin-logout-text,
+  .owner-logout-text {
+    display: none;
+  }
+}
+
+/* Shared Modern Dashboard Components */
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.stat-widget {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-widget:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.stat-widget-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-widget-icon.blue { background-color: #DBEAFE; color: #1D4ED8; }
+.stat-widget-icon.green { background-color: #DCFCE7; color: #15803D; }
+.stat-widget-icon.amber { background-color: #FEF3C7; color: #B45309; }
+.stat-widget-icon.purple { background-color: #EDE9FE; color: #6D28D9; }
+.stat-widget-icon.rose { background-color: #FFE4E6; color: #BE123C; }
+
+.stat-widget-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-widget-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-widget-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1.2;
+  margin-top: 0.2rem;
+}
+
+/* Modern Data Table Container */
+.data-table-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.data-table-header {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #E2E8F0;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.data-table-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0;
+}
+
+.modern-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.modern-table th {
+  background-color: #F8FAFC;
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.modern-table td {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #F1F5F9;
+  font-size: 0.88rem;
+  color: #1E293B;
+  vertical-align: middle;
+}
+
+.modern-table tr:hover td {
+  background-color: #F8FAFC;
+}
+
+/* Status Badges */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.status-pill.success { background-color: #DCFCE7; color: #15803D; }
+.status-pill.warning { background-color: #FEF3C7; color: #B45309; }
+.status-pill.danger { background-color: #FEE2E2; color: #B91C1C; }
+.status-pill.info { background-color: #DBEAFE; color: #1D4ED8; }
+.status-pill.neutral { background-color: #F1F5F9; color: #475569; }
+
+/* Filter & Search Bar */
+.table-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.search-input-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.88rem;
+}
+
+.search-input-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.88rem;
+  width: 200px;
+}

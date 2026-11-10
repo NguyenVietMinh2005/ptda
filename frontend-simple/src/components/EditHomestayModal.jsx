@@ -4,7 +4,9 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import '../App.css'; // Dùng CSS chung
 
-const UPDATE_API_URL = 'http://localhost:3000/api/homestays';
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const UPDATE_API_URL = `${API_BASE_URL}/homestays`;
 
 function EditHomestayModal({ homestay, onClose, onHomestayUpdated }) {
   // State để lưu trữ dữ liệu của form

@@ -121,11 +121,29 @@ export const createReview = async (req, res) => {
       data: review,
     });
   } catch (error) {
-    if (error.message === 'Không tìm thấy homestay') {
+    if (error.message.includes('Không tìm thấy homestay')) {
       res.status(404).json({ message: error.message });
+    } else if (error.message.includes('hoàn thành kỳ nghỉ')) {
+      res.status(403).json({ message: error.message });
     } else {
+      console.error('Lỗi khi gửi đánh giá:', error);
       res.status(500).json({ message: 'Lỗi máy chủ.' });
     }
+  }
+};
+
+/**
+ * Controller kiểm tra quyền đánh giá của người dùng
+ */
+export const checkCanReview = async (req, res) => {
+  try {
+    const homestayId = parseInt(req.params.id);
+    const userId = req.user?.MaNguoiDung || null;
+
+    const result = await homestayService.checkCanReview(userId, homestayId);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Lỗi máy chủ' });
   }
 };
 
@@ -150,14 +168,19 @@ export const bookHomestay = async (req, res) => {
     });
   } catch (error) {
     // Bắt các lỗi nghiệp vụ từ service
-    if (
-      error.message === 'Không tìm thấy homestay' ||
-      error.message === 'Ngày trả phải sau ngày nhận'
-    ) {
+    if (error.message.includes('Không tìm thấy homestay')) {
       res.status(404).json({ message: error.message });
-    } else if (error.message === 'Số lượng khách vượt quá mức cho phép') {
+    } else if (error.message.includes('Khoảng thời gian này đã có khách đặt')) {
+      res.status(409).json({ message: error.message });
+    } else if (
+      error.message.includes('Ngày trả phòng') ||
+      error.message.includes('Ngày nhận hoặc ngày trả') ||
+      error.message.includes('Số lượng khách') ||
+      error.message.includes('không nhận đặt phòng')
+    ) {
       res.status(400).json({ message: error.message });
     } else {
+      console.error('Lỗi khi đặt phòng:', error);
       res.status(500).json({ message: 'Lỗi máy chủ.' });
     }
   }
@@ -272,5 +295,51 @@ export const uploadImages = async (req, res) => {
     } else {
       res.status(500).json({ message: error.message });
     }
+  }
+};
+
+/**
+ * Controller để xóa một ảnh riêng lẻ của homestay
+ */
+export const deleteImage = async (req, res) => {
+  try {
+    const homestayId = parseInt(req.params.id, 10);
+    const imageId = parseInt(req.params.imageId, 10);
+    const ownerId = req.owner?.MaChu;
+
+    if (isNaN(homestayId) || isNaN(imageId)) {
+      return res.status(400).json({ success: false, message: 'ID homestay hoặc ID ảnh không hợp lệ' });
+    }
+
+    await homestayService.deleteImage(homestayId, ownerId, imageId);
+
+    res.status(200).json({
+      success: true,
+      message: 'Xóa ảnh thành công!',
+    });
+  } catch (error) {
+    if (error.message.includes('Không có quyền')) {
+      return res.status(403).json({ success: false, message: error.message });
+    }
+    if (error.message.includes('Không tìm thấy homestay') || error.message.includes('Không tìm thấy ảnh')) {
+      return res.status(404).json({ success: false, message: error.message });
+    }
+    if (error.message.includes('Ảnh không thuộc homestay')) {
+      return res.status(400).json({ success: false, message: error.message });
+    }
+    return res.status(500).json({ success: false, message: error.message || 'Lỗi máy chủ khi xóa ảnh.' });
+  }
+};
+
+/**
+ * Controller để kiểm tra tình trạng phòng / ngày đã được đặt
+ */
+export const getHomestayAvailability = async (req, res) => {
+  try {
+    const homestayId = parseInt(req.params.id);
+    const availability = await homestayService.getHomestayAvailability(homestayId);
+    res.status(200).json(availability);
+  } catch (error) {
+    res.status(500).json({ message: error.message || 'Lỗi khi kiểm tra tình trạng phòng.' });
   }
 };

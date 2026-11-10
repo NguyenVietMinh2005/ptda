@@ -3,19 +3,28 @@ import express from 'express';
 import * as homestayController from '../controllers/homestay.controller.js';
 import { protect } from '../middlewares/auth.middleware.js';
 import { protectOwner } from '../middlewares/owner.middleware.js';
-import upload from '../middlewares/upload.middleware.js';
+import upload, { validateUploadedImages, handleMulterError } from '../middlewares/upload.middleware.js';
 
 const router = express.Router();
 
 // --- Public Routes ---
 router.get('/', homestayController.getAllHomestays);
+router.get('/:id/availability', homestayController.getHomestayAvailability);
 router.get('/:id', homestayController.getHomestayById);
 
 // --- Owner Routes (Dành cho CHU_HOMESTAY) ---
 router.post('/', protectOwner, homestayController.createHomestay);
 router.put('/:id', protectOwner, homestayController.updateHomestay);
 router.delete('/:id', protectOwner, homestayController.deleteHomestay);
-router.post('/:id/images',protectOwner,upload.array('images', 10), homestayController.uploadImages);
+router.post(
+  '/:id/images',
+  protectOwner,
+  upload.array('images', 5),
+  handleMulterError,
+  validateUploadedImages,
+  homestayController.uploadImages
+);
+router.delete('/:id/images/:imageId', protectOwner, homestayController.deleteImage);
 
 // --- User Routes (Dành cho NGUOI_DUNG) ---
 // Thêm homestay vào yêu thích (yêu cầu đăng nhập)
@@ -26,6 +35,7 @@ router.delete('/:id/favorite', protect, homestayController.removeFavorite);
 
 // Gửi đánh giá cho một homestay (yêu cầu đăng nhập)
 router.post('/:id/reviews', protect, homestayController.createReview);
+router.get('/:id/can-review', protect, homestayController.checkCanReview);
 
 // Đặt phòng (yêu cầu đăng nhập)
 router.post('/:id/book', protect, homestayController.bookHomestay);

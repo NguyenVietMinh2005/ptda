@@ -1,0 +1,12 @@
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+.cache/
+
+# Preserve sample homestay images, ignore runtime user uploads
+uploads/*
+!uploads/hs*.jpg
+!uploads/.gitkeep
+

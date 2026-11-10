@@ -11,39 +11,78 @@ import prisma from '../config/prisma.js';
  * 
  */
 export const updateBookingStatus = async (bookingId, ownerId, newStatus) => {
-  // 1. Kiểm tra xem 'newStatus' có hợp lệ không (khớp với Enum)
-  if (newStatus !== 'DaXacNhan' && newStatus !== 'DaHuy') {
-    throw new Error('Trạng thái cập nhật không hợp lệ'); // Lỗi 400
+  const allowedStatuses = ['DaXacNhan', 'DaHuy', 'DangLuuTru', 'DaHoanThanh'];
+  if (!allowedStatuses.includes(newStatus)) {
+    throw new Error('Trạng thái cập nhật không hợp lệ');
   }
 
-  // 2. (Quan trọng) Tìm đơn đặt VÀ xác thực quyền sở hữu
-  // Tìm một đơn đặt...
+  // 1. Tìm đơn đặt VÀ xác thực quyền sở hữu của chủ nhà
   const booking = await prisma.dAT_PHONG.findFirst({
     where: {
       MaDatPhong: bookingId,
-      // ...MÀ nó có chi tiết đặt phòng...
       CHI_TIET_DAT_PHONG: {
         some: {
-          // ...liên quan đến một homestay...
           HOMESTAY: {
-            // ...thuộc sở hữu của chủ này
             MaChu: ownerId,
           },
         },
       },
-      // ...VÀ đơn này đang ở trạng thái "Chờ xác nhận"
-      TrangThai: 'ChoXacNhan',
+    },
+    include: {
+      CHI_TIET_DAT_PHONG: true,
     },
   });
 
-  // 3. Nếu không tìm thấy (hoặc không có quyền, hoặc đã xử lý)
   if (!booking) {
     throw new Error(
-      'Không tìm thấy đơn đặt, bạn không có quyền, hoặc đơn đã được xử lý'
-    ); // Lỗi 404/403
+      'Không tìm thấy đơn đặt, hoặc bạn không có quyền quản lý đơn này'
+    );
   }
 
-  // 4. Cập nhật trạng thái
+  // 2. Kiểm tra tính hợp lệ của luồng chuyển đổi trạng thái
+  if (newStatus === 'DaXacNhan') {
+    if (booking.TrangThai !== 'ChoXacNhan') {
+      throw new Error('Chỉ có thể xác nhận đơn đặt phòng đang ở trạng thái Chờ xác nhận');
+    }
+
+    // KIỂM TRA LẠI LỊCH TRÙNG TRƯỚC KHI XÁC NHẬN
+    const homestayId = booking.CHI_TIET_DAT_PHONG[0]?.MaHomestay;
+    if (homestayId) {
+      const conflict = await prisma.dAT_PHONG.findFirst({
+        where: {
+          MaDatPhong: { not: bookingId },
+          CHI_TIET_DAT_PHONG: {
+            some: { MaHomestay: homestayId },
+          },
+          TrangThai: {
+            in: ['DaXacNhan', 'DangLuuTru'],
+          },
+          AND: [
+            { NgayNhan: { lt: booking.NgayTra } },
+            { NgayTra: { gt: booking.NgayNhan } },
+          ],
+        },
+      });
+
+      if (conflict) {
+        throw new Error('Không thể xác nhận đơn này vì đã có đơn khác được xác nhận trong cùng khoảng thời gian.');
+      }
+    }
+  } else if (newStatus === 'DangLuuTru') {
+    if (booking.TrangThai !== 'DaXacNhan') {
+      throw new Error('Chỉ có thể chuyển sang Đang lưu trú khi đơn đã được xác nhận');
+    }
+  } else if (newStatus === 'DaHoanThanh') {
+    if (booking.TrangThai !== 'DangLuuTru' && booking.TrangThai !== 'DaXacNhan') {
+      throw new Error('Chỉ có thể hoàn thành đơn đã được xác nhận hoặc đang lưu trú');
+    }
+  } else if (newStatus === 'DaHuy') {
+    if (booking.TrangThai === 'DaHoanThanh') {
+      throw new Error('Không thể hủy đơn đặt phòng đã hoàn thành lưu trú');
+    }
+  }
+
+  // 3. Cập nhật trạng thái mới
   const updatedBooking = await prisma.dAT_PHONG.update({
     where: {
       MaDatPhong: bookingId,

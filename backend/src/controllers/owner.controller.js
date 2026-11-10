@@ -160,3 +160,61 @@ export const getDashboardStats = async (req, res) => {
     res.status(500).json({ message: 'Lỗi máy chủ.' });
   }
 };
+
+/**
+ * Controller lấy lịch sử giao dịch liên quan đến homestay của chủ nhà
+ */
+export const getMyTransactions = async (req, res) => {
+  try {
+    const ownerId = req.owner.MaChu;
+    const transactions = await ownerService.getMyTransactions(ownerId);
+
+    res.status(200).json({
+      message: 'Lấy lịch sử giao dịch thành công!',
+      data: transactions,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Lỗi máy chủ khi lấy lịch sử giao dịch.' });
+  }
+};
+
+/**
+ * Controller lấy thông tin tài khoản chủ nhà
+ */
+export const getOwnerProfile = async (req, res) => {
+  try {
+    const ownerId = req.owner.MaChu;
+    const profile = await ownerService.getOwnerProfile(ownerId);
+
+    res.status(200).json({
+      message: 'Lấy thông tin tài khoản thành công!',
+      data: profile,
+    });
+  } catch (error) {
+    console.error(error);
+    if (error.message.includes('Không tìm thấy')) {
+      res.status(404).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: 'Lỗi máy chủ.' });
+    }
+  }
+};
+
+/**
+ * Controller cập nhật thông tin tài khoản chủ nhà
+ */
+export const updateOwnerProfile = async (req, res) => {
+  try {
+    const ownerId = req.owner.MaChu;
+    const updated = await ownerService.updateOwnerProfile(ownerId, req.body);
+
+    res.status(200).json({
+      message: 'Cập nhật thông tin tài khoản thành công!',
+      data: updated,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Lỗi máy chủ khi cập nhật thông tin.' });
+  }
+};

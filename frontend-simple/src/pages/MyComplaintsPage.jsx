@@ -5,7 +5,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header' // Dùng Header component
 import '../App.css' // Dùng chung CSS
 
-const API_URL = 'http://localhost:3000/api/auth/me/complaints'
+import { API_BASE_URL } from '../utils/apiConfig';
+
+const API_URL = `${API_BASE_URL}/auth/me/complaints`;
 
 function MyComplaintsPage() {
   const [complaints, setComplaints] = useState([])

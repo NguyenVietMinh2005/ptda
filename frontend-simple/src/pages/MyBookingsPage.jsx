@@ -1,5 +1,5 @@
 // src/pages/MyBookingsPage.jsx
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import '../App.css' // Dùng chung CSS
@@ -30,9 +30,9 @@ function MyBookingsPage() {
 
   // Lấy token và user
   const token = localStorage.getItem('authToken')
-  const user = JSON.parse(localStorage.getItem('authUser'))
 
-  const fetchBookings = async () => {
+
+  const fetchBookings = useCallback(async () => {
     try {
       const response = await axios.get(API_URL, {
         headers: {
@@ -40,12 +40,12 @@ function MyBookingsPage() {
         }
       })
       setBookings(response.data.data)
-    } catch (err) {
+    } catch {
       setError('Không thể tải lịch sử đặt phòng.')
     } finally {
       setLoading(false)
     }
-  }
+  }, [token])
 
   useEffect(() => {
     // 1. Kiểm tra đăng nhập
@@ -56,7 +56,7 @@ function MyBookingsPage() {
     }
 
     fetchBookings()
-  }, [token, navigate])
+  }, [token, navigate, fetchBookings])
 
   // (Đã xóa hàm handleLogout vì Header.jsx đã xử lý)
 

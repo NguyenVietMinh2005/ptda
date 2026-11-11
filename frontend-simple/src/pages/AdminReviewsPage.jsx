@@ -1,5 +1,5 @@
 // src/pages/AdminReviewsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/AdminLayout';
 import { Search, Star, Trash2, RefreshCw } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function AdminReviewsPage() {
   const [starFilter, setStarFilter] = useState('ALL');
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/reviews`, {
@@ -29,11 +29,11 @@ export default function AdminReviewsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchReviews();
-  }, [token]);
+  }, [fetchReviews]);
 
   const handleDeleteReview = async (reviewId) => {
     if (!window.confirm(`Bạn có chắc chắn muốn gỡ bỏ đánh giá #${reviewId}?`)) {

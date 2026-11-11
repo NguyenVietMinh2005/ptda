@@ -1,5 +1,5 @@
 // src/pages/HomestayDetailPage.jsx
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import axios from 'axios'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { 
@@ -112,7 +112,7 @@ function HomestayDetailPage() {
             setReviewComment(existingReview.BinhLuan || '')
           }
         }
-      } catch (err) {
+      } catch {
         setError('Không thể tải chi tiết homestay.')
       } finally {
         setLoading(false) 
@@ -141,7 +141,7 @@ function HomestayDetailPage() {
           })
           setCanReview(canRes.data.canReview)
           setCanReviewReason(canRes.data.reason || '')
-        } catch (err) {
+        } catch {
           setCanReview(false)
         }
       }
@@ -152,7 +152,7 @@ function HomestayDetailPage() {
     checkReviewEligibility()
   }, [id, token, user, DETAIL_API_URL])
 
-  const fetchAvailability = async () => {
+  const fetchAvailability = useCallback(async () => {
     if (id) {
       try {
         const availRes = await axios.get(`${API_BASE_URL}/homestays/${id}/availability`);
@@ -161,11 +161,11 @@ function HomestayDetailPage() {
         console.warn('Không thể tải thông tin phòng trống:', err);
       }
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     fetchAvailability();
-  }, [id]);
+  }, [fetchAvailability]);
 
 
   // Favorite handler
@@ -202,7 +202,7 @@ function HomestayDetailPage() {
         })
         toast.success('Đã thêm vào danh sách yêu thích!')
       }
-    } catch (err) {
+    } catch {
       toast.error('Đã xảy ra lỗi khi cập nhật yêu thích.')
     }
   }
@@ -333,7 +333,6 @@ function HomestayDetailPage() {
   const reviewsWithComments = allReviews.filter(
     review => review.BinhLuan && review.BinhLuan.trim() !== ''
   )
-  const totalComments = reviewsWithComments.length
 
   let averageRating = "5.0"
   if (totalReviews > 0) {

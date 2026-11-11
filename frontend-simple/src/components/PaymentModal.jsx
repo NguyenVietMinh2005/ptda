@@ -1,5 +1,5 @@
 // src/components/PaymentModal.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { 
@@ -20,7 +20,7 @@ export default function PaymentModal({ bookingId, onClose, onPaymentSuccess }) {
 
   const token = localStorage.getItem('authToken');
 
-  const fetchPaymentInfo = async () => {
+  const fetchPaymentInfo = useCallback(async () => {
     try {
       setLoading(true);
       const res = await axios.get(`${API_BASE}/${bookingId}/payment-info`, {
@@ -35,13 +35,13 @@ export default function PaymentModal({ bookingId, onClose, onPaymentSuccess }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [bookingId, token]);
 
   useEffect(() => {
     if (bookingId) {
       fetchPaymentInfo();
     }
-  }, [bookingId]);
+  }, [bookingId, fetchPaymentInfo]);
 
   // Khách chọn phương thức Tiền mặt
   const handleSelectCashMethod = async () => {
@@ -73,7 +73,7 @@ export default function PaymentModal({ bookingId, onClose, onPaymentSuccess }) {
           : undefined
       };
 
-      const res = await axios.post(
+      await axios.post(
         `${API_BASE}/${bookingId}/payment/simulate`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }

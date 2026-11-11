@@ -1,5 +1,5 @@
 // src/pages/AdminDashboardPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AdminLayout from '../components/AdminLayout';
@@ -29,7 +29,7 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/dashboard-stats`, {
@@ -42,11 +42,11 @@ export default function AdminDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchStats();
-  }, [token]);
+  }, [fetchStats]);
 
   return (
     <AdminLayout

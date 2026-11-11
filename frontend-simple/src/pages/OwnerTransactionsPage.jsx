@@ -1,5 +1,5 @@
 // src/pages/OwnerTransactionsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import OwnerLayout from '../components/OwnerLayout';
 import { Search, CreditCard, RefreshCw, CheckCircle2, XCircle, TrendingUp } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function OwnerTransactionsPage() {
   const [methodFilter, setMethodFilter] = useState('ALL');
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(API_URL, {
@@ -29,11 +29,11 @@ export default function OwnerTransactionsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchTransactions();
-  }, [token]);
+  }, [fetchTransactions]);
 
   const filteredTransactions = transactions.filter((t) => {
     const term = searchTerm.toLowerCase();

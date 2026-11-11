@@ -1,5 +1,5 @@
 // src/pages/OwnerDashboardPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import OwnerLayout from '../components/OwnerLayout';
@@ -26,7 +26,7 @@ export default function OwnerDashboardPage() {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(API_URL, {
@@ -39,11 +39,11 @@ export default function OwnerDashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchStats();
-  }, [token]);
+  }, [fetchStats]);
 
   return (
     <OwnerLayout

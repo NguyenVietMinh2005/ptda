@@ -1,5 +1,5 @@
 // src/pages/OwnerProfilePage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import OwnerLayout from '../components/OwnerLayout';
 import { User, Phone, MapPin, CreditCard, Shield, Save, RefreshCw } from 'lucide-react';
@@ -23,7 +23,7 @@ export default function OwnerProfilePage() {
 
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(API_URL, {
@@ -43,11 +43,11 @@ export default function OwnerProfilePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchProfile();
-  }, [token]);
+  }, [fetchProfile]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,5 +1,5 @@
 // src/pages/AdminComplaintsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/AdminLayout';
 import { AlertTriangle, CheckCircle2, MessageSquare, RefreshCw, Send } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function AdminComplaintsPage() {
   const [resolutionMessages, setResolutionMessages] = useState({});
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchComplaints = async () => {
+  const fetchComplaints = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/complaints`, {
@@ -29,11 +29,11 @@ export default function AdminComplaintsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchComplaints();
-  }, [token]);
+  }, [fetchComplaints]);
 
   const handleResolveComplaint = async (complaintId) => {
     const ketQua = resolutionMessages[complaintId];

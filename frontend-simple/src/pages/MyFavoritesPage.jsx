@@ -38,7 +38,7 @@ function MyFavoritesPage() {
         })
         // API này trả về mảng YEU_THICH, mỗi mục có chứa HOMESTAY
         setFavorites(response.data.data)
-      } catch (err) {
+      } catch {
         setError('Không thể tải danh sách yêu thích.')
       } finally {
         setLoading(false)

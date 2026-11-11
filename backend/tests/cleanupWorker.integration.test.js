@@ -2,6 +2,7 @@
 process.env.NODE_ENV = 'test';
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 
 import prisma from '../src/config/prisma.js';
 import * as homestayService from '../src/services/homestay.service.js';
@@ -111,6 +112,66 @@ describe('Giai đoạn 2.3 - Bước 3: Integration Tests (Nhóm A - Queue & Sto
     // Mô phỏng cơ sở dữ liệu Queue trong bộ nhớ
     const inMemoryQueue = [];
 
+    // Mock PostgreSQL raw SQL ($queryRaw) cho enqueueCleanup và claimJobs
+    mockMethod(prisma, '$queryRaw', async (strings, ...values) => {
+      const sql = Array.isArray(strings)
+        ? strings.join('?')
+        : (typeof strings === 'object' && strings?.sql ? strings.sql : String(strings || ''));
+      const rawValues = Array.isArray(strings) ? values : (strings?.values || values || []);
+
+      // 1. Mô phỏng: INSERT INTO "STORAGE_CLEANUP_QUEUE" ... ON CONFLICT DO NOTHING RETURNING *
+      if (sql.includes('INSERT INTO "STORAGE_CLEANUP_QUEUE"')) {
+        const [filePath, bucketName, reason, maxRetries, nextRetryAt, createdAt, updatedAt] = rawValues;
+        const cleanPath = typeof filePath === 'string' ? filePath.trim() : filePath;
+        const bucket = bucketName || 'local';
+        const activeJob = inMemoryQueue.find(
+          (j) => j.filePath === cleanPath &&
+                 j.bucketName === bucket &&
+                 [queueService.QUEUE_STATUS.PENDING, queueService.QUEUE_STATUS.PROCESSING].includes(j.status)
+        );
+        if (activeJob) {
+          return []; // ON CONFLICT DO NOTHING -> 0 rows returned
+        }
+        const record = {
+          id: inMemoryQueue.length + 1,
+          filePath: cleanPath,
+          bucketName: bucket,
+          reason: reason || 'DELETE_IMAGE',
+          status: queueService.QUEUE_STATUS.PENDING,
+          retryCount: 0,
+          maxRetries: typeof maxRetries === 'number' ? maxRetries : 5,
+          lockToken: null,
+          lockedAt: null,
+          nextRetryAt: nextRetryAt || new Date(),
+          created_at: createdAt || new Date(),
+          updated_at: updatedAt || new Date(),
+        };
+        inMemoryQueue.push(record);
+        return [record];
+      }
+
+      // 2. Mô phỏng: WITH candidate AS (...) UPDATE ... RETURNING q.* (FOR UPDATE SKIP LOCKED)
+      if (sql.includes('WITH candidate AS') || sql.includes('FOR UPDATE SKIP LOCKED')) {
+        const now = new Date();
+        const candidates = inMemoryQueue.filter(
+          (j) => j.status === queueService.QUEUE_STATUS.PENDING &&
+                 (!j.nextRetryAt || j.nextRetryAt <= now) &&
+                 j.retryCount < j.maxRetries
+        );
+        const limit = typeof rawValues[1] === 'number' ? rawValues[1] : 5;
+        const claimed = candidates.slice(0, limit);
+        for (const job of claimed) {
+          job.status = queueService.QUEUE_STATUS.PROCESSING;
+          job.lockedAt = new Date();
+          job.lockToken = crypto.randomUUID();
+          job.updated_at = new Date();
+        }
+        return claimed;
+      }
+
+      return [];
+    });
+
     mockMethod(prisma.sTORAGE_CLEANUP_QUEUE, 'findFirst', async ({ where }) => {
       if (where?.id) {
         return inMemoryQueue.find((j) => j.id === where.id && (where.lockToken ? j.lockToken === where.lockToken : true)) || null;
@@ -200,6 +261,7 @@ describe('Giai đoạn 2.3 - Bước 3: Integration Tests (Nhóm A - Queue & Sto
   // INT-QS-03: Storage xóa thất bại và job được retry
   // =========================================================================
   it('INT-QS-03: Storage xóa gặp lỗi TRANSIENT -> Job giữ PENDING, tăng retryCount, tính backoff', async () => {
+    mockTransaction();
     const mockJob = {
       id: 201,
       filePath: 'homestays/1/net_fail.jpg',
@@ -213,6 +275,29 @@ describe('Giai đoạn 2.3 - Bước 3: Integration Tests (Nhóm A - Queue & Sto
     };
 
     let updatedJob = { ...mockJob };
+
+    // Mock PostgreSQL raw SQL ($queryRaw) cho claimJobs
+    mockMethod(prisma, '$queryRaw', async (strings, ...values) => {
+      const sql = Array.isArray(strings)
+        ? strings.join('?')
+        : (typeof strings === 'object' && strings?.sql ? strings.sql : String(strings || ''));
+      if (sql.includes('WITH candidate AS') || sql.includes('FOR UPDATE SKIP LOCKED')) {
+        const now = new Date();
+        if (
+          updatedJob.status === queueService.QUEUE_STATUS.PENDING &&
+          (!updatedJob.nextRetryAt || updatedJob.nextRetryAt <= now) &&
+          updatedJob.retryCount < updatedJob.maxRetries
+        ) {
+          updatedJob.status = queueService.QUEUE_STATUS.PROCESSING;
+          updatedJob.lockedAt = new Date();
+          updatedJob.lockToken = crypto.randomUUID();
+          updatedJob.updated_at = new Date();
+          return [{ ...updatedJob }];
+        }
+        return [];
+      }
+      return [];
+    });
 
     mockMethod(prisma.sTORAGE_CLEANUP_QUEUE, 'findFirst', async ({ where }) => {
       if (where?.id === updatedJob.id) {

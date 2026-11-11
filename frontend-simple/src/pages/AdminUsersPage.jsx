@@ -1,5 +1,5 @@
 // src/pages/AdminUsersPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/AdminLayout';
 import { Search, Lock, Unlock, UserCheck, UserX, RefreshCw } from 'lucide-react';
@@ -15,7 +15,7 @@ export default function AdminUsersPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/users`, {
@@ -28,11 +28,11 @@ export default function AdminUsersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchUsers();
-  }, [token]);
+  }, [fetchUsers]);
 
   const handleToggleUserStatus = async (userId, currentStatus) => {
     const newStatus = !currentStatus;

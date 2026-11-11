@@ -1,5 +1,5 @@
 // src/pages/AdminBookingsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/AdminLayout';
 import { Search, Calendar, RefreshCw, CheckCircle2, AlertCircle, Clock } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function AdminBookingsPage() {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/bookings`, {
@@ -29,11 +29,11 @@ export default function AdminBookingsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchBookings();
-  }, [token]);
+  }, [fetchBookings]);
 
   const handleUpdateBookingStatus = async (bookingId, newStatus) => {
     try {

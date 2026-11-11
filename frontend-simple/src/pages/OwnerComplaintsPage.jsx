@@ -1,5 +1,5 @@
 // src/pages/OwnerComplaintsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import OwnerLayout from '../components/OwnerLayout';
@@ -20,19 +20,19 @@ export default function OwnerComplaintsPage() {
   const navigate = useNavigate();
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchComplaints = async () => {
+  const fetchComplaints = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setComplaints(response.data.data || []);
-    } catch (err) {
+    } catch {
       toast.error('Không thể tải danh sách khiếu nại.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (!token) {
@@ -41,7 +41,7 @@ export default function OwnerComplaintsPage() {
       return;
     }
     fetchComplaints();
-  }, [token, navigate]);
+  }, [token, navigate, fetchComplaints]);
 
   const handleResolve = async (complaintId) => {
     const ketQua = resolutionMessages[complaintId];

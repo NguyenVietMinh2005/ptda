@@ -1,6 +1,6 @@
 // src/components/Header.jsx
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { 
   Menu, X, Trees, User, Calendar, MessageSquareWarning, 
   Heart, LogOut, Compass, Sparkles, Building2, ChevronDown 
@@ -11,7 +11,6 @@ function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   const userString = localStorage.getItem('authUser');

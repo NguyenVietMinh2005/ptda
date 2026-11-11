@@ -71,7 +71,7 @@ function HomePage() {
             console.warn('Lỗi tải yêu thích:', favErr)
           }
         }
-      } catch (err) {
+      } catch {
         setError('Không thể tải danh sách homestay. Vui lòng thử lại sau.')
       } finally {
         setLoading(false)
@@ -103,7 +103,7 @@ function HomePage() {
       if (section) {
         section.scrollIntoView({ behavior: 'smooth' })
       }
-    } catch (err) {
+    } catch {
       setError('Lỗi khi tìm kiếm homestay.')
     } finally {
       setLoading(false)
@@ -180,7 +180,7 @@ function HomePage() {
         })
         toast.success('Đã thêm vào danh sách yêu thích!')
       }
-    } catch (err) {
+    } catch {
       toast.error('Thao tác yêu thích thất bại.')
     }
   }

@@ -1,5 +1,5 @@
 // src/pages/AdminTransactionsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/AdminLayout';
 import { Search, CreditCard, RefreshCw, CheckCircle2, XCircle } from 'lucide-react';
@@ -16,7 +16,7 @@ export default function AdminTransactionsPage() {
   const [methodFilter, setMethodFilter] = useState('ALL');
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/transactions`, {
@@ -29,11 +29,11 @@ export default function AdminTransactionsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchTransactions();
-  }, [token]);
+  }, [fetchTransactions]);
 
   const filteredTransactions = transactions.filter((t) => {
     const term = searchTerm.toLowerCase();

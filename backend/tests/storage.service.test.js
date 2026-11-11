@@ -210,7 +210,8 @@ describe('Level 1: Storage Service & Path Classifier Unit Tests', () => {
       // Tạo thư mục bên ngoài
       const outsideDir = path.join(os.tmpdir(), 'ptda-outside-dir-' + Date.now());
       await fs.promises.mkdir(outsideDir, { recursive: true });
-      await fs.promises.writeFile(path.join(outsideDir, 'target.jpg'), 'content');
+      const targetFile = path.join(outsideDir, 'target.jpg');
+      await fs.promises.writeFile(targetFile, 'content');
 
       const symlinkDir = path.join(testUploadsDir, 'sym_parent_dir');
       try {
@@ -221,7 +222,14 @@ describe('Level 1: Storage Service & Path Classifier Unit Tests', () => {
         });
         assert.equal(res.isDeletable, false);
         assert.equal(res.type, 'SECURITY_ALERT');
-        assert.match(res.error, /thư mục cha/i);
+        assert.match(res.error, /thư mục cha|traversal/i);
+
+        // Xác nhận file bên ngoài tuyệt đối không bị xóa khi gọi xóa
+        const delRes = await deleteFileFromStorage('uploads/sym_parent_dir/target.jpg', 'local', {
+          uploadsDir: testUploadsDir,
+        });
+        assert.equal(delRes.success, false);
+        assert.equal(fs.existsSync(targetFile), true, 'File bên ngoài uploads không được phép bị xóa');
       } catch (err) {
         if (err.code !== 'EPERM') throw err;
       } finally {

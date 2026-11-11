@@ -30,7 +30,7 @@ function MyComplaintsPage() {
           headers: { 'Authorization': `Bearer ${token}` }
         })
         setComplaints(response.data.data)
-      } catch (err) {
+      } catch {
         setError('Không thể tải lịch sử khiếu nại.')
       } finally {
         setLoading(false)

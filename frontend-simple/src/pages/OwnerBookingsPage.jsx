@@ -1,5 +1,5 @@
 // src/pages/OwnerBookingsPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import OwnerLayout from '../components/OwnerLayout';
@@ -21,19 +21,19 @@ export default function OwnerBookingsPage() {
   const navigate = useNavigate();
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(response.data.data || []);
-    } catch (err) {
+    } catch {
       toast.error('Không thể tải danh sách đơn đặt.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (!token) {
@@ -42,7 +42,7 @@ export default function OwnerBookingsPage() {
       return;
     }
     fetchBookings();
-  }, [token, navigate]);
+  }, [token, navigate, fetchBookings]);
 
   const handleUpdateStatus = async (bookingId, newStatus) => {
     let actionText = 'Xác nhận';

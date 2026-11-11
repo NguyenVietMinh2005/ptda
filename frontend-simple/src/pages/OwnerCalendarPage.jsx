@@ -1,5 +1,5 @@
 // src/pages/OwnerCalendarPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import OwnerLayout from '../components/OwnerLayout';
 import {
@@ -29,7 +29,7 @@ export default function OwnerCalendarPage() {
 
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [homestayRes, bookingRes] = await Promise.all([
@@ -39,8 +39,8 @@ export default function OwnerCalendarPage() {
 
       const hList = homestayRes.data.data || [];
       setHomestays(hList);
-      if (hList.length > 0 && !selectedHomestayId) {
-        setSelectedHomestayId(hList[0].MaHomestay);
+      if (hList.length > 0) {
+        setSelectedHomestayId(prev => prev || hList[0].MaHomestay);
       }
       setAllBookings(bookingRes.data.data || []);
     } catch (err) {
@@ -49,11 +49,11 @@ export default function OwnerCalendarPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchData();
-  }, [token]);
+  }, [fetchData]);
 
   // Calendar calculations
   const year = currentDate.getFullYear();

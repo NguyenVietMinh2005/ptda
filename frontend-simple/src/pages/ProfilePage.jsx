@@ -15,7 +15,7 @@ function ProfilePage() {
   const token = localStorage.getItem('authToken');
 
   // 1. Lấy thông tin user từ localStorage để điền vào form
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('authUser')));
+  const [user] = useState(JSON.parse(localStorage.getItem('authUser')));
 
   // 2. Tạo state riêng cho từng trường
   const [hoTen, setHoTen] = useState(user?.HoTen || '');

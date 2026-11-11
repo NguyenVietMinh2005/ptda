@@ -1,5 +1,5 @@
 // src/pages/AdminHomestaysPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AdminLayout from '../components/AdminLayout';
@@ -24,7 +24,7 @@ export default function AdminHomestaysPage() {
   const [filterStatus, setFilterStatus] = useState('ALL');
   const token = localStorage.getItem('ownerAuthToken');
 
-  const fetchHomestays = async () => {
+  const fetchHomestays = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/homestays`, {
@@ -37,11 +37,11 @@ export default function AdminHomestaysPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchHomestays();
-  }, [token]);
+  }, [fetchHomestays]);
 
   const handleApprovalChange = async (homestayId, newStatus) => {
     const statusText = newStatus === 'DaDuyet' ? 'DUYỆT' : newStatus === 'TuChoi' ? 'TỪ CHỐI' : 'CHỜ DUYỆT';

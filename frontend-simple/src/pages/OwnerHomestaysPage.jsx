@@ -1,5 +1,5 @@
 // src/pages/OwnerHomestaysPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import OwnerLayout from '../components/OwnerLayout';
@@ -29,19 +29,19 @@ export default function OwnerHomestaysPage() {
   const [editingHomestay, setEditingHomestay] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const fetchMyHomestays = async () => {
+  const fetchMyHomestays = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMyHomestays(response.data.data || []);
-    } catch (err) {
+    } catch {
       toast.error('Không thể tải danh sách homestay của bạn.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     if (!token) {
@@ -50,7 +50,7 @@ export default function OwnerHomestaysPage() {
       return;
     }
     fetchMyHomestays();
-  }, [token, navigate]);
+  }, [token, navigate, fetchMyHomestays]);
 
   const handleImageUpload = async (e, homestayId) => {
     e.preventDefault();
@@ -70,7 +70,7 @@ export default function OwnerHomestaysPage() {
       );
       toast.success('Tải ảnh lên thành công!');
       fetchMyHomestays();
-    } catch (err) {
+    } catch {
       toast.error('Tải ảnh thất bại.');
     }
   };
@@ -84,7 +84,7 @@ export default function OwnerHomestaysPage() {
         );
         toast.success('Đã xóa homestay thành công.');
         setMyHomestays((current) => current.filter((h) => h.MaHomestay !== homestayId));
-      } catch (err) {
+      } catch {
         toast.error('Xóa homestay thất bại.');
       }
     }

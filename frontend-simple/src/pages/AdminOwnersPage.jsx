@@ -1,5 +1,5 @@
 // src/pages/AdminOwnersPage.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import AdminLayout from '../components/AdminLayout';
 import { Search, Lock, Unlock, Shield, ShieldAlert, RefreshCw } from 'lucide-react';
@@ -22,7 +22,7 @@ export default function AdminOwnersPage() {
     currentAdmin = null;
   }
 
-  const fetchOwners = async () => {
+  const fetchOwners = useCallback(async () => {
     setLoading(true);
     try {
       const res = await axios.get(`${ADMIN_API_URL}/owners`, {
@@ -35,11 +35,11 @@ export default function AdminOwnersPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
 
   useEffect(() => {
     fetchOwners();
-  }, [token]);
+  }, [fetchOwners]);
 
   const handleToggleOwnerStatus = async (ownerId, currentStatus) => {
     if (currentAdmin?.MaChu === ownerId) {
